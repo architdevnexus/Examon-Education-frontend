@@ -1,0 +1,262 @@
+[
+  {
+    "id": 1,
+    "title": "Thermodynamics Basics",
+    "level": "Beginner",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/112105123/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "GATE Mechanical – Thermodynamics Section",
+      "totalMarks": 65,
+      "duration": "180 min",
+      "questions": 10
+    }
+  },
+  {
+    "id": 2,
+    "title": "Fluid Mechanics Fundamentals",
+    "level": "Intermediate",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/112105171/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "SSC JE Mechanical – Fluid Mechanics",
+      "totalMarks": 50,
+      "duration": "60 min",
+      "questions": 20
+    }
+  },
+  {
+    "id": 3,
+    "title": "Strength of Materials Notes",
+    "level": "Advanced",
+    "language": "Hindi",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/112107146/module1/Lecture1.pdf",
+    "exam": {
+      "examTitle": "RRB JE Civil – Strength of Materials",
+      "totalMarks": 40,
+      "duration": "45 min",
+      "questions": 25
+    }
+  },
+  {
+    "id": 4,
+    "title": "Electrical Circuit Theory",
+    "level": "Beginner",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/108105053/pdf/Module1/Lecture1.pdf",
+    "exam": {
+      "examTitle": "GATE Electrical – Network Theory",
+      "totalMarks": 65,
+      "duration": "180 min",
+      "questions": 8
+    }
+  },
+  {
+    "id": 5,
+    "title": "Engineering Mathematics I",
+    "level": "Intermediate",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/122104019/numerical_methods.pdf",
+    "exam": {
+      "examTitle": "GATE Engineering Mathematics",
+      "totalMarks": 100,
+      "duration": "180 min",
+      "questions": 15
+    }
+  },
+  {
+    "id": 6,
+    "title": "Machine Design Concepts",
+    "level": "Advanced",
+    "language": "Hindi",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/112105125/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "ESE Mechanical – Machine Design",
+      "totalMarks": 100,
+      "duration": "120 min",
+      "questions": 12
+    }
+  },
+  {
+    "id": 7,
+    "title": "Surveying and Levelling",
+    "level": "Beginner",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/105107157/module1/Lecture1.pdf",
+    "exam": {
+      "examTitle": "SSC JE Civil – Surveying",
+      "totalMarks": 50,
+      "duration": "45 min",
+      "questions": 20
+    }
+  },
+  {
+    "id": 8,
+    "title": "Power Systems Overview",
+    "level": "Intermediate",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/108105104/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "GATE Electrical – Power Systems",
+      "totalMarks": 65,
+      "duration": "180 min",
+      "questions": 10
+    }
+  },
+  {
+    "id": 9,
+    "title": "Heat Transfer Simplified",
+    "level": "Advanced",
+    "language": "Hindi",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/112105043/module1/Lecture1.pdf",
+    "exam": {
+      "examTitle": "GATE Mechanical – Heat Transfer",
+      "totalMarks": 65,
+      "duration": "180 min",
+      "questions": 12
+    }
+  },
+  {
+    "id": 10,
+    "title": "Civil Engineering Materials",
+    "level": "Beginner",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/105103094/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "SSC JE Civil – Construction Materials",
+      "totalMarks": 50,
+      "duration": "60 min",
+      "questions": 20
+    }
+  },
+  {
+    "id": 11,
+    "title": "Signals and Systems Notes",
+    "level": "Intermediate",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/108104100/pdf/Lecture1.pdf",
+    "exam": {
+      "examTitle": "GATE Electronics – Signals & Systems",
+      "totalMarks": 65,
+      "duration": "180 min",
+      "questions": 10
+    }
+  },
+  {
+    "id": 12,
+    "title": "Structural Analysis Made Easy",
+    "level": "Advanced",
+    "language": "Hindi",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/105105108/module1/Lecture1.pdf",
+    "exam": {
+      "examTitle": "ESE Civil – Structural Analysis",
+      "totalMarks": 100,
+      "duration": "120 min",
+      "questions": 15
+    }
+  },
+  {
+    "id": 13,
+    "title": "Control Systems Guide",
+    "level": "Intermediate",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/108105037/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "GATE Electrical – Control Systems",
+      "totalMarks": 65,
+      "duration": "180 min",
+      "questions": 10
+    }
+  },
+  {
+    "id": 14,
+    "title": "Environmental Engineering Notes",
+    "level": "Beginner",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/105105048/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "SSC JE Civil – Environmental Engineering",
+      "totalMarks": 50,
+      "duration": "60 min",
+      "questions": 25
+    }
+  },
+  {
+    "id": 15,
+    "title": "Engineering Drawing Reference",
+    "level": "Intermediate",
+    "language": "Hindi",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/112107144/module1/Lecture1.pdf",
+    "exam": {
+      "examTitle": "RRB JE Mechanical – Engineering Graphics",
+      "totalMarks": 40,
+      "duration": "45 min",
+      "questions": 20
+    }
+  },
+  {
+    "id": 16,
+    "title": "Digital Electronics Basics",
+    "level": "Beginner",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/117103063/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "GATE ECE – Digital Logic Design",
+      "totalMarks": 65,
+      "duration": "180 min",
+      "questions": 8
+    }
+  },
+  {
+    "id": 17,
+    "title": "Microprocessor 8085 Tutorial",
+    "level": "Intermediate",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/108105102/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "GATE ECE – Microprocessors & Microcontrollers",
+      "totalMarks": 65,
+      "duration": "180 min",
+      "questions": 10
+    }
+  },
+  {
+    "id": 18,
+    "title": "Transportation Engineering",
+    "level": "Advanced",
+    "language": "Hindi",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/105107122/module1/Lecture1.pdf",
+    "exam": {
+      "examTitle": "ESE Civil – Transportation Engineering",
+      "totalMarks": 100,
+      "duration": "120 min",
+      "questions": 15
+    }
+  },
+  {
+    "id": 19,
+    "title": "Hydraulics and Pneumatics",
+    "level": "Intermediate",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/112105164/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "SSC JE Mechanical – Hydraulics & Pneumatics",
+      "totalMarks": 50,
+      "duration": "60 min",
+      "questions": 20
+    }
+  },
+  {
+    "id": 20,
+    "title": "Manufacturing Process Overview",
+    "level": "Beginner",
+    "language": "English",
+    "pdfUrl": "https://nptel.ac.in/content/storage2/courses/112105126/pdf/mod1.pdf",
+    "exam": {
+      "examTitle": "GATE Mechanical – Manufacturing Process",
+      "totalMarks": 65,
+      "duration": "180 min",
+      "questions": 12
+    }
+  }
+]

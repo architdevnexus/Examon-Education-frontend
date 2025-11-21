@@ -1,0 +1,104 @@
+{
+  "quizzes": [
+    {
+      "id": "upsc_gs_2025_01",
+      "title": "UPSC Prelims 2025 - General Studies Set A",
+      "exam": "UPSC",
+      "duration": 7200,
+      "totalMarks": 100,
+      "tags": ["Polity", "Geography", "Economy", "Environment"],
+      "questions": [
+        {
+          "id": "upsc_q1",
+          "type": "multiple_choice",
+          "question": "Which of the following is not a Directive Principle of State Policy?",
+          "options": [
+            "Equal pay for equal work",
+            "Uniform civil code",
+            "Right to property",
+            "Promotion of international peace"
+          ],
+          "correctAnswerIndex": 2,
+          "marks": 50,
+          "topic": "Polity",
+          "difficulty": "medium"
+        },
+        {
+          "id": "upsc_q2",
+          "type": "multiple_choice",
+          "question": "Which of the following rivers originates in India?",
+          "options": ["Brahmaputra", "Sutlej", "Mahanadi", "Indus"],
+          "correctAnswerIndex": 2,
+          "marks": 50,
+          "topic": "Geography",
+          "difficulty": "easy"
+        }
+      ]
+    },
+    {
+      "id": "ssc_cgl_gk_2025_01",
+      "title": "SSC CGL Tier 1 - General Knowledge",
+      "exam": "SSC CGL",
+      "duration": 3600,
+      "totalMarks": 50,
+      "tags": ["History", "Science", "Current Affairs"],
+      "questions": [
+        {
+          "id": "ssc_q1",
+          "type": "multiple_choice",
+          "question": "Who was the founder of the Maurya Empire?",
+          "options": [
+            "Ashoka",
+            "Chandragupta Maurya",
+            "Bindusara",
+            "Harshavardhana"
+          ],
+          "correctAnswerIndex": 1,
+          "marks": 25,
+          "topic": "History",
+          "difficulty": "easy"
+        },
+        {
+          "id": "ssc_q2",
+          "type": "multiple_choice",
+          "question": "Which gas is used in the preparation of soda water?",
+          "options": ["Oxygen", "Carbon dioxide", "Nitrogen", "Hydrogen"],
+          "correctAnswerIndex": 1,
+          "marks": 25,
+          "topic": "Science",
+          "difficulty": "easy"
+        }
+      ]
+    },
+    {
+      "id": "rrb_ntpc_math_2025_01",
+      "title": "RRB NTPC - Quantitative Aptitude",
+      "exam": "RRB NTPC",
+      "duration": 3600,
+      "totalMarks": 50,
+      "tags": ["Maths", "Reasoning"],
+      "questions": [
+        {
+          "id": "rrb_q1",
+          "type": "multiple_choice",
+          "question": "What is the least common multiple (LCM) of 12 and 18?",
+          "options": ["36", "72", "24", "48"],
+          "correctAnswerIndex": 0,
+          "marks": 25,
+          "topic": "Maths",
+          "difficulty": "easy"
+        },
+        {
+          "id": "rrb_q2",
+          "type": "multiple_choice",
+          "question": "If TRAIN is coded as WUDLQ, how is BUS coded?",
+          "options": ["EXV", "DWV", "EWT", "DWT"],
+          "correctAnswerIndex": 0,
+          "marks": 25,
+          "topic": "Reasoning",
+          "difficulty": "medium"
+        }
+      ]
+    }
+  ]
+}

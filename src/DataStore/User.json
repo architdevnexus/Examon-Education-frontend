@@ -1,0 +1,51 @@
+{
+  "userProfile": {
+    "id": "U12345",
+    "firstName": "Anupam",
+    "lastName": "Upadhyay",
+    "profileImage": "anupam_profile.jpg",
+    "email": "anupam.upadhyay@example.com",
+    "phoneNumber": "+91-9876543210",
+
+    "quizStats": {
+      "totalQuizzes": 25,
+      "attemptedQuizzes": 20,
+      "passed": 15,
+      "failed": 5,
+      "passFailRatio": "75%"
+    },
+
+    "previousExams": [
+      {
+        "examId": "UPSC2024",
+        "examName": "UPSC Civil Services",
+        "year": 2024,
+        "attempted": true,
+        "result": "Passed",
+        "score": 892,
+        "rank": 145,
+        "subjects": [
+          { "name": "General Studies", "marks": 320 },
+          { "name": "Optional Subject - Sociology", "marks": 280 },
+          { "name": "Essay", "marks": 150 },
+          { "name": "Interview", "marks": 142 }
+        ]
+      },
+      {
+        "examId": "GATE2023",
+        "examName": "GATE Mechanical",
+        "year": 2023,
+        "attempted": true,
+        "result": "Failed",
+        "score": 32,
+        "rank": null,
+        "subjects": [
+          { "name": "Engineering Mechanics", "marks": 8 },
+          { "name": "Thermodynamics", "marks": 10 },
+          { "name": "Maths", "marks": 6 },
+          { "name": "General Aptitude", "marks": 8 }
+        ]
+      }
+    ]
+  }
+}

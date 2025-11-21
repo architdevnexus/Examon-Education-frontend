@@ -1,0 +1,169 @@
+{
+  "status": "success",
+  "data": [
+    {
+      "id": "blog_001",
+      "title": "Mastering React in 2025: From Beginner to Pro",
+      "slug": "mastering-react-in-2025",
+      "author": {
+        "name": "Ananya Sharma",
+        "profile_image": "https://cdn.example.com/instructors/ananya_sharma.jpg",
+        "designation": "Senior Frontend Engineer at Google"
+      },
+      "published_date": "2025-09-18",
+      "read_time": "8 min",
+      "thumbnail": "https://cdn.example.com/blogs/react_masterclass_thumbnail.jpg",
+      "tags": ["React", "Frontend", "JavaScript", "Web Development"],
+      "category": "Frontend Development",
+      "excerpt": "Learn modern React with real-world projects, hooks, performance optimization, and the latest 2025 ecosystem updates like React Server Components.",
+      "content": {
+        "introduction": "React continues to dominate frontend development in 2025 with new features like React Server Components and Concurrent Rendering. This guide helps you move from the basics to advanced patterns used in production apps.",
+        "sections": [
+          {
+            "heading": "1. Getting Started with React",
+            "text": "Understand React’s component model, JSX, and virtual DOM. Set up your development environment using Vite or Next.js for faster builds."
+          },
+          {
+            "heading": "2. State Management Simplified",
+            "text": "Learn when to use useState, useReducer, and Zustand for scalable applications. Understand global state patterns that prevent prop drilling."
+          },
+          {
+            "heading": "3. Optimizing Performance",
+            "text": "Discover how to lazy load components, memoize expensive computations, and leverage React’s Suspense for smooth rendering."
+          },
+          {
+            "heading": "4. Real-World Projects",
+            "text": "Build a live project dashboard, implement authentication, and integrate APIs. Each project focuses on practical application of React concepts."
+          }
+        ],
+        "conclusion": "React in 2025 emphasizes simplicity, scalability, and speed. By mastering hooks and new rendering strategies, you can build apps that stand out."
+      },
+      "related_courses": [
+        {
+          "id": "course_101",
+          "title": "React Advanced Bootcamp",
+          "duration": "6 weeks",
+          "level": "Intermediate"
+        },
+        {
+          "id": "course_205",
+          "title": "Next.js with Server Components",
+          "duration": "4 weeks",
+          "level": "Advanced"
+        }
+      ],
+      "seo": {
+        "meta_title": "Mastering React in 2025 | Frontend Development Blog",
+        "meta_description": "Learn React with modern patterns and tools for 2025. Covers hooks, performance tips, and project-based learning for frontend engineers."
+      }
+    },
+    {
+      "id": "blog_002",
+      "title": "Complete Guide to Node.js Backend Architecture",
+      "slug": "nodejs-backend-architecture-guide",
+      "author": {
+        "name": "Ravi Patel",
+        "profile_image": "https://cdn.example.com/instructors/ravi_patel.jpg",
+        "designation": "Backend Architect at Infosys"
+      },
+      "published_date": "2025-07-09",
+      "read_time": "10 min",
+      "thumbnail": "https://cdn.example.com/blogs/node_architecture_thumbnail.jpg",
+      "tags": ["Node.js", "Backend", "API", "Express", "Architecture"],
+      "category": "Backend Development",
+      "excerpt": "A deep dive into Node.js architecture, including event-driven models, REST API design, and best practices for scalable backend applications.",
+      "content": {
+        "introduction": "Node.js enables developers to build high-performance backends using a non-blocking I/O model. This post breaks down modern backend architecture for large-scale apps.",
+        "sections": [
+          {
+            "heading": "1. Understanding Event-Driven Architecture",
+            "text": "Node.js is single-threaded but asynchronous. Learn how the event loop works and how to handle concurrent requests efficiently."
+          },
+          {
+            "heading": "2. Structuring Your Application",
+            "text": "Use the MVC (Model-View-Controller) or layered architecture pattern for better maintainability. Organize controllers, services, and repositories cleanly."
+          },
+          {
+            "heading": "3. Error Handling and Logging",
+            "text": "Implement global error handlers using middleware. Integrate Winston or Pino for structured logging and monitoring."
+          },
+          {
+            "heading": "4. Scaling with Clusters and PM2",
+            "text": "Learn how to utilize Node’s cluster module and PM2 process manager to make full use of multi-core CPUs."
+          }
+        ],
+        "conclusion": "With the right architecture, Node.js can power everything from small APIs to enterprise-scale systems with minimal overhead."
+      },
+      "related_courses": [
+        {
+          "id": "course_302",
+          "title": "Node.js and Express from Scratch",
+          "duration": "8 weeks",
+          "level": "Beginner"
+        },
+        {
+          "id": "course_310",
+          "title": "Advanced API Design with Node and MongoDB",
+          "duration": "6 weeks",
+          "level": "Advanced"
+        }
+      ],
+      "seo": {
+        "meta_title": "Node.js Backend Architecture | Full Guide 2025",
+        "meta_description": "Understand Node.js architecture, scaling strategies, and backend best practices for production-ready systems."
+      }
+    },
+    {
+      "id": "blog_003",
+      "title": "Data Visualization with Python and Power BI",
+      "slug": "data-visualization-python-powerbi",
+      "author": {
+        "name": "Meera Singh",
+        "profile_image": "https://cdn.example.com/instructors/meera_singh.jpg",
+        "designation": "Data Scientist at TCS"
+      },
+      "published_date": "2025-08-15",
+      "read_time": "7 min",
+      "thumbnail": "https://cdn.example.com/blogs/python_powerbi_thumbnail.jpg",
+      "tags": ["Python", "Power BI", "Data Visualization", "Analytics"],
+      "category": "Data Science",
+      "excerpt": "Discover how Python and Power BI work together to deliver powerful, interactive dashboards for data-driven decision-making.",
+      "content": {
+        "introduction": "In the modern data ecosystem, combining Python’s analytical power with Power BI’s visualization capability provides unmatched insight generation.",
+        "sections": [
+          {
+            "heading": "1. Setting Up Your Environment",
+            "text": "Install Pandas, Matplotlib, and Power BI Connector. Ensure seamless integration between Jupyter Notebooks and Power BI Desktop."
+          },
+          {
+            "heading": "2. Cleaning and Preparing Data",
+            "text": "Use Python’s Pandas to clean datasets, handle missing values, and prepare data for visualization layers."
+          },
+          {
+            "heading": "3. Building Dashboards in Power BI",
+            "text": "Connect Power BI to Python scripts, create custom visuals, and publish interactive dashboards online."
+          }
+        ],
+        "conclusion": "Combining Python and Power BI allows you to bridge the gap between data analysis and storytelling — perfect for analysts and business leaders alike."
+      },
+      "related_courses": [
+        {
+          "id": "course_501",
+          "title": "Python for Data Analytics",
+          "duration": "5 weeks",
+          "level": "Intermediate"
+        },
+        {
+          "id": "course_505",
+          "title": "Power BI Masterclass",
+          "duration": "4 weeks",
+          "level": "Beginner"
+        }
+      ],
+      "seo": {
+        "meta_title": "Data Visualization with Python and Power BI | 2025",
+        "meta_description": "Learn how to build interactive dashboards and visualizations using Python and Power BI in this hands-on guide."
+      }
+    }
+  ]
+}

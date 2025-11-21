@@ -1,0 +1,32 @@
+[
+    {
+    "id": 1,
+    "title": "Introduction",
+    "description": "Begin with a warm welcome to all SSC JE aspirants. Set the tone for an engaging learning experience by outlining the goals of the session.",
+    "image": "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1761305067/s01_gz1vbs.png"
+  },
+  {
+    "id": 2,
+    "title": "Summary",
+    "description": "Deliver the core technical knowledge required for SSC JE — focusing on Civil, Electrical, and Mechanical domains. Include key concepts, problem-solving techniques, and theoretical frameworks essential for both Paper I and Paper II.",
+    "image": "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1761304538/s1_xah2b2.png"
+  },
+  {
+    "id": 3,
+    "title": "Core Teaching / Main Lesson",
+    "description": "Apply concepts through real-world engineering examples and previous year questions (PYQs).Demonstrate time-saving methods and step-by-step solution approaches.",
+    "image": "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1761304538/s2_aupypq.png"
+  },
+  {
+    "id": 4,
+    "title": "Practical Demo",
+    "description": "Engage students through live quizzes, polls, and problem-solving challenges.Address common doubts, share shortcuts, and improve conceptual clarity through interactive discussions.",
+    "image": "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1761304538/s4_bxcdni.png"
+  },
+  {
+    "id": 5,
+    "title": "Q/A Interaction",
+    "description": "Recap all major concepts discussed in the session.Provide a concise summary, formula sheet, and key revision notes.Guide learners on what to focus on next for continuous improvement.",
+    "image": "https://res.cloudinary.com/dt4ohfuwc/image/upload/v1761304538/s3_gheosk.png"
+  }
+]

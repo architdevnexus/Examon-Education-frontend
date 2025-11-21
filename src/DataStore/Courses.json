@@ -1,0 +1,62 @@
+[
+  {
+    "id": 1,
+    "img": "https://images.pexels.com/photos/33802867/pexels-photo-33802867.jpeg",
+    "actualprice": 5999,
+    "previousprice": 15000,
+    "percent": 60,
+    "courseDetails": "All in One – Master Batch (Live + Recorded)",
+    "insideCourses": ["Technical Subjects", "Non-Technical Subjects", "Live Doubt Sessions", "Recorded Lectures"],
+    "perks": ["NEW", "LIVE CLASS", "FREE CONTENT"],
+    "Discount": true,
+    "amount": 1000
+  },
+  {
+    "id": 2,
+    "img": "https://images.pexels.com/photos/33802867/pexels-photo-33802867.jpeg",
+    "actualprice": 4999,
+    "previousprice": 12000,
+    "percent": 58,
+    "courseDetails": "GATE 2026 (CE) – Master Batch",
+    "insideCourses": ["Full Technical Syllabus", "Engineering Mathematics", "Aptitude", "Mock Tests"],
+    "perks": ["RECORDED", "PYQs", "LIVE TESTS"],
+    "Discount": true,
+    "amount": 800
+  },
+  {
+    "id": 3,
+    "img": "https://images.unsplash.com/photo-1519389950473-47ba0277781c",
+    "actualprice": 3499,
+    "previousprice": 8999,
+    "percent": 61,
+    "courseDetails": "SSC JE 2025 (ME) – Final Punch",
+    "insideCourses": ["Thermodynamics", "Fluid Mechanics", "Reasoning", "General Awareness"],
+    "perks": ["LIVE CLASS", "DOUBT SOLVING"],
+    "Discount": true,
+    "amount": 500
+  },
+  {
+    "id": 4,
+    "img": "https://images.pexels.com/photos/33802867/pexels-photo-33802867.jpeg",
+    "actualprice": 2999,
+    "previousprice": 7499,
+    "percent": 60,
+    "courseDetails": "PSU 2025 (EE) – Crash Course",
+    "insideCourses": [ "Electronics", "Electrical Machines", "Control Systems", "Practice Sets", "PYQs"],
+    "perks": ["NEW", "RECORDED"],
+    "Discount": true,
+    "amount": 1000
+  },
+  {
+    "id": 5,
+    "img": "https://images.unsplash.com/photo-1556761175-4b46a572b786",
+    "actualprice": 3799,
+    "previousprice": 9500,
+    "percent": 60,
+    "courseDetails": "ISRO Technical Assistant (ME)",
+    "insideCourses": ["Technical Core Subjects", "Interview Preparation", "Mock Interviews", "Interview Preparation","Interview Preparation","Interview Preparation","Interview Preparation","Test Series"],
+    "perks": ["LIVE CLASS", "FREE MOCKS"],
+    "Discount": true,
+    "amount": 700
+  }
+]

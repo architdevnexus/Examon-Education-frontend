@@ -1,0 +1,174 @@
+{
+  "exams": [
+    {
+      "id": "upsc",
+      "name": "UPSC Civil Services",
+      "year": 2025,
+      "important_dates": [
+        { "description": "Notification Released", "date": "12 February 2025" },
+        { "description": "Application Start", "date": "12 February 2025" },
+        { "description": "Last Date to Apply", "date": "4 March 2025" },
+        { "description": "Prelims Exam", "date": "25 May 2025" },
+        { "description": "Mains Exam", "date": "20 September 2025" }
+      ],
+      "application_fee": [
+        { "category": "General / OBC (Male)", "amount": "₹100" },
+        { "category": "Female / SC / ST / PwBD", "amount": "Exempted (No Fee)" }
+      ],
+      "eligibility": {
+        "qualification": "Bachelor’s degree in any discipline from a recognized university",
+        "age_limit": "21–32 years (with category-wise relaxations)"
+      },
+      "exam_pattern": {
+        "stages": ["Preliminary", "Mains", "Personality Test (Interview)"],
+        "mode": "Offline (Pen-Paper)"
+      }
+    },
+    {
+      "id": "ssc-cgl",
+      "name": "SSC CGL (Combined Graduate Level)",
+      "year": 2025,
+      "important_dates": [
+        { "description": "Notification Released", "date": "11 June 2025" },
+        { "description": "Application Start", "date": "11 June 2025" },
+        { "description": "Last Date to Apply", "date": "10 July 2025" },
+        { "description": "Tier 1 Exam", "date": "September 2025" },
+        { "description": "Tier 2 Exam", "date": "December 2025" }
+      ],
+      "application_fee": [
+        { "category": "General / OBC (Male)", "amount": "₹100" },
+        { "category": "Female / SC / ST / PwBD / Ex-Servicemen", "amount": "Exempted" }
+      ],
+      "eligibility": {
+        "qualification": "Bachelor’s degree from a recognized university",
+        "age_limit": "18–32 years (varies by post)"
+      },
+      "exam_pattern": {
+        "stages": ["Tier I (Objective CBT)", "Tier II (Objective CBT)"],
+        "mode": "Computer Based Test (CBT)"
+      }
+    },
+    {
+      "id": "bank-po",
+      "name": "IBPS Bank PO",
+      "year": 2025,
+      "important_dates": [
+        { "description": "Notification Released", "date": "June 2025" },
+        { "description": "Application Period", "date": "June–July 2025" },
+        { "description": "Preliminary Exam", "date": "October 2025" },
+        { "description": "Main Exam", "date": "November 2025" },
+        { "description": "Interview", "date": "January–February 2026" }
+      ],
+      "application_fee": [
+        { "category": "General / OBC", "amount": "₹850" },
+        { "category": "SC / ST / PwBD", "amount": "₹175" }
+      ],
+      "eligibility": {
+        "qualification": "Bachelor’s degree in any discipline",
+        "age_limit": "20–30 years"
+      },
+      "exam_pattern": {
+        "stages": ["Preliminary", "Main", "Interview"],
+        "mode": "Online (CBT)"
+      }
+    },
+    {
+      "id": "neet",
+      "name": "NEET (National Eligibility cum Entrance Test)",
+      "year": 2025,
+      "important_dates": [
+        { "description": "Notification Released", "date": "March 2025" },
+        { "description": "Application Period", "date": "March–April 2025" },
+        { "description": "Exam Date", "date": "4 May 2025" },
+        { "description": "Result Declaration", "date": "June 2025" }
+      ],
+      "application_fee": [
+        { "category": "General", "amount": "₹1700" },
+        { "category": "OBC / EWS", "amount": "₹1600" },
+        { "category": "SC / ST / PwBD", "amount": "₹1000" }
+      ],
+      "eligibility": {
+        "qualification": "10+2 with Physics, Chemistry, Biology",
+        "age_limit": "17 years minimum; upper limit as per NMC rules"
+      },
+      "exam_pattern": {
+        "stages": ["Single Paper (Physics, Chemistry, Biology)"],
+        "mode": "Offline (OMR Based)"
+      }
+    },
+    {
+      "id": "jee",
+      "name": "JEE Main",
+      "year": 2025,
+      "important_dates": [
+        { "description": "Session 1 Exam", "date": "January 2025" },
+        { "description": "Session 2 Exam", "date": "April 2025" }
+      ],
+      "application_fee": [
+        { "category": "General (Male)", "amount": "₹1000" },
+        { "category": "General (Female)", "amount": "₹800" },
+        { "category": "SC / ST / PwD", "amount": "₹500" }
+      ],
+      "eligibility": {
+        "qualification": "10+2 with Physics, Chemistry, Mathematics",
+        "age_limit": "No upper age limit; must have passed 12th in 2023, 2024, or appearing 2025"
+      },
+      "exam_pattern": {
+        "papers": [
+          { "name": "Paper 1", "course": "B.E. / B.Tech" },
+          { "name": "Paper 2A", "course": "B.Arch" },
+          { "name": "Paper 2B", "course": "B.Planning" }
+        ],
+        "mode": "Computer Based Test (CBT)"
+      }
+    },
+    {
+      "id": "cat",
+      "name": "CAT (Common Admission Test)",
+      "year": 2025,
+      "important_dates": [
+        { "description": "Notification Released", "date": "July 2025" },
+        { "description": "Application Period", "date": "August–September 2025" },
+        { "description": "Admit Card", "date": "October 2025" },
+        { "description": "Exam Date", "date": "24 November 2025 (Tentative)" },
+        { "description": "Result Declaration", "date": "January 2026" }
+      ],
+      "application_fee": [
+        { "category": "General / NC-OBC", "amount": "₹2500" },
+        { "category": "SC / ST / PwD", "amount": "₹1250" }
+      ],
+      "eligibility": {
+        "qualification": "Bachelor’s degree with minimum 50% marks (45% for SC/ST/PwD)",
+        "age_limit": "No age limit"
+      },
+      "exam_pattern": {
+        "sections": ["VARC", "DILR", "QA"],
+        "mode": "Computer Based Test (CBT)"
+      }
+    },
+    {
+      "id": "gate",
+      "name": "GATE (Graduate Aptitude Test in Engineering)",
+      "year": 2025,
+      "important_dates": [
+        { "description": "Notification Released", "date": "August 2024" },
+        { "description": "Application Period", "date": "August–September 2024" },
+        { "description": "Admit Card", "date": "January 2025" },
+        { "description": "Exam Dates", "date": "1–2 & 8–9 February 2025" },
+        { "description": "Result Declaration", "date": "March 2025" }
+      ],
+      "application_fee": [
+        { "category": "General / OBC (Male)", "amount": "₹1800" },
+        { "category": "Female / SC / ST / PwD", "amount": "₹900" }
+      ],
+      "eligibility": {
+        "qualification": "Bachelor’s degree in Engineering / Science / Technology / Architecture",
+        "age_limit": "No age limit"
+      },
+      "exam_pattern": {
+        "structure": "Single paper with General Aptitude + Subject-specific questions",
+        "mode": "Computer Based Test (CBT)"
+      }
+    }
+  ]
+}

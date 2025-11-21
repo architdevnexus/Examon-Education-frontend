@@ -1,0 +1,87 @@
+[
+  {
+    "id": "disc_001",
+    "title": "🔥 Mega Discount Unlocked!",
+    "description": "You just unlocked a special 35% discount on the Full Stack Developer Program.",
+    "discount": 35,
+    "courseId": "fsd_2025",
+    "banner": "limited_offer",
+    "cta": {
+      "label": "Enroll Now",
+      "url": "/course/full-stack?discount=35"
+    },
+    "tags": ["flash-sale", "limited-time"],
+    "expiresIn": "6h",
+    "createdAt": "2025-11-20T10:30:00Z",
+    "priority": "high",
+    "read": false
+  },
+  {
+    "id": "disc_002",
+    "title": "🎉 Holiday Deal!",
+    "description": "Flat ₹2000 OFF on the Data Science Bootcamp. Celebrate the festival with learning!",
+    "discount": 2000,
+    "courseId": "ds_101",
+    "banner": "holiday",
+    "cta": {
+      "label": "Claim Discount",
+      "url": "/course/data-science?coupon=HOLIDAY2000"
+    },
+    "tags": ["festival-offer", "top-pick"],
+    "expiresIn": "48h",
+    "createdAt": "2025-11-20T09:45:00Z",
+    "priority": "medium",
+    "read": false
+  },
+  {
+    "id": "disc_003",
+    "title": "⏳ Early Bird Offer Ending Soon!",
+    "description": "Save 25% on the UI/UX Design Mastery Course. Early-bird window closes at midnight.",
+    "discount": 25,
+    "courseId": "uiux_090",
+    "banner": "early_bird",
+    "cta": {
+      "label": "Grab Offer",
+      "url": "/course/uiux?earlybird=true"
+    },
+    "tags": ["early-bird", "design"],
+    "expiresIn": "14h",
+    "createdAt": "2025-11-19T18:10:00Z",
+    "priority": "high",
+    "read": false
+  },
+  {
+    "id": "disc_004",
+    "title": "⚡ Flash Sale Alert!",
+    "description": "Flat 50% OFF on React.js Masterclass — ONLY for the next 90 minutes.",
+    "discount": 50,
+    "courseId": "react_pro",
+    "banner": "flash",
+    "cta": {
+      "label": "Buy at Half Price",
+      "url": "/course/react?flashsale=true"
+    },
+    "tags": ["flash-sale", "urgent"],
+    "expiresIn": "90m",
+    "createdAt": "2025-11-19T12:00:00Z",
+    "priority": "urgent",
+    "read": true
+  },
+  {
+    "id": "disc_005",
+    "title": "🤝 Referral Discount Activated",
+    "description": "Get ₹500 off your next purchase because your friend joined the AI Essentials Course!",
+    "discount": 500,
+    "courseId": null,
+    "banner": "referral",
+    "cta": {
+      "label": "Use Discount",
+      "url": "/courses?applyReferral=500"
+    },
+    "tags": ["referral", "bonus"],
+    "expiresIn": "7d",
+    "createdAt": "2025-11-18T15:40:00Z",
+    "priority": "low",
+    "read": false
+  }
+]
