@@ -1,10 +1,12 @@
 import { useEffect } from "react";
 import { useNotificationStore } from "../../Zustand/useNotificationStore";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+
 
 const HeaderNotification = () => {
   const { notifications, initSocket } = useNotificationStore();
-
+const Navigate = useNavigate();
   useEffect(() => {
     console.log("HeaderNotification Mounted");
     initSocket();
@@ -37,7 +39,7 @@ const HeaderNotification = () => {
           animate={{ x: ["0%", "-100%"] }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         >
-          {[...notifications, ...notifications].map((item, index) => (
+          {[...notifications, ...notifications , ...notifications].map((item, index) => (
             <div
               key={index}
               className="
@@ -87,6 +89,12 @@ const HeaderNotification = () => {
                 >
                   {item.discount}% OFF
                 </span>
+              )}
+
+              {item?.cta && (
+                <button onClick={()=> Navigate(item?.cta?.url)}>
+{item?.cta.label}
+                </button>
               )}
             </div>
           ))}

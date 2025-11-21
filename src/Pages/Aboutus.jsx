@@ -34,7 +34,9 @@ const Aboutus = () => {
         </section>
 
         {/* About Numbers */}
-        <AboutNumber />
+        <section className="min-w-full">
+          <AboutNumber />
+        </section>
 
         {/* Mission & Vision Section */}
         <section className="flex flex-col items-center justify-center w-full py-10">

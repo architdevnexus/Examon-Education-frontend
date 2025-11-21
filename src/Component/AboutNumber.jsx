@@ -3,10 +3,7 @@ import { motion } from "framer-motion";
 import Stats from "./Stats";
 import { useAchievementStore } from "../Zustand/GetAchievement";
 
-/**
- * 🎯 Animation Utility
- * Generates consistent fade-in variants for Framer Motion
- */
+
 const fadeIn = (direction = "up", delay = 0) => ({
   hidden: {
     opacity: 0,
