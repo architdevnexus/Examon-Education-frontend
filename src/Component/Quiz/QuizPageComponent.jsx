@@ -255,7 +255,7 @@ const DynamicTest = ({ quizData }) => {
 
       {/* Result Section */}
       {hasSubmitted && (
-        <div className=" space-y-8">
+        <div className=" space-y-8 ">
           <div className="relative flex flex-col items-center justify-start">
             <div className="absolute z-999 -left-10 opacity-20">
               <img

@@ -36,9 +36,9 @@ const CategoryCourses = ({ category }) => {
             return courseCat === category.toLowerCase();
         });
     }, [data, category]);
-    console.log(filteredCourses)
+    // console.log(filteredCourses)
     return (
-        <div className="mt-8">
+        <div className="mt-8 w-full">
             <motion.h2
                 className="text-2xl font-bold text-gray-800 mb-4"
                 initial={{ opacity: 0, y: 10 }}
@@ -67,14 +67,14 @@ const CategoryCourses = ({ category }) => {
             {!loading && filteredCourses.length > 0 && (
                 <Swiper
                     direction={isDesktop ? "vertical" : "horizontal"}
-                    spaceBetween={20}
-                    slidesPerView={isDesktop ? 3 : 2}
+                    spaceBetween={10}
+                    slidesPerView={isDesktop ? 3 : 1}
                     autoplay={{
                         delay: 2000,
                         disableOnInteraction: false,
                     }}
                     breakpoints={{
-                        640: { slidesPerView: isDesktop ? 3 : 2 },
+                        640: { slidesPerView: isDesktop ? 3 : 1 },
                         768: { slidesPerView: isDesktop ? 4 : 3 },
                         1024: { slidesPerView: isDesktop ? 5 : 4 },
                     }}

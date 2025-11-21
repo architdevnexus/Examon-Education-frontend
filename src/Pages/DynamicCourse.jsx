@@ -73,8 +73,7 @@ const DynamicCourse = () => {
 
   // ========== Heart / Add to Cart Click Handler ==========
   const handleEnroll = useCallback(() => {
-    const auth = JSON.parse(localStorage.getItem("auth"));
-    const token = auth?.token;
+    const token = JSON.parse(localStorage.getItem("token"))?.state?.token;
 
     if (!token) {
       toast.info("Please login to add this course to your favorites");
@@ -94,7 +93,7 @@ const DynamicCourse = () => {
 
     addToCart(foundCourse);
     // console.log("Added to favorites:", foundCourse);
-    toast.success(`${course.title} added to your favorites!`);
+    toast.success(`${course.courseDetails} added to your favorites!`);
   }, [foundCourse, cart, addToCart, navigate]);
 
 

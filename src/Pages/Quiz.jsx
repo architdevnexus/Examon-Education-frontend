@@ -197,7 +197,7 @@ const Quiz = () => {
         {showFilter && (
           <>
             <motion.div
-              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-40"
+              className="fixed inset-0 bg-black/40 backdrop-blur-sm z-80"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
@@ -209,7 +209,7 @@ const Quiz = () => {
               animate={{ x: 0 }}
               exit={{ x: "100%" }}
               transition={{ type: "spring", stiffness: 120, damping: 20 }}
-              className="fixed top-0 right-0 w-80 h-full bg-white z-[991] shadow-xl p-6 overflow-y-auto rounded-l-2xl"
+              className="fixed right-0 w-80 h-3/4 bg-white z-[999] shadow-xl p-6 overflow-y-auto rounded-l-2xl"
             >
               <div className="flex justify-between items-center mb-4">
                 <h2 className="text-lg font-semibold text-gray-800">
