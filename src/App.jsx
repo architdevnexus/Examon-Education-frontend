@@ -11,7 +11,7 @@ import Navbar from "./Component/Navbar/Navbar";
 import Footer from "./Component/Footer";
 import Whatsapp from "./Component/Whatsapp";
 import ProtectedRoute from "./auth/ProtectedRoute";
-
+import PopupManager from "./Component/Popup/NotificationPopup"
 /* Lazy-loaded pages */
 const Home = lazy(() => import("./Pages/Home"));
 const Aboutus = lazy(() => import("./Pages/Aboutus"));
@@ -35,7 +35,7 @@ const Batches = lazy(() => import("./Pages/Batches"));
     MAIN APP COMPONENT
 -------------------------------------------------------------------*/
 function App() {
-  
+
 
   return (
     <Router>
@@ -122,6 +122,8 @@ function App() {
 
         {/* Footer */}
         <Footer />
+
+        <PopupManager/>
 
         {/* Toast */}
         <ToastContainer
