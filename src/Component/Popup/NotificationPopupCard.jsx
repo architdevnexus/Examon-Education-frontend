@@ -1,114 +1,135 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { X } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
-const NotificationPopup = ({ item, onClose }) => {
-    const navigate = useNavigate();
+const NotificationPopup = ({ items = [], onClose }) => {
+  const navigate = useNavigate();
+  const [index, setIndex] = useState(0);
+  const [progress, setProgress] = useState(0);
 
-    useEffect(() => {
-        document.body.style.overflow = "hidden";
-        return () => (document.body.style.overflow = "auto");
-    }, []);
+  const timerRef = useRef(null);
+  const item = items[index];
 
-    const handleNavigate = () => {
-        if (!item.link) return;
-        onClose();
-        setTimeout(() => navigate(`/${item.link}`), 250);
-    };
+  // Auto slide every 6 seconds
+  useEffect(() => {
+    setProgress(0);
 
-    // Slide animation
-    const slideCard = {
-        hidden: { opacity: 0, x: 80 },
-        visible: {
-            opacity: 1,
-            x: 0,
-            transition: { duration: 0.4, ease: "easeOut" },
-        },
-        exit: {
-            opacity: 0,
-            x: -80,
-            transition: { duration: 0.4, ease: "easeIn" },
-        },
-    };
+    timerRef.current = setInterval(() => {
+      setProgress((p) => {
+        if (p >= 100) {
+          next();
+          return 0;
+        }
+        return p + 1.7;
+      });
+    }, 100);
 
-    return (
-        <AnimatePresence mode="wait">
-            <motion.div
-                key={item.id || item.title}
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                exit={{ opacity: 0 }}
-                className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-lg 
-                   flex items-center justify-center px-4"
-            >
-                <motion.div
-                    variants={slideCard}
-                    initial="hidden"
-                    animate="visible"
-                    exit="exit"
-                    className="
-            relative rounded-3xl p-8 md:p-12 w-full max-w-5xl
+    return () => clearInterval(timerRef.current);
+  }, [index]);
+
+  const next = () => setIndex((i) => (i + 1) % items.length);
+  const prev = () => setIndex((i) => (i - 1 + items.length) % items.length);
+
+  // Swipe detect
+  const handleDragEnd = (e, info) => {
+    if (info.offset.x < -50) next();
+    if (info.offset.x > 50) prev();
+  };
+
+  const slideAnim = {
+    hidden: { opacity: 0, x: 120 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
+    exit: { opacity: 0, x: -120, transition: { duration: 0.3 } },
+  };
+
+  const handleNavigate = () => {
+    if (!item.link) return;
+    onClose();
+    setTimeout(() => navigate(`/${item.link}`), 200);
+  };
+
+  return (
+    <AnimatePresence mode="wait">
+      <motion.div
+        key={index}
+        className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-lg flex items-center justify-center px-4"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+      >
+        <motion.div
+          variants={slideAnim}
+          initial="hidden"
+          animate="visible"
+          exit="exit"
+          drag="x"
+          dragConstraints={{ left: 0, right: 0 }}
+          onDragEnd={handleDragEnd}
+          className="relative rounded-3xl p-8 md:p-12 w-full max-w-5xl
             bg-gradient-to-br from-[#2D2D2D]/95 to-[#79ABCD]/95
-            shadow-[0_0_50px_rgba(0,0,0,0.5)]
-            border border-white/10
-            flex flex-col gap-6
-          "
-                >
-                    {/* Close Button */}
-                    <button
-                        onClick={onClose}
-                        className="absolute top-5 right-5 bg-black/40 p-1 rounded-full 
-             text-gray-300 hover:text-white hover:bg-black/60 transition"
-                    >
-                        <X size={12} />
-                    </button>
-                    <div className="flex items-center">
+            shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10"
+        >
+          {/* Close */}
+          <button
+            onClick={onClose}
+            className="absolute top-5 right-5 bg-black/40 p-1 rounded-full text-gray-300 hover:text-white transition"
+          >
+            <X size={15} />
+          </button>
 
+          {/* Layout unchanged */}
+          <div className="flex flex-col md:flex-row items-center gap-6">
+            <div className="flex flex-col gap-3 flex-1">
+              <h3 className="text-sm text-gray-400 uppercase tracking-widest">
+                {item.title}
+              </h3>
+              <h1 className="text-2xl md:text-3xl font-bold text-white">
+                {item.subtitle}
+              </h1>
+              <p className="text-gray-300">{item.description}</p>
 
-                        <div className="flex flex-col gap-3 items-start">
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                onClick={handleNavigate}
+                className="mt-4 px-6 py-3 rounded-full bg-[var(--primary-color)] text-white font-semibold"
+              >
+                Enroll Now →
+              </motion.button>
+            </div>
 
-                            {/* TEXT */}
-                            <h3 className="text-sm tracking-widest text-gray-400 uppercase">
-                                {item.title}
-                            </h3>
+            <div className="flex-1 flex justify-center">
+              <img
+                src={item.image}
+                className="w-full h-72 rounded-2xl object-cover shadow-lg"
+              />
+            </div>
+          </div>
 
-                            <h1 className="text-2xl font-bold text-white">{item.subtitle}</h1>
+          {/* Progress Bar */}
+          <div className="w-full h-[5px] bg-white/20 mt-6 rounded-full overflow-hidden">
+            <div
+              className="h-full bg-[var(--primary-color)] transition-all"
+              style={{ width: `${progress}%` }}
+            ></div>
+          </div>
 
-                            <p className="text-gray-300 text-base">{item.description}</p>
-
-                            <motion.button
-                                whileHover={{ scale: 1.05 }}
-                                onClick={handleNavigate}
-                                className="mt-4 px-6 py-3 w-fit rounded-full
-                      bg-[var(--primary-color)] cursor-pointer hover:bg-[var(--secondary-color)]
-                      text-white font-semibold shadow-lg"
-                            >
-                                Enroll Now →
-                            </motion.button>
-                        </div>
-                        {/* IMAGE */}
-                        <div className="relative flex justify-center">
-                            <img
-                                src={item.image}
-                                alt="Course"
-                                className="w-full h-72 rounded-2xl object-cover shadow-lg"
-                            />
-
-                            <motion.img
-                                initial={{ scale: 0 }}
-                                animate={{ scale: 1, rotate: -6 }}
-                                transition={{ type: "spring", stiffness: 160, damping: 10 }}
-                                src="/new 1.svg"
-                                className="absolute w-12 h-12 bottom-[-10px] right-[-10px]"
-                            />
-                        </div>
-                    </div>
-
-                </motion.div>
-            </motion.div>
-        </AnimatePresence>
-    );
+          {/* Dots */}
+          <div className="flex justify-center gap-2 mt-4">
+            {items.map((_, i) => (
+              <div
+                key={i}
+                onClick={() => setIndex(i)}
+                className={`w-3 h-3 rounded-full cursor-pointer ${
+                  i === index ? "bg-white scale-110" : "bg-white/40"
+                }`}
+              ></div>
+            ))}
+          </div>
+        </motion.div>
+      </motion.div>
+    </AnimatePresence>
+  );
 };
 
 export default NotificationPopup;
