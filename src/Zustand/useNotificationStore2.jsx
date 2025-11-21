@@ -13,19 +13,19 @@ export const useNotificationStore2 = create((set, get) => ({
 
   initSocket: async () => {
     if (get().listenersAttached) {
-      console.log("⚠️ Listeners already attached");
+      console.log(" Listeners already attached");
       return;
     }
 
     set({ listenersAttached: true });
 
-    console.log("📡 Fetching initial notifications from API...");
+    console.log(" Fetching initial notifications from API...");
 
     try {
       const res = await fetch("http://194.238.18.1:3004/api/notification/latest");
       const json = await res.json();
 
-      console.log("📦 API Notifications:", json.data);
+      console.log("📦 API Notifications2:", json.data);
 
       set({ popnotifications: json.data });
     } catch (error) {

@@ -1,34 +1,56 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
+import NotificationPopup from "./NotificationPopupCard";
 import { useNotificationStore2 } from "../../Zustand/useNotificationStore2";
 
 const PopupManager = () => {
   const { popnotifications, initSocket } = useNotificationStore2();
-  const [current, setCurrent] = useState(null);
+  const [items, setItems] = useState([]);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  const intervalRef = useRef(null);
 
   useEffect(() => {
     initSocket();
   }, []);
 
+  // When notifications arrive → take latest 5 and begin slider
   useEffect(() => {
-    if (popnotifications.length > 0) {
-      setCurrent(popnotifications[0]); // show latest
-    }
+    if (!popnotifications || popnotifications.length === 0) return;
+
+    const timer = setTimeout(() => {
+      const latestFive = popnotifications.slice(0, 5);
+      setItems(latestFive);
+      setCurrentIndex(0);
+    }, 2000);
+
+    return () => clearTimeout(timer);
   }, [popnotifications]);
 
-  const closePopup = () => {
-    setCurrent(null);
+  // Start slider rotation
+  useEffect(() => {
+    if (items.length === 0) return;
+
+    intervalRef.current = setInterval(() => {
+      setCurrentIndex((prev) =>
+        prev + 1 < items.length ? prev + 1 : prev
+      );
+    }, 4000);
+
+    return () => clearInterval(intervalRef.current);
+  }, [items]);
+
+  const handleClose = () => {
+    clearInterval(intervalRef.current);
+    setItems([]);
+    setCurrentIndex(0);
   };
 
-  if (!current) return null;
+  if (items.length === 0) return null;
 
   return (
     <NotificationPopup
-      title={current.title}
-      subtitle={current.subtitle}
-      description={current.description}
-      img={current.img}
-      path={current.path}
-      onClose={closePopup}
+      item={items[currentIndex]}   // Pass only single item at a time
+      onClose={handleClose}
     />
   );
 };
