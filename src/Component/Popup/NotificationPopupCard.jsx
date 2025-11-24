@@ -83,7 +83,7 @@ const NotificationPopup = ({ items = [], onClose }) => {
           </button>
 
           {/* Layout (responsive) */}
-          <div className="flex flex-col md:flex-row items-center gap-4 sm:gap-6">
+          <div className="flex flex-col-reverse md:flex-row items-center gap-4 sm:gap-6">
             
             {/* Text Section */}
             <div className="flex flex-col gap-2 sm:gap-3 flex-1 text-center md:text-left">
@@ -115,10 +115,10 @@ const NotificationPopup = ({ items = [], onClose }) => {
             {/* Image Section */}
             <div className="flex-1 flex justify-center">
               <img
-                src={item.image}
+                src={item.image ? item.image : './logo2.svg'}
                 className="
                   w-40 h-40 sm:w-60 sm:h-60 md:w-full md:h-72 
-                  rounded-lg sm:rounded-2xl object-cover shadow-lg
+                  rounded-lg sm:rounded-2xl object-cover
                 "
               />
             </div>

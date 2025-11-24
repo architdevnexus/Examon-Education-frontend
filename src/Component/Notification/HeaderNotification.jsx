@@ -6,7 +6,7 @@ import { useNavigate } from "react-router-dom";
 
 const HeaderNotification = () => {
   const { notifications, initSocket } = useNotificationStore();
-const Navigate = useNavigate();
+  const Navigate = useNavigate();
   useEffect(() => {
     console.log("HeaderNotification Mounted");
     initSocket();
@@ -39,7 +39,7 @@ const Navigate = useNavigate();
           animate={{ x: ["0%", "-100%"] }}
           transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
         >
-          {[...notifications, ...notifications , ...notifications].map((item, index) => (
+          {[...notifications, ...notifications, ...notifications].map((item, index) => (
             <div
               key={index}
               className="
@@ -92,8 +92,17 @@ const Navigate = useNavigate();
               )}
 
               {item?.cta && (
-                <button onClick={()=> Navigate(item?.cta?.url)}>
-{item?.cta.label}
+                <button
+                  className="
+                    font-bold text-sm 
+                    bg-yellow-300 text-black 
+                    px-2 py-0.5 rounded-md 
+                    shadow 
+                    cursor-pointer
+                    animate-pulse
+                  "
+                  onClick={() => Navigate(item?.cta?.url)}>
+                  Enroll Now
                 </button>
               )}
             </div>
