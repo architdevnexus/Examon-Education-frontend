@@ -99,7 +99,7 @@ const HeaderNotification = () => {
                     px-2 py-0.5 rounded-md 
                     shadow 
                     cursor-pointer
-                    animate-pulse
+                    
                   "
                   onClick={() => Navigate(item?.cta?.url)}>
                   Enroll Now
