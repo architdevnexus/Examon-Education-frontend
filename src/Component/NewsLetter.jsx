@@ -6,7 +6,7 @@ import Cookies from "js-cookie";
 
 //  Create reusable axios instance for better scalability
 const api = axios.create({
-  baseURL: "http://194.238.18.1:3004/api",
+  baseURL: "https://backend.palgharhome.com/api",
   withCredentials: true, // ensure cookies are sent if backend uses sessions
   timeout: 10000, // 10s timeout for safety
 });

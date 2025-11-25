@@ -3,7 +3,7 @@ import { io } from "socket.io-client";
 
 console.log("🌐 Creating Socket Connection...");
 
-export const socket = io("http://194.238.18.1:3004", {
+export const socket = io("https://backend.palgharhome.com", {
   transports: ["websocket"],
   withCredentials: true,
   reconnection: true,

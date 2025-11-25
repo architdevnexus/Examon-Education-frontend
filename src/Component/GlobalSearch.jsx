@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const BASE_API = "http://194.238.18.1:3004/api";
+const BASE_API = "https://backend.palgharhome.com/api";
 
 const GlobalSearchModal = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState("");

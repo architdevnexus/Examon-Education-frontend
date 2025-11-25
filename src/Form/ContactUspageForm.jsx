@@ -33,7 +33,7 @@ const ContactUspageForm = () => {
   };
 
   //  API base URL (for maintainability)
-  const API_BASE = "http://194.238.18.1:3004/api";
+  const API_BASE = "https://backend.palgharhome.com/api";
 
   //  Handle form submission
   const handleSubmit = async (e) => {

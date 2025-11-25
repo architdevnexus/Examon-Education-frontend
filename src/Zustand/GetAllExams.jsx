@@ -11,7 +11,7 @@ export const useExamStore = create((set) => ({
     set({ loading: true, error: null });
 
     try {
-      const res = await axios.get("http://194.238.18.1:3004/api/exams/details");
+      const res = await axios.get("https://backend.palgharhome.com/api/exams/details");
 
       // Since response is an array, directly store it
       set({ exams: res.data || [], loading: false });

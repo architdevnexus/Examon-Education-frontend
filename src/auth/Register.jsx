@@ -124,7 +124,7 @@ const Register = () => {
     }
 
     try {
-      const res = await fetch("http://194.238.18.1:3004/api/verify-otp", {
+      const res = await fetch("https://backend.palgharhome.com/api/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -151,7 +151,7 @@ const Register = () => {
   // -------------------------------
   const handleResend = async () => {
     try {
-      const res = await fetch("http://194.238.18.1:3004/api/resend-otp", {
+      const res = await fetch("https://backend.palgharhome.com/api/resend-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email }),

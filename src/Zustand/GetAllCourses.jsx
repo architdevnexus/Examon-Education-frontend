@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_BASE = "http://194.238.18.1:3004/api";
+const API_BASE = "https://backend.palgharhome.com/api";
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common["Content-Type"] = "application/json";

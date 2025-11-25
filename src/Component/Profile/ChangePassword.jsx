@@ -4,7 +4,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaLock, FaSpinner } from "react-icons/fa";
 import { toast } from "react-toastify";
 
-const API_BASE = "http://194.238.18.1:3004/api";
+const API_BASE = "https://backend.palgharhome.com/api";
 
 const ChangePassword = ({ isOpen, onClose }) => {
   const [oldPassword, setOldPassword] = useState("");

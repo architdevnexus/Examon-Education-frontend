@@ -20,7 +20,7 @@ export const usePyqStore = create((set, get) => ({
         set({ loading: true, error: null });
 
         try {
-            const response = await axios.get("http://194.238.18.1:3004/api/pyq");
+            const response = await axios.get("https://backend.palgharhome.com/api/pyq");
 
             // Validate response data structure
             if (response.status === 200 ) {

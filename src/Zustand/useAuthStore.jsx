@@ -12,7 +12,7 @@ const safeParse = (str) => {
 };
 
 /**  Base API URL */
-const API_BASE = "http://194.238.18.1:3004/api";
+const API_BASE = "https://backend.palgharhome.com/api";
 
 /**  Zustand Auth Store */
 export const useAuthStore = create((set) => ({

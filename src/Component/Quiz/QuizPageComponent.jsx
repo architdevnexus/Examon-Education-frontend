@@ -2,7 +2,7 @@ import React, { useState, useEffect, useCallback, useMemo } from "react";
 import { toast } from "react-toastify";
 import axios from "axios";
 
-const API_BASE = "http://194.238.18.1:3004/api";
+const API_BASE = "https://backend.palgharhome.com/api";
 
 const DynamicTest = ({ quizData }) => {
   const [answers, setAnswers] = useState([]);

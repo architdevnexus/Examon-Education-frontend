@@ -23,7 +23,7 @@ export const useQuizStore = create((set) => ({
 
       // 🔹 API call example  
       const response = await fetch(
-        `http://194.238.18.1:3004/api/user/quizzes/${userId}`,
+        `https://backend.palgharhome.com/api/user/quizzes/${userId}`,
         {
           method: "GET",
           headers: {

@@ -7,20 +7,20 @@ export const useProfileData = create((set, get) => ({
   loading: false,
   error: null,
 
-  /** ✅ Fetch user profile from API using stored token and userId */
+  /**  Fetch user profile from API using stored token and userId */
   fetchUserProfile: async () => {
     try {
       set({ loading: true, error: null });
-const tokens = JSON.parse(localStorage.getItem("token"))?.state?.token;
+      const tokens = JSON.parse(localStorage.getItem("token"))?.state?.token;
       // Get token & userId from auth store
-      const { token , userId } = useAuthStore.getState();
+      const { token, userId } = useAuthStore.getState();
       if (!token || !userId) {
         throw new Error("Missing authentication details");
       }
 
-      // ✅ Fetch user data
+      //  Fetch user data
       const response = await axios.get(
-        `http://194.238.18.1:3004/api/profile/${userId}`,
+        `https://backend.palgharhome.com/api/profile/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

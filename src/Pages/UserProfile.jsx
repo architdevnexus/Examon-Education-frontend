@@ -22,7 +22,7 @@ import ChangePassword from "../Component/Profile/ChangePassword";
 import { ReviewSection } from "../Component/Review/ReivewSection";
 import UserProfileHeader from "../Component/Profile/UserProfileHeader";
 
-const API_BASE = "http://194.238.18.1:3004/api";
+const API_BASE = "https://backend.palgharhome.com/api";
 const api = axios.create({ baseURL: API_BASE, withCredentials: true });
 
 const UserProfile = () => {

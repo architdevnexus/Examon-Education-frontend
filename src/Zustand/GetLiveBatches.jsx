@@ -10,7 +10,7 @@ export const useBatchesStore = create((set) => ({
   fetchBatches: async () => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get("http://194.238.18.1:3004/api/live/batches");
+      const response = await axios.get("https://backend.palgharhome.com/api/live/batches");
       const categories = response.data?.categories || [];
 
       // Flatten all batches with their category name
