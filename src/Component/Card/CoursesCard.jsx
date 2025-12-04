@@ -6,7 +6,6 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCourseStore } from "../../Zustand/GetAllCourses";
 
-
 const CoursesCard = ({
   id,
   img,
@@ -22,16 +21,13 @@ const CoursesCard = ({
 
   const { cart, addToCart, removeFromCart } = useCourseStore();
   const navigate = useNavigate();
+  const token = localStorage.getItem("token");
 
-  const token = localStorage.getItem("token")
-
-  // Check if this course is already in the cart
   const isInCart = cart.some((item) => item.id === id);
 
-  /**  Toggle Cart Handler */
+  /** Toggle Cart */
   const handleCartToggle = (e) => {
-    e.stopPropagation(); // Prevent triggering Explore navigation
-
+    e.stopPropagation();
     if (!token) {
       toast.error("Please login to manage your cart");
       setTimeout(() => navigate("/login"), 1500);
@@ -42,7 +38,7 @@ const CoursesCard = ({
       removeFromCart(id);
       toast.info("Removed from cart");
     } else {
-      const courseData = {
+      addToCart({
         id,
         img,
         actualprice,
@@ -53,45 +49,48 @@ const CoursesCard = ({
         perks,
         Discount,
         amount,
-      };
-      addToCart(courseData);
+      });
       toast.success("Added to cart");
     }
   };
 
-  /**  Navigate to Course Detail Page */
   const handleNavigate = () => navigate(`/courses/${id}`);
 
   return (
     <div
-      className="rounded-xl bg-white flex flex-col flex-1 max-h-[600px]  shadow-xl overflow-hidden transition-transform hover:scale-[1.02] duration-300"
-   
-   >
-      {/* === TOP SECTION (Image + Pricing) === */}
-      <div className="relative shadow-lg p-2 rounded-2xl w-full h-52 md:h-62 overflow-hidden">
+      className="
+        bg-white rounded-xl shadow-xl overflow-hidden 
+        flex flex-col transition-transform hover:scale-[1.02] duration-300
+        h-[600px] max-h-[600px]
+      "
+    >
+      {/* === COURSE IMAGE + PRICING === */}
+      <div className="relative p-2 rounded-2xl w-full shadow-2xl h-52 md:h-60 overflow-hidden">
         <img
           src={img}
           alt={courseDetails}
-          className="object-center object-cover rounded-2xl w-full "
+          className="w-full h-full object-cover rounded-2xl cursor-pointer"
           onClick={handleNavigate}
         />
 
-        {/* === Pricing Overlay === */}
-        <div className="absolute bottom-0 left-0 w-full bg-white px-4 py-1 flex justify-around items-center text-sm md:text-lg">
+        {/* Pricing Banner */}
+        <div className="absolute bottom-0 left-0 w-full bg-white px-4 py-1 flex  justify-between items-center text-sm">
           <span className="font-bold text-black">₹{actualprice}</span>
           <span className="line-through text-gray-400">₹{previousprice}</span>
-          <span className="text-red-500 font-medium">{percent}% OFF</span>
+          <span className="text-red-500 font-semibold">{percent}% OFF</span>
         </div>
       </div>
 
-      {/* === SCROLLABLE COURSE DETAILS === */}
-      <div className="flex flex-col gap-2 px-4 py-3 overflow-y-auto max-h-[calc(500px-14rem)] md:max-h-[calc(520px-14rem)]">
-        <span className="font-semibold text-black text-md">
+      {/* === TITLE + MODULES (Scrollable) === */}
+      <div className="px-4 py-3 flex flex-col gap-2">
+
+        {/* Title with ellipsis */}
+        <span className="font-semibold text-black text-md line-clamp-2 h-[48px]">
           {courseDetails}
         </span>
 
-        {/* Inside Courses List */}
-        <ul className="text-sm text-gray-600 space-y-1 min-h-28 overflow-y-auto pr-1">
+        {/* Inside Modules - scroll */}
+        <ul className="text-sm text-gray-600 space-y-1 h-[110px] overflow-y-auto pr-1">
           {insideCourses.map((item, index) => (
             <li key={index} className="flex items-start gap-2">
               <TiTickOutline className="text-green-600 mt-1" />
@@ -99,55 +98,50 @@ const CoursesCard = ({
             </li>
           ))}
         </ul>
-
-
       </div>
-      <div className="p-3">
 
-        {/* Perks */}
-        <div className="flex flex-wrap gap-2 mt-2">
+      {/* === PERKS + DISCOUNT === */}
+      <div className="px-4">
+        <div className="flex flex-wrap gap-2 mt-1">
           {perks.map((perk, i) => (
-            <div
+            <span
               key={i}
               className={`px-3 py-1 rounded-md text-white text-xs font-medium ${perk.toLowerCase() === "new"
-                ? "bg-[#FF0000]"
-                : "bg-[var(--text-color)]"
+                  ? "bg-red-600"
+                  : "bg-[var(--text-color)]"
                 }`}
             >
               {perk}
-            </div>
+            </span>
           ))}
         </div>
-        {/* Extra Discount */}
+
         {Discount && (
-          <div className="flex items-center gap-2 text-sm text-[#FF0000] font-medium mt-2">
+          <div className="flex items-center gap-2 text-sm text-red-600 font-medium mt-2">
             <CiPercent className="text-xl" />
             <span>EXTRA ₹{amount} COUPON DISCOUNT</span>
           </div>
         )}
       </div>
 
-      {/* === FIXED BOTTOM ACTIONS === */}
+      {/* === FOOTER ACTIONS === */}
       <div
         onClick={handleNavigate}
-        className="px-4 py-3 mt-auto flex items-center justify-between bg-white border-t"
+        className="mt-auto px-4 py-3 flex items-center justify-between bg-white border-t cursor-pointer"
       >
-        {/* Heart Icon - Add/Remove from Cart */}
+        {/* Cart Heart Button */}
         <div
           onClick={handleCartToggle}
-          className="p-2 text-lg rounded-full text-white bg-black hover:scale-110 transition-transform cursor-pointer"
+          className="p-2 rounded-full bg-black hover:scale-110 transition-transform"
         >
           {isInCart ? (
-            <FaHeart className="text-red-500" />
+            <FaHeart className="text-red-500 text-lg" />
           ) : (
-            <FaRegHeart className="text-white" />
+            <FaRegHeart className="text-white text-lg" />
           )}
         </div>
 
-        {/* Explore Button */}
-        <button
-          className="px-6 py-2 rounded-2xl text-white bg-[var(--primary-color)] text-sm font-semibold cursor-pointer transition-all hover:bg-opacity-90"
-        >
+        <button className="px-6 py-2 bg-[var(--primary-color)] cursor-pointer text-white rounded-2xl font-semibold text-sm hover:bg-opacity-90">
           Explore
         </button>
       </div>

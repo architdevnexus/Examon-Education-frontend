@@ -38,7 +38,7 @@ const ProfileEditDropdown = () => {
     }
   }, [userId, token, fetchUserProfile]);
 
-  
+
 
   //  When profile data changes (after fetch)
   useEffect(() => {
@@ -101,19 +101,22 @@ const ProfileEditDropdown = () => {
     }
   };
 
-  const handleCancel = () => {
-    setEditMode(false);
-    if (userData) {
-      setForm({
-        fullname: name || "",
-        email: email || "",
-        phone: userData.phone || "",
-        course: userData.preferedCourse || "",
-        image: userData.profileImage || null,
-      });
-      setPreview(userData.profileImage || null);
-    }
-  };
+const handleCancel = () => {
+  setEditMode(false);
+
+  if (userData?.[0]) {
+    setForm({
+      fullname: name || "",
+      email: email || "",
+      phone: userData[0].phone || "",
+      course: userData[0].preferedCourse || "",
+      image: userData[0].profileImage || null,
+    });
+
+    setPreview(userData[0].profileImage || null);
+  }
+};
+
 
   // ========== Render ==========
   return (
@@ -212,11 +215,10 @@ const ProfileEditDropdown = () => {
                   value={form.course}
                   onChange={(e) => handleChange("course", e.target.value)}
                   disabled={!editMode}
-                  className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none transition ${
-                    editMode
+                  className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none transition ${editMode
                       ? "border-blue-400 focus:ring-2 focus:ring-blue-100 bg-white"
                       : "border-gray-200 bg-gray-50 text-gray-600"
-                  }`}
+                    }`}
                 >
                   <option value="">-- Select Course --</option>
                   {coursesData.map((c, i) => (
@@ -244,11 +246,10 @@ const Field = ({ label, value, onChange, readOnly, disabled }) => (
       onChange={onChange}
       readOnly={readOnly}
       disabled={disabled}
-      className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none transition ${
-        disabled || readOnly
+      className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none transition ${disabled || readOnly
           ? "border-gray-200 bg-gray-50 text-gray-600"
           : "border-blue-400 focus:ring-2 focus:ring-blue-100"
-      }`}
+        }`}
     />
   </div>
 );

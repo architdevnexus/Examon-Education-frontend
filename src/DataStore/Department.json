@@ -1,0 +1,154 @@
+{
+  "education": {
+    "department": {
+      "name": "Education & Skill Development",
+      "tagline": "Empowering careers with industry-recognized skills",
+      "description": "We provide high-quality, job-oriented, modern training programs with certifications. Courses are crafted by industry experts with real-world applications.",
+      "achievements": [
+        "10,000+ Students Trained",
+        "50+ Professional Instructors",
+        "90% Placement Assistance Success Rate",
+        "30+ Industry Partner Tie-Ups"
+      ],
+      "contact": {
+        "email": "support@educationcenter.com",
+        "phone": "+91 9876543210",
+        "address": "Palghar, Maharashtra, India"
+      },
+      "policies": {
+        "privacy_policy": "We ensure strict confidentiality of your personal and educational data. No information is shared with third parties.",
+        "terms_conditions": "Students must follow course policies, attend sessions regularly, and avoid sharing course material.",
+        "refund_policy": "Full refund available within 7 days if less than 20% of the course is accessed."
+      }
+    },
+
+    "categories": [
+      {
+        "id": "CAT01",
+        "name": "Technology & Development",
+        "description": "Learn coding, UI/UX, AI, and future-ready skills.",
+        "thumbnail": "/images/categories/tech.jpg",
+        "courses_count": 12
+      },
+      {
+        "id": "CAT02",
+        "name": "Business & Marketing",
+        "description": "Grow with digital marketing, business management, ads, and branding.",
+        "thumbnail": "/images/categories/business.jpg",
+        "courses_count": 8
+      },
+      {
+        "id": "CAT03",
+        "name": "Finance & Investing",
+        "description": "Master stock trading, accounting, taxation & financial planning.",
+        "thumbnail": "/images/categories/finance.jpg",
+        "courses_count": 5
+      }
+    ],
+
+    "courses": [
+      {
+        "id": "COURSE101",
+        "category_id": "CAT01",
+        "title": "Full Stack Web Development",
+        "duration": "6 Months",
+        "level": "Beginner to Advanced",
+        "price": 19999,
+        "discount_price": 14999,
+        "language": "English / Hindi",
+        "mode": "Online",
+        "certificate": true,
+        "thumbnail": "/images/courses/fullstack.jpg",
+        "overview": "Master the complete MERN stack and build real-world applications.",
+        "requirements": [
+          "Basic computer skills",
+          "No prior coding experience required"
+        ],
+        "skills": [
+          "HTML, CSS, JavaScript",
+          "React, Node.js, Express",
+          "API Development",
+          "MongoDB, Git & Deployment"
+        ],
+        "syllabus": [
+          {
+            "week": 1,
+            "title": "HTML, CSS Fundamentals",
+            "topics": ["HTML5", "Flexbox", "Grid", "Responsive Design"]
+          },
+          {
+            "week": 4,
+            "title": "JavaScript + ES6",
+            "topics": ["Functions", "Arrays", "Promises", "Async/Await"]
+          },
+          {
+            "week": 8,
+            "title": "React Development",
+            "topics": ["Components", "Hooks", "Routing", "State Management"]
+          },
+          {
+            "week": 14,
+            "title": "Backend with Node.js",
+            "topics": ["Express", "JWT Auth", "REST APIs"]
+          }
+        ],
+        "instructors": [
+          {
+            "name": "Rohan Sharma",
+            "experience": "6 Years",
+            "image": "/images/instructors/rohan.jpg",
+            "expertise": ["React", "Node", "MongoDB"]
+          }
+        ],
+        "faq": [
+          {
+            "question": "Is prior coding knowledge required?",
+            "answer": "No, this course is beginner-friendly."
+          },
+          {
+            "question": "Do I get placement assistance?",
+            "answer": "Yes, resume building + interview preparation included."
+          }
+        ],
+        "reviews": [
+          {
+            "user": "Ankit Verma",
+            "rating": 5,
+            "comment": "Amazing course! Best for beginners."
+          }
+        ]
+      },
+
+      {
+        "id": "COURSE201",
+        "category_id": "CAT02",
+        "title": "Digital Marketing Mastery",
+        "duration": "4 Months",
+        "level": "Beginner to Intermediate",
+        "price": 14999,
+        "discount_price": 10999,
+        "language": "Hindi / English",
+        "mode": "Online",
+        "certificate": true,
+        "thumbnail": "/images/courses/digitalmarketing.jpg",
+        "overview": "Learn SEO, Ads, Content Strategy, and Social Media Marketing.",
+        "skills": ["SEO", "Google Ads", "Meta Ads", "Branding", "Analytics"]
+      },
+
+      {
+        "id": "COURSE301",
+        "category_id": "CAT03",
+        "title": "Stock Market Trading",
+        "duration": "1 Month",
+        "level": "Beginner",
+        "price": 5999,
+        "discount_price": 3999,
+        "language": "Hindi",
+        "mode": "Online",
+        "certificate": true,
+        "thumbnail": "/images/courses/stockmarket.jpg",
+        "overview": "Master technical analysis, candlesticks & trading psychology."
+      }
+    ]
+  }
+}

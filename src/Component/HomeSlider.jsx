@@ -63,7 +63,7 @@ const HomeSlider = () => {
       x: 0,
       opacity: 1,
       scale: 1,
-      transition: { duration: .6, ease: "easeInOut" },
+      transition: { duration: 0.6, ease: "easeInOut" },
     },
     exit: (dir) => ({
       x: dir > 0 ? -1000 : 1000,

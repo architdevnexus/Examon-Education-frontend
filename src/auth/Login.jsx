@@ -195,6 +195,17 @@ const Login = () => {
 
             {/* Register Redirect */}
             <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
+            Forgot Password{" "}
+              <button
+                onClick={() => navigate("/forgot-password")}
+                className="text-blue-600 font-semibold hover:underline"
+              >
+                Reset
+              </button>
+            </div>
+
+            {/* Register Redirect */}
+            <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
               Don’t have an account?{" "}
               <button
                 onClick={() => navigate("/register")}

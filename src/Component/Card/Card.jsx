@@ -8,8 +8,14 @@ const Card = ({
   accentColor = "#e74c3c" 
 }) => {
   return (
-    <div className="w-72 md:w-80 bg-white rounded-2xl overflow-hidden shadow-md hover:-translate-y-2 hover:shadow-2xl transition-all duration-300">
-      
+    <div
+      className="
+        w-72 md:w-80 bg-white rounded-2xl overflow-hidden shadow-md
+        hover:-translate-y-2 hover:shadow-2xl transition-all duration-300
+        h-[320px] max-h-[420px]      /* 🔹 FIXED CARD HEIGHT */
+        flex flex-col
+      "
+    >
       {/* 🔹 Top section with gradient and title */}
       <div
         className="h-36 relative flex items-center justify-center text-white font-bold text-2xl"
@@ -20,7 +26,7 @@ const Card = ({
         }}
       >
         <div
-          className="absolute inset-0  opacity-85"
+          className="absolute inset-0 opacity-85"
           style={{
             background: `linear-gradient(to bottom, rgba(0,0,0,0.3), ${accentColor})`,
           }}
@@ -29,7 +35,7 @@ const Card = ({
       </div>
 
       {/* 🔹 Hexagon Icon */}
-      <div className="flex  justify-center -mt-10">
+      <div className="flex justify-center -mt-10">
         <div
           className="w-20 h-20 flex items-center justify-center shadow-lg"
           style={{
@@ -43,8 +49,12 @@ const Card = ({
       </div>
 
       {/* 🔹 Description Section */}
-      <div className="px-6 py-4 text-center">
-        <p className="text-gray-500 text-sm leading-relaxed">{description}</p>
+      <div className="px-6 py-4 text-center flex-grow">
+        <p
+          className="text-gray-500 text-sm leading-relaxed line-clamp-5"
+        >
+          {description}
+        </p>
       </div>
     </div>
   );

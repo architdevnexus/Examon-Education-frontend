@@ -214,7 +214,7 @@ const Navbar = () => {
                 <div key={path} className="relative">
                   <button
                     onClick={() => handleNavigate(path)}
-                    className={`text-gray-700 font-medium hover:text-[var(--primary-color)] transition ${isActive ? "text-[var(--primary-color)]" : ""
+                    className={`text-gray-700 font-medium   cursor-pointer  hover:text-[var(--primary-color)] transition ${isActive ? "text-[var(--primary-color)]" : ""
                       }`}
                   >
                     {label}
@@ -302,7 +302,7 @@ const Navbar = () => {
                     <button
                       key={path}
                       onClick={() => handleNavigate(path)}
-                      className={`text-left border-l-2 py-2 px-2 ${location.pathname === path
+                      className={`text-left border-l-2   cursor-pointer  py-2 px-2 ${location.pathname === path
                         ? "text-[var(--primary-color)] font-semibold"
                         : "text-gray-700"
                         }`}

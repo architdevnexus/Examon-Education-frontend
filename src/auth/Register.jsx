@@ -88,8 +88,9 @@ const Register = () => {
         otpRefs.current[0]?.focus();
       }, 800);
     } else {
-      toast.error(result?.message || "Registration failed");
+      toast.error(result?.msg || "Registration failed or Email Already Exists");
     }
+
   };
 
   // -------------------------------
@@ -323,8 +324,8 @@ const Register = () => {
                 disabled={counter !== 0}
                 onClick={handleResend}
                 className={`w-full py-2 rounded-xl font-semibold text-md ${counter === 0
-                    ? "bg-green-600 text-white hover:bg-green-700"
-                    : "bg-gray-300 text-gray-600 cursor-not-allowed"
+                  ? "bg-green-600 text-white hover:bg-green-700"
+                  : "bg-gray-300 text-gray-600 cursor-not-allowed"
                   }`}
               >
                 {counter === 0 ? "Resend OTP" : `Resend OTP in ${counter}s`}

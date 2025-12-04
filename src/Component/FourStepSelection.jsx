@@ -45,14 +45,14 @@ export const FourStepSelection = () => {
   };
 
   return (
-    <div className="relative min-w-full bg-white z-10 -mt-44 mb-12"
-     style={{
-            clipPath:
-              "polygon(15% 0, 90% 0, 100% 18%, 100% 100%, 80% 100%, 20% 100%, 0 100%, 0 20%)",
-          }}
+    <div className="relative min-w-full bg-white z-10 -mt-42 mb-12"
+      style={{
+        clipPath:
+          "polygon(15% 0, 90% 0, 100% 18%, 100% 100%, 80% 100%, 20% 100%, 0 100%, 0 20%)",
+      }}
     >
       <section className="grid grid-cols-1 min-h-[80vh] w-full overflow-hidden"
-      
+
       >
 
         {/* Heading */}
@@ -60,7 +60,7 @@ export const FourStepSelection = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-         
+
           className="text-center bg-white w-full py-8 text-2xl md:text-3xl text-[var(--text-color)] leading-relaxed"
         >
           A Four-step system for{" "}
@@ -79,9 +79,8 @@ export const FourStepSelection = () => {
               initial="hidden"
               whileInView="show"
               viewport={{ once: true, amount: 0.2 }}
-              className={`flex flex-col p-4 z-20 group transition-all duration-300 ${
-                idx % 2 === 1 ? "translate-y-8 md:translate-y-20" : ""
-              }`}
+              className={`flex flex-col p-4 z-20 group transition-all duration-300 ${idx % 2 === 1 ? "translate-y-8 md:translate-y-20" : ""
+                }`}
             >
               <div className="flex justify-end">
                 <motion.img

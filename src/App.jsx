@@ -31,6 +31,9 @@ const Register = lazy(() => import("./auth/Register"));
 const ViewQuizPop = lazy(() => import("./Component/ViewQuizPop"));
 const Batches = lazy(() => import("./Pages/Batches"));
 
+const ForgotPassword = lazy(() => import("./Form/ForgotPassword"));
+const NewPassword = lazy(() => import("./Form/NewPassword"))
+
 /* ------------------------------------------------------------------
     MAIN APP COMPONENT
 -------------------------------------------------------------------*/
@@ -65,7 +68,7 @@ function App() {
             </div>
           }
         >
-          <div className="mt-30">
+          <div className="mt-29">
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
@@ -76,6 +79,8 @@ function App() {
               <Route path="/contact" element={<ContactUs />} />
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/new-password" element={<NewPassword/>}/>
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:id" element={<DynamicBlog />} />
               <Route path="/batches" element={<Batches />} />
@@ -123,7 +128,7 @@ function App() {
         {/* Footer */}
         <Footer />
 
-        <PopupManager/>
+        <PopupManager />
 
         {/* Toast */}
         <ToastContainer

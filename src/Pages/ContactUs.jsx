@@ -15,7 +15,7 @@ const ContactUs = () => {
       >
         <Hero
           Title=""
-          bg="https://res.cloudinary.com/dt4ohfuwc/image/upload/v1763016624/IMG_2442_vh7qwl.png"
+          bg="/ContactUs.png"
           desc=""
           alt="Contact background image"
         />

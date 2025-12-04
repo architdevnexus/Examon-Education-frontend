@@ -16,7 +16,7 @@ import { useNavigate } from "react-router-dom";
 import { useAuthStore } from "../Zustand/UserData";
 import { useCourseStore } from "../Zustand/GetAllCourses";
 import { useProfileData } from "../Zustand/GetuseProfile";
-import AttemptedQuiz from"../Component/AttemptedQuiz"
+import AttemptedQuiz from "../Component/AttemptedQuiz"
 import ChangePassword from "../Component/Profile/ChangePassword";
 
 import { ReviewSection } from "../Component/Review/ReivewSection";
@@ -60,7 +60,7 @@ const UserProfile = () => {
     }
   }, [isAuthenticated, token, user, fetchCourses, fetchUserProfile, navigate]);
   // console.log(userData)
-  
+
 
   // ===============================
   // LOGOUT HANDLER
@@ -121,7 +121,7 @@ const UserProfile = () => {
     [user, token, navigate, updateUser]
   );
 
- 
+
 
   // ===============================
   // RENDER
@@ -144,10 +144,10 @@ const UserProfile = () => {
 
           <button
             onClick={() => setShowPassword(true)}
-            className="p-3 rounded-full hover:bg-gray-200 focus:ring-2 focus:ring-gray-400 transition-all"
+            className="px-3 py-2 cursor-pointer flex items-center text-gray-800 rounded-md border bg-gray-300 hover:bg-gray-200 focus:ring-2 focus:ring-gray-400 transition-all"
             title="Change Password"
           >
-            <BsThreeDotsVertical className="text-gray-600 text-lg" />
+          <BsThreeDotsVertical/>  Change Password 
           </button>
         </div>
       </header>
@@ -171,13 +171,13 @@ const UserProfile = () => {
         />
       </motion.div>
 
-      <AttemptedQuiz/>
-    
+      <AttemptedQuiz />
 
-        <div className="border-t border-gray-200 mt-10 pt-6">
-          <ReviewSection />
-        </div>
- 
+
+      <div className="border-t border-gray-200 mt-10 pt-6">
+        <ReviewSection />
+      </div>
+
 
       {/* PASSWORD MODAL */}
       {showPassword && (

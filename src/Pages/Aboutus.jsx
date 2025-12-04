@@ -21,9 +21,9 @@ const Aboutus = () => {
     <main className="flex flex-col min-h-screen w-full bg-white text-gray-800 overflow-hidden">
       {/*  Hero Section */}
       <Hero
-        Title="About Us"
-        desc="Examon Education empowers aspirants with a results-focused platform for Government and PSU exams in India. Our quality content, delivered in a focused ecosystem, stands on one clear promise."
-        bg="https://res.cloudinary.com/dt4ohfuwc/image/upload/v1762863070/IMG_2245_kn7rhy.png"
+        Title=""
+        desc=""
+        bg="/AboutUs.png"
       />
 
       {/*  Async Sections */}
