@@ -23,7 +23,7 @@ const ContactUs = () => {
 
       {/* Contact Form Section */}
       <motion.section
-        className="relative z-[10] -mt-55 px-4 md:px-8 lg:px-16 py-25 flex justify-center"
+        className="relative z-[10] md:-mt-55 px-4 md:px-8 lg:px-16 mb-16 md:py-25 flex justify-center"
         initial={{ opacity: 0, y: 80 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.3, duration: 0.9, ease: "easeOut" }}
@@ -38,7 +38,7 @@ const ContactUs = () => {
           <ContactForm />
           <div className="py-2">
 
-      <Map/>
+            <Map />
           </div>
         </motion.div>
       </motion.section>

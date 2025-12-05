@@ -115,7 +115,7 @@ const Navbar = () => {
             <img
               src="/examon_logo.svg"
               alt="Logo"
-              className="h-12 w-auto cursor-pointer select-none"
+              className="h-8 sm:h-12 w-auto cursor-pointer select-none"
               onClick={() => handleNavigate("/")}
             />
 
@@ -128,7 +128,7 @@ const Navbar = () => {
                   onClick={() => setExamOpen((prev) => !prev)}
                   aria-haspopup="true"
                   aria-expanded={examOpen}
-                  className="px-2 py-1 z-[991] rounded-xl border-2 border-[var(--secondary-color)] text-gray-700 font-medium hover:text-[var(--primary-color)] transition flex items-center gap-1"
+                  className=" p-1 md:px-2 z-[991] text-xs sm:text-base rounded-md border-2 border-[var(--secondary-color)] text-gray-700 font-medium hover:text-[var(--primary-color)] transition flex items-center gap-1"
                 >
                   All Exams ▾
                 </button>
@@ -139,14 +139,14 @@ const Navbar = () => {
                 >
                   {/* Blinking Dot */}
                   <motion.p
-                    className="w-2 h-2 bg-red-600 rounded-full"
+                    className="w-1 h-1 bg-red-600 rounded-full"
                     animate={{ opacity: [1, 0, 1] }}
                     transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
                   />
 
                   {/* Blinking Text */}
                   <motion.span
-                    className="text-red-600 font-bold"
+                    className="text-red-600 text-xs font-bold"
                     animate={{ opacity: [1, 0, 1] }}
                     transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
                   >

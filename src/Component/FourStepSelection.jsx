@@ -45,7 +45,7 @@ export const FourStepSelection = () => {
   };
 
   return (
-    <div className="relative min-w-full bg-white z-10 -mt-50 mb-12"
+    <div className="relative min-w-full bg-white z-10 md:-mt-50 mb-12"
       style={{
         clipPath:
           "polygon(8% 0, 92% 0, 100% 15%, 100% 100%, 0 100%, 0 17%)",

@@ -3,7 +3,7 @@ import React from "react";
 const Hero = ({ bg, Title, desc }) => {
   return (
     <section
-      className="relative flex items-center justify-center md:justify-start flex-col h-[60vh] md:h-[80vh] -mt-22 gap-3 text-[var(--background-color)] bg-center bg-contain bg-no-repeat px-4 md:px-8"
+      className="relative flex items-center justify-center md:justify-start flex-col h-[41.5vh] md:h-[80vh] -mt-22 gap-3 text-[var(--background-color)] bg-center bg-contain bg-no-repeat px-4 md:px-8"
       style={{
         backgroundImage: `url(${bg})`,
       }}

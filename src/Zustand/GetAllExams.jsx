@@ -16,7 +16,7 @@ export const useExamStore = create((set) => ({
       // Since response is an array, directly store it
       set({ exams: res.data || [], loading: false });
     } catch (err) {
-      console.error("❌ Error fetching exams:", err);
+      console.error("Error fetching exams:", err);
       set({
         error: err.response?.data?.message || err.message,
         loading: false,
