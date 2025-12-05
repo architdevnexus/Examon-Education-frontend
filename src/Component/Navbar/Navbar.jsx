@@ -150,7 +150,7 @@ const Navbar = () => {
                     animate={{ opacity: [1, 0, 1] }}
                     transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
                   >
-                    Live
+                    Live Batches
                   </motion.span>
                 </div>
               </div>

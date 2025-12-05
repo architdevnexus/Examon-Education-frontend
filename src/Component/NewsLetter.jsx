@@ -1,114 +1,137 @@
-import React, { useState } from "react";
+import React, { useState, useCallback, useMemo } from "react";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import axios from "axios";
-import Cookies from "js-cookie";
 
-//  Create reusable axios instance for better scalability
+// Axios Instance (optimized)
 const api = axios.create({
   baseURL: "https://backend.palgharhome.com/api",
-  withCredentials: true, // ensure cookies are sent if backend uses sessions
-  timeout: 10000, // 10s timeout for safety
+  timeout: 10000,
 });
+
+// Debounce function
+const debounce = (fn, delay = 400) => {
+  let timer;
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+};
 
 const NewsLetter = () => {
   const [email, setEmail] = useState("");
+  const [debouncedEmail, setDebouncedEmail] = useState("");
   const [loading, setLoading] = useState(false);
 
-  //  Handle newsletter subscription
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  // Memoized debouncer to avoid re-creation
+  const debouncedChangeHandler = useMemo(
+    () =>
+      debounce((value) => {
+        setDebouncedEmail(value);
+      }, 400),
+    []
+  );
 
-    if (!email.trim() || !email.includes("@")) {
-      toast.error("Please enter a valid email address!");
-      return;
-    }
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
+    debouncedChangeHandler(e.target.value);
+  };
 
-    setLoading(true);
+  const handleSubmit = useCallback(
+    async (e) => {
+      e.preventDefault();
 
-    try {
-      //  Retrieve token securely from cookies
-      const token = Cookies.get("accessToken");
-      console.log(token)
+      if (!debouncedEmail.trim() || !debouncedEmail.includes("@")) {
+        toast.error("Please enter a valid email address!");
+        return;
+      }
+
+      const token = JSON.parse(localStorage.getItem("token"))?.state?.token;
+
       if (!token) {
         toast.error("Please log in before subscribing!");
         return;
       }
 
-      //  Post to API with token in Authorization header
-      const response = await api.post(
-        "/subscribe",
-        { email: email.trim() },
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
+      setLoading(true);
 
-      //  Handle success
-      if (response?.data?.success) {
-        toast.success("🎉 You’ve successfully subscribed to our newsletter!");
-        setEmail("");
-      } else {
-        toast.warn("Subscription request received, please check your inbox.");
+      try {
+        const response = await api.post(
+          "/subscribe",
+          { email: debouncedEmail.trim() },
+          {
+            headers: { Authorization: `Bearer ${token}` },
+          }
+        );
+
+        if (response?.data?.success) {
+          toast.success("🎉 You’ve successfully subscribed!");
+          setEmail("");
+          setDebouncedEmail("");
+        } else {
+          toast.warn("Subscription request received, please check your inbox.");
+        }
+      } catch (error) {
+        console.error("Newsletter error:", error);
+        toast.error(
+          error.response?.data?.message ||
+            (error.code === "ECONNABORTED"
+              ? "Request timed out. Try again."
+              : "Something went wrong!")
+        );
+      } finally {
+        setLoading(false);
       }
-    } catch (error) {
-      console.error("Newsletter subscription error:", error);
-      const msg =
-        error.response?.data?.message ||
-        (error.code === "ECONNABORTED"
-          ? "Request timed out. Please try again."
-          : "Something went wrong. Try again later!");
-      toast.error(msg);
-    } finally {
-      setLoading(false);
-    }
-  };
+    },
+    [debouncedEmail]
+  );
 
   return (
     <section className="bg-[var(--primary-color)] text-white rounded-3xl shadow-2xl p-6 md:p-10 flex flex-col md:flex-row items-center justify-between gap-6 transition-all duration-500 hover:shadow-indigo-300/30">
-      {/* Left: Icon */}
+
+      {/* Left Icon */}
       <div className="flex-shrink-0">
-        <img
-          src="/books.svg"
-          alt="Newsletter illustration"
-          className="w-24 h-24 md:w-28 md:h-28"
-          loading="lazy"
-        />
+        {loading ? (
+          <div className="w-24 h-24 md:w-28 md:h-28 bg-white/20 animate-pulse rounded-xl" />
+        ) : (
+          <img
+            src="/books.svg"
+            alt="Newsletter illustration"
+            className="w-24 h-24 md:w-28 md:h-28"
+            loading="lazy"
+          />
+        )}
       </div>
 
-      {/* Middle: Text */}
+      {/* Middle Text */}
       <div className="flex flex-col md:flex-1 gap-2 text-center md:text-left">
         <h2 className="text-2xl md:text-3xl font-bold leading-snug">
           Subscribe to Our Newsletter
         </h2>
         <p className="text-white/80 text-base md:text-lg max-w-lg">
-          Stay ahead with the latest news, batches, and study updates. Enter
-          your email to join our learning community!
+          Stay ahead with the latest news, batches, and study updates.
         </p>
       </div>
 
-      {/* Right: Subscription Form */}
+      {/* Right: Form */}
       <form
         onSubmit={handleSubmit}
         className="flex flex-col sm:flex-row gap-3 w-full sm:w-auto md:w-1/2 mt-3"
       >
-        <label htmlFor="email" className="sr-only">
-          Email Address
-        </label>
         <input
-          id="email"
           type="email"
           placeholder="Enter your email"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
+          onChange={handleEmailChange}
           className="flex-1 p-3 rounded-lg outline-none border border-transparent focus:border-white focus:ring-2 focus:ring-white transition bg-white/90 text-gray-900 placeholder-gray-500"
-          required
           disabled={loading}
+          required
         />
+
         <button
           type="submit"
           disabled={loading}
-          className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-white ${
+          className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 ${
             loading
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-white text-[var(--primary-color)] hover:bg-white/90"
@@ -118,13 +141,7 @@ const NewsLetter = () => {
         </button>
       </form>
 
-      {/* Toast Notifications */}
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        pauseOnHover
-        theme="colored"
-      />
+      <ToastContainer position="top-right" autoClose={3000} pauseOnHover theme="colored" />
     </section>
   );
 };

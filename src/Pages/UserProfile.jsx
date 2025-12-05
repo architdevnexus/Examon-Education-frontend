@@ -6,7 +6,7 @@ import React, {
   useRef,
 } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
-import { BsThreeDotsVertical } from "react-icons/bs";
+import { RiLockPasswordLine } from "react-icons/ri";
 import { motion } from "framer-motion";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -144,10 +144,10 @@ const UserProfile = () => {
 
           <button
             onClick={() => setShowPassword(true)}
-            className="px-3 py-2 cursor-pointer flex items-center text-gray-800 rounded-md border bg-gray-300 hover:bg-gray-200 focus:ring-2 focus:ring-gray-400 transition-all"
+            className="px-3 py-2 gap-3 cursor-pointer flex items-center text-gray-800 rounded-md border bg-gray-100 hover:bg-gray-200 focus:ring-2 focus:ring-gray-400 transition-all"
             title="Change Password"
           >
-          <BsThreeDotsVertical/>  Change Password 
+          Change Password  <RiLockPasswordLine/> 
           </button>
         </div>
       </header>

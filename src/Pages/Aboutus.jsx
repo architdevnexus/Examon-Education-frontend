@@ -23,7 +23,7 @@ const Aboutus = () => {
       <Hero
         Title=""
         desc=""
-        bg="/AboutUs.png"
+        bg="/AboutUs2.png"
       />
 
       {/*  Async Sections */}

@@ -45,10 +45,10 @@ export const FourStepSelection = () => {
   };
 
   return (
-    <div className="relative min-w-full bg-white z-10 -mt-42 mb-12"
+    <div className="relative min-w-full bg-white z-10 -mt-50 mb-12"
       style={{
         clipPath:
-          "polygon(15% 0, 90% 0, 100% 18%, 100% 100%, 80% 100%, 20% 100%, 0 100%, 0 20%)",
+          "polygon(9% 0, 90% 0, 100% 20%, 100% 100%, 0 100%, 17%)",
       }}
     >
       <section className="grid grid-cols-1 min-h-[80vh] w-full overflow-hidden"

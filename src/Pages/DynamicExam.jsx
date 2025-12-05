@@ -9,7 +9,7 @@ const DynamicExam = () => {
   const { _id: id } = useParams();
   const { exams, loading, error, fetchAllExams } = useExamStore();
 
-  const [activeIndex, setActiveIndex] = useState(0); // ⭐ TAB STATE
+  const [activeIndex, setActiveIndex] = useState(0);
 
   useEffect(() => {
     if (!exams || exams.length === 0) fetchAllExams();
@@ -41,25 +41,62 @@ const DynamicExam = () => {
       </div>
     );
 
-  /** 🧩 Function to style HTML for each detail */
-  const styleHTML = (html) => {
+  /** ⭐ STYLE HTML INCLUDING TABLES */
+  const styledHTML = useMemo(() => {
+    const html = exam.examDetails?.[activeIndex]?.Content || "";
     if (!html) return "";
 
     const clean = DOMPurify.sanitize(html);
 
     return clean
-      .replaceAll(/<p>/g, '<p class="text-gray-700 leading-relaxed mb-4">')
-      .replaceAll(/<ul>/g, '<ul class="list-disc pl-6 space-y-2">')
-      .replaceAll(/<ol>/g, '<ol class="list-decimal pl-6 space-y-2">');
-  };
+      /** TABLE WRAPPER */
+      .replaceAll(
+        /<table([^>]*)>/g,
+        '<div class="overflow-x-auto my-6"><table$1 class="min-w-full text-sm text-left border border-gray-300 rounded-xl overflow-hidden shadow-md">'
+      )
+      .replaceAll(/<\/table>/g, "</table></div>")
 
-  // ⭐ CURRENT ACTIVE ITEM
+      /** TABLE STYLES */
+      .replaceAll(/<thead>/g, '<thead class="bg-gray-100 text-gray-800 font-semibold">')
+      .replaceAll(/<tbody>/g, '<tbody class="divide-y divide-gray-200">')
+      .replaceAll(/<tr>/g, '<tr class="hover:bg-gray-50 transition-colors">')
+      .replaceAll(
+        /<td([^>]*)>/g,
+        '<td$1 class="px-4 py-3 border-b border-gray-200 text-gray-700 whitespace-nowrap">'
+      )
+      .replaceAll(
+        /<th([^>]*)>/g,
+        '<th$1 class="px-4 py-3 border-b border-gray-300 text-gray-900 font-medium bg-gray-50 whitespace-nowrap">'
+      )
+
+      /** LISTS & PARAGRAPHS */
+      .replaceAll(/<ul>/g, '<ul class="list-disc pl-6 space-y-2 text-gray-700">')
+      .replaceAll(/<ol>/g, '<ol class="list-decimal pl-6 space-y-2 text-gray-700">')
+      .replaceAll(/<p>/g, '<p class="text-gray-700 leading-relaxed mb-4">')
+
+      /** HEADINGS */
+      .replaceAll(
+        /<h2([^>]*)>/g,
+        '<h2$1 class="text-2xl font-semibold text-gray-900 mt-8 mb-4 border-l-4 border-blue-600 pl-3">'
+      )
+      .replaceAll(
+        /<h3([^>]*)>/g,
+        '<h3$1 class="text-xl font-semibold text-gray-900 mt-6 mb-3">'
+      )
+
+      /** LINKS */
+      .replaceAll(
+        /<a([^>]*)>/g,
+        '<a$1 class="text-blue-600 font-medium hover:underline">'
+      );
+  }, [activeIndex, exam]);
+
   const current = exam.examDetails?.[activeIndex];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white py-10 px-4 sm:px-6 lg:px-12">
 
-      {/* ===== HEADER ===== */}
+      {/* HEADER */}
       <section className="bg-white rounded-2xl shadow-md border border-gray-200 p-6 mb-10 text-center">
         <div className="flex flex-col items-center gap-4">
           <img
@@ -73,7 +110,7 @@ const DynamicExam = () => {
         </div>
       </section>
 
-      {/* ⭐⭐⭐ TABS SECTION ⭐⭐⭐ */}
+      {/* TABS */}
       <div className="flex gap-3 mb-6 border-b border-gray-200 pb-3 overflow-x-auto">
         {exam.examDetails?.map((item, index) => (
           <button
@@ -90,7 +127,7 @@ const DynamicExam = () => {
         ))}
       </div>
 
-      {/* ===== ACTIVE EXAM DETAIL ===== */}
+      {/* CONTENT AREA */}
       <section className="bg-white p-6 sm:p-8 rounded-2xl border border-gray-200 shadow-sm">
         <h2 className="text-2xl font-semibold text-gray-900 mb-4">
           {current?.title}
@@ -111,19 +148,19 @@ const DynamicExam = () => {
           </p>
         </div>
 
-        {/* 🧩 Dynamic Content */}
+        {/* ⭐ RENDER HTML WITH TABLE SUPPORT */}
         <div
           className="prose prose-lg max-w-none"
-          dangerouslySetInnerHTML={{ __html: styleHTML(current?.Content) }}
+          dangerouslySetInnerHTML={{ __html: styledHTML }}
         />
       </section>
 
-      {/* ===== FAQ SECTION ===== */}
+      {/* FAQ */}
       <section className="mt-16">
         <FAQ />
       </section>
 
-      {/* ===== CONTACT SECTION ===== */}
+      {/* CONTACT */}
       <section className="pt-10 border-t border-gray-200 mt-10">
         <ContactSection />
       </section>

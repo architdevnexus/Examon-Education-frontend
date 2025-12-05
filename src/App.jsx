@@ -114,7 +114,7 @@ function App() {
                 path="*"
                 element={
                   <div className="flex justify-center items-center h-screen text-xl font-semibold text-gray-500">
-                    404 — Page Not Found
+                  <img src="/404.jpg" alt="" srcset="" />
                   </div>
                 }
               />
