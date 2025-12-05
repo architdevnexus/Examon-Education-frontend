@@ -80,7 +80,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/new-password" element={<NewPassword/>}/>
+              <Route path="/reset-password" element={<NewPassword/>}/>
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:id" element={<DynamicBlog />} />
               <Route path="/batches" element={<Batches />} />

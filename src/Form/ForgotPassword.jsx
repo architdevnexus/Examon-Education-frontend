@@ -31,38 +31,45 @@ export default function ForgotPassword() {
   // ----------------------------
   // Submit Handler
   // ----------------------------
-  const handleSendEmail = async () => {
-    if (!email.trim()) return toast.error("Please enter your email");
+ const handleSendEmail = async () => {
+  if (!email.trim()) return toast.error("Please enter your email");
 
-    if (!/\S+@\S+\.\S+/.test(email))
-      return toast.error("Enter a valid email");
+  if (!/\S+@\S+\.\S+/.test(email))
+    return toast.error("Enter a valid email");
 
-    setLoading(true);
-    try {
-      const response = await fetch(
-        "https://backend.palgharhome.com/api/forgot-password",
-        {
-          method: "POST",
-          credentials: "include", // <-- fetch equivalent of withCredentials
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ email }),
-        }
-      );
-      const data = await response.json().catch(() => null);
+  setLoading(true);
 
-      if (!response.ok) {
-        toast.error(data?.message || "Unable to send reset link");
-      } else if (data?.success) {
-        toast.success("Password reset link sent to your email!");
-      } else {
-        toast.error("Something went wrong!");
+  try {
+    const response = await fetch(
+      "https://backend.palgharhome.com/api/forgot-password",
+      {
+        method: "POST",
+        credentials: "include",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
       }
-    } catch (error) {
-      toast.error("Network error, please try again later.");
-    }
+    );
 
-    setLoading(false);
-  };
+    let data = {};
+    try { data = await response.json(); } catch {}
+
+    if (response.ok && data?.success) {
+      toast.success("Password reset link sent to your email!");
+
+      // ✅ Navigate using token from API
+      if (data?.resetToken) {
+        navigate(`/api/reset-password/${data.resetToken}`);
+      }
+    } else {
+      toast.error(data?.message || "Unable to send reset link");
+    }
+  } catch (e) {
+    toast.error("Network error, please try again.");
+  }
+
+  setLoading(false);
+};
+
 
   return (
     <div className="fixed inset-0 z-[999] flex items-center justify-center bg-black/50 backdrop-blur-sm p-4">
