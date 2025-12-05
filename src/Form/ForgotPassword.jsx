@@ -31,44 +31,44 @@ export default function ForgotPassword() {
   // ----------------------------
   // Submit Handler
   // ----------------------------
- const handleSendEmail = async () => {
-  if (!email.trim()) return toast.error("Please enter your email");
+  const handleSendEmail = async () => {
+    if (!email.trim()) return toast.error("Please enter your email");
 
-  if (!/\S+@\S+\.\S+/.test(email))
-    return toast.error("Enter a valid email");
+    if (!/\S+@\S+\.\S+/.test(email))
+      return toast.error("Enter a valid email");
 
-  setLoading(true);
+    setLoading(true);
 
-  try {
-    const response = await fetch(
-      "https://backend.palgharhome.com/api/forgot-password",
-      {
-        method: "POST",
-        credentials: "include",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email }),
+    try {
+      const response = await fetch(
+        "https://backend.palgharhome.com/api/forgot-password",
+        {
+          method: "POST",
+          credentials: "include",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ email }),
+        }
+      );
+
+      let data = {};
+      try { data = await response.json(); } catch { }
+
+      if (response.ok && data?.success) {
+        toast.success("Password reset link sent to your email!");
+
+        // ✅ Navigate using token from API
+        if (data?.token) {
+          navigate(`/api/reset-password/${data.token}`);
+        }
+      } else {
+        toast.success(data?.message || "Unable to send reset link");
       }
-    );
-
-    let data = {};
-    try { data = await response.json(); } catch {}
-
-    if (response.ok && data?.success) {
-      toast.success("Password reset link sent to your email!");
-
-      // ✅ Navigate using token from API
-      if (data?.resetToken) {
-        navigate(`/api/reset-password/${data.resetToken}`);
-      }
-    } else {
-      toast.error(data?.message || "Unable to send reset link");
+    } catch (e) {
+      toast.error("Network error, please try again.");
     }
-  } catch (e) {
-    toast.error("Network error, please try again.");
-  }
 
-  setLoading(false);
-};
+    setLoading(false);
+  };
 
 
   return (
@@ -111,8 +111,8 @@ export default function ForgotPassword() {
           onClick={handleSendEmail}
           disabled={loading}
           className={`w-full py-3 rounded-lg text-white font-semibold transition ${loading
-              ? "bg-gray-400 cursor-not-allowed animate-pulse"
-              : "bg-blue-600 hover:bg-blue-700"
+            ? "bg-gray-400 cursor-not-allowed animate-pulse"
+            : "bg-blue-600 hover:bg-blue-700"
             }`}
         >
           {loading ? "Sending..." : "Send Reset Link"}

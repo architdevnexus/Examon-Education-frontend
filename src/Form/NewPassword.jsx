@@ -58,7 +58,7 @@ export default function NewPassword() {
         toast.success("Password reset successful!");
         setTimeout(() => navigate("/login"), 1500);
       } else {
-        toast.error(data?.msg || "Unable to reset password");
+        toast.success(data?.msg || "Unable to reset password");
       }
     } catch (error) {
       toast.error("Server error, try again later");
@@ -74,7 +74,7 @@ export default function NewPassword() {
       <div className="w-full max-w-md bg-white shadow-2xl rounded-2xl p-8">
 
         <h2 className="text-2xl font-bold text-gray-800 mb-2 text-center">
-           Set New Password
+          Set New Password
         </h2>
 
         <p className="text-center text-gray-600 mb-6">
@@ -125,9 +125,8 @@ export default function NewPassword() {
         <button
           onClick={handleSubmit}
           disabled={loading}
-          className={`w-full p-3 text-white rounded-lg ${
-            loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
-          }`}
+          className={`w-full p-3 text-white rounded-lg ${loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700"
+            }`}
         >
           {loading ? "Updating..." : "Reset Password"}
         </button>

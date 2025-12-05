@@ -95,7 +95,7 @@ const HomeSlider = () => {
     );
 
   const batch = batchData[current];
-
+console.log(batch)
   return (
     <div className="p-2">
       <div
@@ -115,7 +115,7 @@ const HomeSlider = () => {
             className="absolute inset-0"
           >
             <img
-              src={batch.image}
+              src={batch?.images?.[0]}
               alt={batch.batchName}
               className="w-full h-full object-full object-cover rounded-2xl"
             />

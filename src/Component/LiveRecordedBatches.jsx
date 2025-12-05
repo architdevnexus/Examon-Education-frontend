@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useMemo } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
@@ -15,6 +15,17 @@ const LiveRecordedBatches = () => {
   useEffect(() => {
     fetchBatches();
   }, [fetchBatches]);
+
+  // ✔ Always guarantee minimum 3 slides
+  const preparedSlides = useMemo(() => {
+    if (batchData.length >= 3) return batchData;
+
+    const arr = [...batchData];
+    while (arr.length < 3) {
+      arr.push(...batchData); // duplicate
+    }
+    return arr.slice(0, 3);
+  }, [batchData]);
 
   if (loading)
     return (
@@ -48,7 +59,7 @@ const LiveRecordedBatches = () => {
           effect="coverflow"
           grabCursor
           centeredSlides
-          loop
+          loop={true}   // now always works
           speed={900}
           slidesPerView={1}
           breakpoints={{
@@ -68,8 +79,11 @@ const LiveRecordedBatches = () => {
           }}
           className="px-2"
         >
-          {batchData.map((batch) => (
-            <SwiperSlide key={batch._id} className="flex justify-center">
+          {preparedSlides.map((batch, index) => (
+            <SwiperSlide
+              key={batch._id + index}
+              className="flex justify-center items-center !w-auto"
+            >
               <RecordedBatchesCard {...batch} />
             </SwiperSlide>
           ))}

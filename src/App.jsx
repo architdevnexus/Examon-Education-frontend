@@ -12,6 +12,7 @@ import Footer from "./Component/Footer";
 import Whatsapp from "./Component/Whatsapp";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import PopupManager from "./Component/Popup/NotificationPopup"
+import ReminderPopup from "./Component/Remider";
 /* Lazy-loaded pages */
 const Home = lazy(() => import("./Pages/Home"));
 const Aboutus = lazy(() => import("./Pages/Aboutus"));
@@ -140,6 +141,7 @@ function App() {
           draggable
           theme="colored"
         />
+        <ReminderPopup/>
       </div>
     </Router>
   );
