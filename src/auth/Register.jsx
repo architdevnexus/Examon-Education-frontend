@@ -192,7 +192,7 @@ const Register = () => {
         {/* Left Image */}
         <div className="hidden md:block md:w-1/2">
           <img
-            src="https://images.pexels.com/photos/34063100/pexels-photo-34063100.jpeg"
+            src="/login.png"
             alt="Register visual"
             className="w-full h-full object-cover"
           />

@@ -80,7 +80,7 @@ function App() {
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
-              <Route path="/reset-password" element={<NewPassword/>}/>
+              <Route path="/reset-password/:token" element={<NewPassword />} />
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:id" element={<DynamicBlog />} />
               <Route path="/batches" element={<Batches />} />
@@ -114,7 +114,7 @@ function App() {
                 path="*"
                 element={
                   <div className="flex justify-center items-center h-screen text-xl font-semibold text-gray-500">
-                  <img src="/404.jpg" alt="" srcset="" />
+                    <img src="/404.jpg" alt="" srcset="" />
                   </div>
                 }
               />
