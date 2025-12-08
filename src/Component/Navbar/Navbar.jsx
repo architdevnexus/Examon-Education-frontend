@@ -138,20 +138,20 @@ const Navbar = () => {
                   onClick={() => navigate("/batches")}
                 >
                   {/* Blinking Dot */}
-                  <motion.p
+                  {/* <motion.p
                     className="w-1 h-1 bg-red-600 rounded-full"
                     animate={{ opacity: [1, 0, 1] }}
                     transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
-                  />
+                  /> */}
 
                   {/* Blinking Text */}
-                  <motion.span
+                  {/* <motion.span
                     className="text-red-600 text-xs font-bold"
                     animate={{ opacity: [1, 0, 1] }}
                     transition={{ duration: 1, repeat: Infinity, ease: "easeInOut", delay: 0.2 }}
                   >
                     Live Batches
-                  </motion.span>
+                  </motion.span> */}
                 </div>
               </div>
 

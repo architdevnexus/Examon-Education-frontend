@@ -9,6 +9,7 @@ import { useCourseStore } from "../../Zustand/GetAllCourses";
 const CoursesCard = ({
   id,
   img,
+  duration,
   actualprice,
   previousprice,
   percent,
@@ -18,19 +19,19 @@ const CoursesCard = ({
   Discount,
   amount,
 }) => {
-
-  const { cart, addToCart, removeFromCart } = useCourseStore();
   const navigate = useNavigate();
   const token = localStorage.getItem("token");
 
+  const { cart, addToCart, removeFromCart } = useCourseStore();
   const isInCart = cart.some((item) => item.id === id);
 
-  /** Toggle Cart */
+  /** Toggle Cart Button */
   const handleCartToggle = (e) => {
     e.stopPropagation();
+
     if (!token) {
       toast.error("Please login to manage your cart");
-      setTimeout(() => navigate("/login"), 1500);
+      setTimeout(() => navigate("/login"), 1200);
       return;
     }
 
@@ -54,6 +55,7 @@ const CoursesCard = ({
     }
   };
 
+  /** Navigate to single course */
   const handleNavigate = () => navigate(`/courses/${id}`);
 
   return (
@@ -64,7 +66,7 @@ const CoursesCard = ({
         h-[600px] max-h-[600px]
       "
     >
-      {/* === COURSE IMAGE + PRICING === */}
+      {/* ==== IMAGE SECTION ==== */}
       <div className="relative p-2 rounded-2xl w-full shadow-2xl h-52 md:h-60 overflow-hidden">
         <img
           src={img}
@@ -73,23 +75,25 @@ const CoursesCard = ({
           onClick={handleNavigate}
         />
 
-        {/* Pricing Banner */}
-        <div className="absolute bottom-0 left-0 w-full bg-white px-4 py-1 flex  justify-between items-center text-sm">
+        {/* ==== PRICE BANNER ==== */}
+        <div className="absolute bottom-0 left-0 w-full bg-white px-4 py-1 flex justify-between items-center text-sm">
           <span className="font-bold text-black">₹{actualprice}</span>
           <span className="line-through text-gray-400">₹{previousprice}</span>
           <span className="text-red-500 font-semibold">{percent}% OFF</span>
         </div>
       </div>
 
-      {/* === TITLE + MODULES (Scrollable) === */}
+      {/* ==== TITLE + MODULES ==== */}
       <div className="px-4 py-3 flex flex-col gap-2">
-
-        {/* Title with ellipsis */}
+        {/* Title */}
         <span className="font-semibold text-black text-md line-clamp-2 h-[48px]">
-          {courseDetails}
+          {courseDetails} - <span className="font-semibold text-black text-xs line-clamp-2 h-[48px]">
+          {duration}
         </span>
+        </span>
+       
 
-        {/* Inside Modules - scroll */}
+        {/* Inside Modules */}
         <ul className="text-sm text-gray-600 space-y-1 h-[110px] overflow-y-auto pr-1">
           {insideCourses.map((item, index) => (
             <li key={index} className="flex items-start gap-2">
@@ -100,16 +104,17 @@ const CoursesCard = ({
         </ul>
       </div>
 
-      {/* === PERKS + DISCOUNT === */}
+      {/* ==== PERKS & DISCOUNT ==== */}
       <div className="px-4">
         <div className="flex flex-wrap gap-2 mt-1">
           {perks.map((perk, i) => (
             <span
               key={i}
-              className={`px-3 py-1 rounded-md text-white text-xs font-medium ${perk.toLowerCase() === "new"
+              className={`px-3 py-1 rounded-md text-white text-xs font-medium ${
+                perk.toLowerCase() === "new"
                   ? "bg-red-600"
                   : "bg-[var(--text-color)]"
-                }`}
+              }`}
             >
               {perk}
             </span>
@@ -124,12 +129,12 @@ const CoursesCard = ({
         )}
       </div>
 
-      {/* === FOOTER ACTIONS === */}
+      {/* ==== BOTTOM ACTIONS ==== */}
       <div
         onClick={handleNavigate}
         className="mt-auto px-4 py-3 flex items-center justify-between bg-white border-t cursor-pointer"
       >
-        {/* Cart Heart Button */}
+        {/* Heart Button */}
         <div
           onClick={handleCartToggle}
           className="p-2 rounded-full bg-black hover:scale-110 transition-transform"

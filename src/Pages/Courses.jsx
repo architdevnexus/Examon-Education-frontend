@@ -1,59 +1,60 @@
 import React, { useState, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaSearch } from "react-icons/fa";
-import { useCourseStore } from "../Zustand/GetAllCourses";
 import ContactSection from "../Component/ContactSection";
+import { useBatchesStore } from "../Zustand/GetLiveBatches";
 import CoursesCard from "../Component/Card/CoursesCard";
+
+// Shimmer Loader
+const ShimmerCard = () => (
+  <div className="w-full h-60 bg-gray-200 animate-pulse rounded-xl" />
+);
 
 const Courses = () => {
   const [searchTerm, setSearchTerm] = useState("");
   const [debouncedTerm, setDebouncedTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
-  const {
-    loading,
-    error,
-    data,
-    categories,
-    selectedCategory,
-    fetchCourses,
-    fetchCoursesByCategory,
-  } = useCourseStore();
+  const { fetchBatches, batchData = [], loading, error } = useBatchesStore();
 
-  // Local pagination state
+  // Local pagination
   const [currentPage, setCurrentPage] = useState(1);
   const perPage = 3;
 
-  // Fetch courses initially
+  // Fetch batch data
   useEffect(() => {
-    fetchCourses();
+    fetchBatches();
   }, []);
-
-  // Debounce search term
+console.log(batchData)
+  // Search debounce
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedTerm(searchTerm.toLowerCase()), 300);
     return () => clearTimeout(handler);
   }, [searchTerm]);
 
-  // Filter + search logic
+  // Extract categories
+  const categories = useMemo(() => {
+    const uniqueCats = new Set(batchData.map((item) => item.categoryName));
+    return ["All", ...Array.from(uniqueCats)];
+  }, [batchData]);
+
+  // Filter + Search Logic
   const filteredCourses = useMemo(() => {
     let filtered =
       selectedCategory === "All"
-        ? data
-        : data.filter((c) => c.examCategory === selectedCategory);
+        ? batchData
+        : batchData.filter((c) => c.categoryName === selectedCategory);
 
     if (debouncedTerm) {
       filtered = filtered.filter((course) =>
-        course.courseDetails?.toLowerCase().includes(debouncedTerm)
+        course.batchName?.toLowerCase().includes(debouncedTerm)
       );
     }
-
     return filtered;
-  }, [data, selectedCategory, debouncedTerm]);
+  }, [batchData, selectedCategory, debouncedTerm]);
 
-  // Calculate total pages
-  const totalPages = Math.ceil(filteredCourses.length / perPage);
+  const totalPages = Math.ceil(filteredCourses.length / perPage) || 1;
 
-  // Infinite pagination logic
   const handleNext = () => {
     setCurrentPage((prev) => (prev === totalPages ? 1 : prev + 1));
   };
@@ -62,25 +63,19 @@ const Courses = () => {
     setCurrentPage((prev) => (prev === 1 ? totalPages : prev - 1));
   };
 
-  // Paginated slice
   const paginatedCourses = useMemo(() => {
     const start = (currentPage - 1) * perPage;
     return filteredCourses.slice(start, start + perPage);
-  }, [filteredCourses, currentPage, perPage]);
+  }, [filteredCourses, currentPage]);
 
-  // Framer Motion animation preset
   const fadeInUp = {
     hidden: { opacity: 0, y: 40 },
-    visible: {
-      opacity: 1,
-      y: 0,
-      transition: { duration: 0.5, ease: "easeOut" },
-    },
+    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
   };
 
   return (
     <main className="flex flex-col items-center w-full bg-white min-h-screen">
-      {/* Hero Section */}
+      {/* HERO SECTION */}
       <section className="relative flex flex-col items-center md:items-start w-full py-20 px-6 md:px-12 bg-gradient-to-r from-[var(--primary-color)] to-blue-800 text-white overflow-hidden">
         <motion.div
           initial={{ opacity: 0, y: -30 }}
@@ -88,24 +83,21 @@ const Courses = () => {
           transition={{ duration: 0.7 }}
           className="z-10 flex flex-col gap-4 max-w-7xl w-full text-center md:text-left"
         >
-          <h1 className="font-extrabold text-4xl md:text-5xl leading-tight">
-            Explore Our Courses
-          </h1>
+          <h1 className="font-extrabold text-4xl md:text-5xl leading-tight">Explore Our Courses</h1>
           <p className="text-white/90 text-sm md:text-base md:w-2/3">
             Build your future with India’s most trusted learning platform.
-            Explore, learn, and achieve excellence with our curated programs.
           </p>
         </motion.div>
 
-        {/* Search + Filter Section */}
+        {/* SEARCH + FILTERS */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, delay: 0.2 }}
           className="relative z-10 flex flex-col sm:flex-row justify-center md:justify-start w-full max-w-7xl mt-10 gap-4"
         >
-          {/* Search Bar */}
-          <div className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-lg w-full sm:max-w-md hover:shadow-xl transition-all duration-300">
+          {/* SEARCH BAR */}
+          <div className="flex items-center gap-3 bg-white rounded-2xl px-4 py-3 shadow-lg w-full sm:max-w-md">
             <FaSearch className="text-[var(--primary-color)] text-lg" />
             <input
               type="text"
@@ -116,65 +108,62 @@ const Courses = () => {
             />
           </div>
 
-          {/* Category Dropdown */}
+          {/* CATEGORY SELECT */}
           <div className="relative w-full sm:w-64">
             <select
               value={selectedCategory}
-              onChange={(e) => fetchCoursesByCategory(e.target.value)}
-              className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-10 rounded-xl shadow-sm focus:outline-none focus:ring-2 focus:ring-[var(--primary-color)] transition-all cursor-pointer appearance-none"
+              onChange={(e) => setSelectedCategory(e.target.value)}
+              className="w-full bg-white border border-gray-300 text-gray-700 py-3 px-4 pr-10 rounded-xl shadow-sm focus:ring-2 focus:ring-[var(--primary-color)] cursor-pointer"
             >
               {categories.map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
+                <option key={cat} value={cat}>{cat}</option>
               ))}
             </select>
-            <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                className="h-5 w-5 text-gray-500"
-                viewBox="0 0 20 20"
-                fill="currentColor"
-              >
-                <path
-                  fillRule="evenodd"
-                  d="M5.23 7.21a.75.75 0 011.06.02L10 10.939l3.71-3.71a.75.75 0 111.06 1.06l-4.24 4.25a.75.75 0 01-1.06 0L5.21 8.27a.75.75 0 01.02-1.06z"
-                  clipRule="evenodd"
-                />
-              </svg>
-            </div>
           </div>
         </motion.div>
       </section>
 
-      {/* Course Grid Section */}
+      {/* COURSES GRID */}
       <section className="w-full bg-[#EEF6FC] px-6 md:px-10 lg:px-14 py-14 flex justify-center">
         {loading ? (
-          <p className="text-gray-600 text-center text-lg">Loading courses...</p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl w-full">
+            {Array.from({ length: 6 }).map((_, i) => <ShimmerCard key={i} />)}
+          </div>
         ) : error ? (
           <p className="text-red-500 text-center text-lg">{error}</p>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-3 gap-8 max-w-7xl w-full">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 max-w-7xl w-full">
             <AnimatePresence>
               {paginatedCourses.length > 0 ? (
                 paginatedCourses.map((course, index) => (
                   <motion.div
-                    key={course.id}
+                    key={course._id}
                     variants={fadeInUp}
                     initial="hidden"
                     animate="visible"
                     exit={{ opacity: 0, scale: 0.9 }}
                     transition={{ delay: index * 0.05 }}
                   >
-                    <CoursesCard {...course} />
+                    <CoursesCard
+                      id={course._id}
+                      img={course.images?.[1]}
+                      duration={course.duration}
+                      actualprice={course.price}
+                      previousprice={course.price + 2000}
+                      percent={Math.round(((course.price + 2000) - course.price) / (course.price + 2000) * 100)}
+                      courseDetails={course.batchName}
+                      insideCourses={course.syllabus ? course.syllabus.split(",") : []}
+                      perks={course.teachers || []}
+                      Discount={true}
+                      amount={500}
+                    />
                   </motion.div>
                 ))
               ) : (
                 <motion.p
-                  key="no-result"
                   initial={{ opacity: 0 }}
                   animate={{ opacity: 1 }}
-                  className="text-center text-gray-500 col-span-full text-base md:text-lg"
+                  className="text-center text-gray-500 col-span-full"
                 >
                   No courses found matching “{searchTerm}”
                 </motion.p>
@@ -184,39 +173,23 @@ const Courses = () => {
         )}
       </section>
 
-      {/* 🔹 Infinite Pagination with Dots */}
+      {/* PAGINATION */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-12 mt-2 pb-12">
-          <button
-            onClick={handlePrev}
-            className="px-4 py-2 bg-white border-b cursor-pointer text-sm font-medium hover:bg-gray-100 transition-all"
-          >
-            Prev
-          </button>
-
-          {/* Dots */}
+          <button onClick={handlePrev} className="px-4 py-2 bg-white border-b hover:bg-gray-100">Prev</button>
           <div className="flex gap-4">
             {Array.from({ length: totalPages }, (_, i) => (
               <span
                 key={i}
-                className={`w-12 h-1 rounded-full transition-all duration-300 ${i + 1 === currentPage
-                    ? "bg-[var(--primary-color)] scale-125"
-                    : "bg-gray-300"
-                  }`}
+                className={`w-12 h-1 rounded-full ${i + 1 === currentPage ? "bg-[var(--primary-color)] scale-125" : "bg-gray-300"}`}
               ></span>
             ))}
           </div>
-
-          <button
-            onClick={handleNext}
-            className="px-4 py-2 bg-white border-b cursor-pointer text-sm font-medium hover:bg-gray-100 transition-all"
-          >
-            Next
-          </button>
+          <button onClick={handleNext} className="px-4 py-2 bg-white border-b hover:bg-gray-100">Next</button>
         </div>
       )}
 
-      {/* Contact Section */}
+      {/* CONTACT */}
       <motion.section
         initial={{ opacity: 0, y: 40 }}
         whileInView={{ opacity: 1, y: 0 }}
