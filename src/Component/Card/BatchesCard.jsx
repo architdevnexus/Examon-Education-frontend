@@ -10,7 +10,7 @@ const BatchesCard = ({ batch }) => {
     createdAt,
     duration,
     enrollLink = "",
-    image,
+    images,
     price,
     syllabus,
     teachers = [],
@@ -25,10 +25,10 @@ const BatchesCard = ({ batch }) => {
                  border border-gray-100 flex flex-col overflow-hidden"
     >
       
-      {/* IMAGE */}
+      {/* images */}
       <div className="relative w-full h-52">
         <img
-          src={image}
+          src={images?.[1]}
           alt={batchName}
           className="w-full h-full object-cover"
         />
