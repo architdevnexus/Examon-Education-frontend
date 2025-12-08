@@ -73,6 +73,7 @@ function App() {
             <Routes>
               {/* Public Routes */}
               <Route path="/" element={<Home />} />
+              {/* <Route path="/" element={<div>Home</div>} /> */}
               <Route path="/about" element={<Aboutus />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/quiz" element={<Quiz />} />

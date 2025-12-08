@@ -23,7 +23,7 @@ export default function ReminderPopup() {
     const timer = setTimeout(() => setShow(true), 5000);
 
     return () => clearTimeout(timer);
-  }, [closed]);
+  }, []);
 
   /* -------------------- SHOW ON X-SCROLL -------------------- */
   useEffect(() => {

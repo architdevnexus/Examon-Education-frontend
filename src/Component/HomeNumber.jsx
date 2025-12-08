@@ -6,17 +6,16 @@ import { useAchievementStore } from "../Zustand/GetAchievement";
 const HomeNumber = () => {
   const { loading, error, achievements, fetchAchievements } = useAchievementStore();
 
+  // FIX: Prevent infinite re-fetch loop
   useEffect(() => {
     fetchAchievements();
-  }, [fetchAchievements]);
-// console.log(achievements);
-  //  If multiple entries exist, take the latest one
+  }, []); // <--- FIXED
+
   const latestAchievement = useMemo(() => {
     if (!achievements?.length) return null;
     return achievements[achievements.length - 1];
   }, [achievements]);
 
-  //  Fallback if no API data
   const stats = latestAchievement
     ? [
         { num: latestAchievement.activeUser || 0, unit: "K", text: "Active Users" },
@@ -31,7 +30,6 @@ const HomeNumber = () => {
         { num: 0, unit: "%", text: "Passing Rate" },
       ];
 
-  // Framer motion animation variants
   const containerVariants = {
     hidden: { opacity: 0, y: 40 },
     visible: {
@@ -50,29 +48,31 @@ const HomeNumber = () => {
     },
   };
 
-  //  Count-Up Animation
+  // Optimized CountUp (no multiple intervals)
   const CountUp = ({ target }) => {
     const [count, setCount] = useState(0);
     const { ref, inView } = useInView({ triggerOnce: true });
 
     useEffect(() => {
-      if (inView) {
-        let start = 0;
-        const duration = 1500;
-        const stepTime = 20;
-        const increment = target / (duration / stepTime);
+      if (!inView) return;
 
-        const timer = setInterval(() => {
-          start += increment;
-          if (start >= target) {
-            clearInterval(timer);
-            start = target;
-          }
-          setCount(Math.floor(start));
-        }, stepTime);
+      let start = 0;
+      const duration = 1500;
+      const stepTime = 20;
+      const increment = target / (duration / stepTime);
 
-        return () => clearInterval(timer);
-      }
+      const timer = setInterval(() => {
+        start += increment;
+
+        if (start >= target) {
+          clearInterval(timer);
+          start = target;
+        }
+
+        setCount(Math.floor(start));
+      }, stepTime);
+
+      return () => clearInterval(timer);
     }, [inView, target]);
 
     return (
@@ -82,12 +82,8 @@ const HomeNumber = () => {
     );
   };
 
-  //  Individual Stat Component
   const NumbCompo = ({ num, unit, text, isLast }) => (
-    <motion.div
-      variants={itemVariants}
-      className="flex items-center justify-center relative"
-    >
+    <motion.div variants={itemVariants} className="flex items-center justify-center relative">
       <div className="flex flex-col items-center text-center p-4">
         <div className="flex items-center justify-center gap-1 text-3xl sm:text-4xl font-extrabold">
           <CountUp target={num} />
@@ -97,13 +93,13 @@ const HomeNumber = () => {
           {text}
         </span>
       </div>
+
       {!isLast && (
         <div className="hidden md:block h-12 w-[2px] bg-[var(--primary-color)] mx-4"></div>
       )}
     </motion.div>
   );
 
-  //  Render States
   if (loading)
     return (
       <div className="w-full flex justify-center items-center py-10 text-gray-500">
@@ -131,11 +127,7 @@ const HomeNumber = () => {
         variants={containerVariants}
       >
         {stats.map((item, index) => (
-          <NumbCompo
-            key={index}
-            {...item}
-            isLast={index === stats.length - 1}
-          />
+          <NumbCompo key={index} {...item} isLast={index === stats.length - 1} />
         ))}
       </motion.div>
     </motion.div>

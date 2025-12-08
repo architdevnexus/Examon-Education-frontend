@@ -10,28 +10,33 @@ const HomeSlider = () => {
 
   const [current, setCurrent] = useState(0);
   const [direction, setDirection] = useState(1);
-  const timeoutRef = useRef(null);
   const touchStartX = useRef(0);
   const touchEndX = useRef(0);
 
-  // Fetch batch data on mount
+  /** ---------------------------
+   * FIX 1: Prevent infinite re-fetch
+   * --------------------------- */
   useEffect(() => {
-    fetchBatches();
-  }, [fetchBatches]);
-  // console.log(batchData)
+    fetchBatches(); // run ONCE
+  }, []); // <--- FIX
 
-  // Auto-slide every 4s
+  /** ---------------------------
+   * Auto-slide Logic
+   * --------------------------- */
   useEffect(() => {
     if (!batchData.length) return;
-    if (timeoutRef.current) clearTimeout(timeoutRef.current);
-    timeoutRef.current = setTimeout(() => {
+
+    const timer = setTimeout(() => {
       setDirection(1);
       setCurrent((prev) => (prev === batchData.length - 1 ? 0 : prev + 1));
     }, 4000);
-    return () => clearTimeout(timeoutRef.current);
+
+    return () => clearTimeout(timer);
   }, [current, batchData.length]);
 
-  // Navigation controls
+  /** ---------------------------
+   * Manual Controls
+   * --------------------------- */
   const nextSlide = useCallback(() => {
     if (!batchData.length) return;
     setDirection(1);
@@ -44,7 +49,9 @@ const HomeSlider = () => {
     setCurrent((prev) => (prev === 0 ? batchData.length - 1 : prev - 1));
   }, [batchData.length]);
 
-  // Touch gestures for mobile swipe
+  /** ---------------------------
+   * Touch Gestures
+   * --------------------------- */
   const handleTouchStart = (e) => (touchStartX.current = e.touches[0].clientX);
   const handleTouchMove = (e) => (touchEndX.current = e.touches[0].clientX);
   const handleTouchEnd = () => {
@@ -52,7 +59,9 @@ const HomeSlider = () => {
     if (touchStartX.current - touchEndX.current < -50) prevSlide();
   };
 
-  // Framer Motion animation variants
+  /** ---------------------------
+   * Framer Motion Variants
+   * --------------------------- */
   const variants = {
     enter: (dir) => ({
       x: dir > 0 ? 1000 : -1000,
@@ -73,6 +82,9 @@ const HomeSlider = () => {
     }),
   };
 
+  /** ---------------------------
+   * Loading / Error / No Data
+   * --------------------------- */
   if (loading)
     return (
       <div className="flex justify-center items-center h-[70vh] text-gray-600 text-lg">
@@ -95,7 +107,7 @@ const HomeSlider = () => {
     );
 
   const batch = batchData[current];
-console.log(batch)
+
   return (
     <div className="p-2">
       <div
@@ -117,22 +129,30 @@ console.log(batch)
             <img
               src={batch?.images?.[0]}
               alt={batch.batchName}
-              className="w-full h-full object-full object-cover rounded-2xl"
+              className="w-full h-full object-cover rounded-2xl"
             />
+
             <div className="absolute inset-0 bg-black/40 flex flex-col justify-end items-start p-8 md:p-14 text-white rounded-2xl">
-              <h2 className="text-2xl sm:text-3xl  font-bold mb-4 max-w-2xl leading-tight">
+              <h2 className="text-2xl sm:text-3xl font-bold mb-4 max-w-2xl leading-tight">
                 {batch.batchName}
               </h2>
-              <p className="text-lg  mb-3">
+
+              <p className="text-lg mb-3">
                 {batch.syllabus || "Comprehensive syllabus included"}
               </p>
+
               <p className="mb-6 text-sm sm:text-base opacity-90">
                 Duration: {batch.duration} | Price: ₹{batch.price}
               </p>
 
               <div className="flex gap-4 w-full sm:w-auto">
                 <button
-                  onClick={() => window.open(batch.link || "https://classplusapp.com/", "_blank")}
+                  onClick={() =>
+                    window.open(
+                      batch.link || "https://classplusapp.com/",
+                      "_blank"
+                    )
+                  }
                   className="bg-[var(--primary-color)] cursor-pointer hover:bg-[var(--text-color)] transition-all duration-300 text-white px-2 md:px-6 py-1 sm:py-2 rounded-full font-semibold"
                 >
                   Enroll Now
@@ -140,7 +160,7 @@ console.log(batch)
 
                 <button
                   className="bg-transparent border-2 rounded-3xl cursor-pointer transition-all duration-300 text-white px-3 sm:px-6 py-1 sm:py-2 font-semibold"
-                  onClick={() => navigate('/courses')}
+                  onClick={() => navigate("/courses")}
                 >
                   Explore Courses
                 </button>
@@ -156,6 +176,7 @@ console.log(batch)
         >
           <MdNavigateBefore size={60} />
         </button>
+
         <button
           onClick={nextSlide}
           className="absolute top-1/2 right-1 text-[var(--secondary-color)] text-4xl p-2 sm:p-3 -translate-y-1/2 z-20"

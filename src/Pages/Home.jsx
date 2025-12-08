@@ -1,4 +1,4 @@
-import React from 'react'
+  import React from 'react'
 import HomeSlider from '../Component/HomeSlider'
 import WhyChooseUs from '../Component/WhyChooseUs'
 import HomeTestimonial from '../Component/Testimonial/HomeTestimonial'
