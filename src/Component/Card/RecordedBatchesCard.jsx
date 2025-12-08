@@ -21,7 +21,7 @@ const RecordedBatchesCard = ({
     <div
       className="
         relative group overflow-hidden rounded-2xl cursor-pointer
-        w-[340px] sm:w-[360px] md:w-[420px]
+        w-[340px] sm:w-[360px] md:w-[460px]
         h-[330px] sm:h-[340px] md:h-[360px]
         transition-transform hover:scale-[1.015]
         shadow-xl hover:shadow-2xl

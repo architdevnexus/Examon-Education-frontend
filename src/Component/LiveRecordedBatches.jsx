@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useMemo } from "react";
+import React, { useEffect, useRef } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { EffectCoverflow, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
@@ -16,22 +16,6 @@ const LiveRecordedBatches = () => {
     fetchBatches();
   }, []);
 
-  // 🛑 FIX: Prevent freeze when batchData is empty
-  const preparedSlides = useMemo(() => {
-    if (!batchData || batchData.length === 0) return [];
-
-    if (batchData.length >= 3) return batchData;
-
-    // Duplicate safely without infinite loop
-    const arr = [...batchData];
-    while (arr.length < 3) {
-      arr.push(...batchData);
-      if (arr.length > 10) break; // safety bailout
-    }
-    return arr.slice(0, 3);
-  }, [batchData]);
-
-  // UI States
   if (loading)
     return (
       <div className="flex justify-center py-20 text-lg text-gray-600">
@@ -41,12 +25,10 @@ const LiveRecordedBatches = () => {
 
   if (error)
     return (
-      <div className="flex justify-center py-20 text-red-500">
-        {error}
-      </div>
+      <div className="flex justify-center py-20 text-red-500">{error}</div>
     );
 
-  if (preparedSlides.length === 0)
+  if (!batchData || batchData.length === 0)
     return (
       <div className="flex justify-center py-20 text-gray-500">
         No batches available.
@@ -66,7 +48,7 @@ const LiveRecordedBatches = () => {
           effect="coverflow"
           grabCursor
           centeredSlides
-          loop
+          loop={true}
           speed={900}
           slidesPerView={1}
           breakpoints={{
@@ -81,22 +63,24 @@ const LiveRecordedBatches = () => {
             slideShadows: true,
           }}
           autoplay={{
-            delay: 2500,
+            delay: 2300,
             disableOnInteraction: false,
+            pauseOnMouseEnter: true,
           }}
           className="px-2"
         >
-          {preparedSlides.map((batch, index) => (
+          {batchData.map((batch) => (
             <SwiperSlide
-              key={batch._id + index}
-              className="flex justify-center items-center !w-auto"
+              key={batch._id}
+              className="!w-auto flex justify-center items-center"
             >
-              <RecordedBatchesCard {...batch} />
+              <div className="w-[90%] md:w-[80%] lg:w-[70%]">
+                <RecordedBatchesCard {...batch} />
+              </div>
             </SwiperSlide>
           ))}
         </Swiper>
 
-        {/* Navigation */}
         <div className="absolute left-1/2 -translate-x-1/2 bottom-[-50px] flex items-center gap-6 z-30">
           <button
             onClick={() => swiperRef.current?.swiper?.slidePrev()}
