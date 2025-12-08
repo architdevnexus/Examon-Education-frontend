@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useMemo, Suspense, useCallback } from "react";
+import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
@@ -12,12 +12,10 @@ import QuizandNotes from "../Component/DynamicPage/QuizandNotes";
 import Masterclass from "../Component/DynamicPage/Masterclass";
 import MasterClassSection from "../Component/MasterClassSection";
 
-// Zustand Store
+// Store
 import { useCourseStore } from "../Zustand/GetAllCourses";
 
-// ======================
-// Shimmer Skeleton Loader
-// ======================
+// Skeleton Loader
 const ShimmerLoader = () => (
   <div className="w-full min-h-screen flex flex-col items-center justify-center p-6 bg-gray-50 animate-pulse">
     <div className="w-full max-w-4xl space-y-4">
@@ -30,48 +28,52 @@ const ShimmerLoader = () => (
       </div>
       <div className="mt-8 grid grid-cols-2 md:grid-cols-3 gap-4">
         {[...Array(6)].map((_, i) => (
-          <div key={i} className="h-40 bg-gray-200 rounded-lg"></div>
+          <div key={i} className="h-40 bg-gray-200 rounded-lg" />
         ))}
       </div>
     </div>
   </div>
 );
 
-// Motion Variants
+// Animations
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-// ======================
-// Main Component
-// ======================
 const DynamicCourse = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
-  const { data, loading, error, fetchCourses, addToCart, removeFromCart, cart } = useCourseStore();
+
+  const {
+    data,
+    cart,
+    loading,
+    error,
+    fetchCourses,
+    addToCart,
+  } = useCourseStore();
+
   const [course, setCourse] = useState(null);
 
-  // Fetch courses
+  // Fetch courses initially
   useEffect(() => {
     if (!data || data.length === 0) fetchCourses();
   }, [data, fetchCourses]);
-// console.log(data)
 
-  // Find the selected course
+  // Find course by ID
   const foundCourse = useMemo(() => {
     if (!Array.isArray(data)) return null;
-    return data.find((item) => String(item.id || item._id) === String(courseId));
+    return data.find((item) => String(item.id) === String(courseId));
   }, [data, courseId]);
-  // console.log(foundCourse)
 
-  // Update state and scroll top
+  // Update local state
   useEffect(() => {
     setCourse(foundCourse);
     window.scrollTo({ top: 0, behavior: "smooth" });
   }, [foundCourse]);
 
-  // ========== Heart / Add to Cart Click Handler ==========
+  // ========== Add to Cart / Favorite ==========
   const handleEnroll = useCallback(() => {
     const token = JSON.parse(localStorage.getItem("token"))?.state?.token;
 
@@ -86,32 +88,30 @@ const DynamicCourse = () => {
       return;
     }
 
-    if (cart.some((item) => item._id === foundCourse._id)) {
+    if (cart.some((item) => item.id === course.id)) {
       toast.info("This course is already in your favorites");
       return;
     }
 
-    addToCart(foundCourse);
-    // console.log("Added to favorites:", foundCourse);
+    addToCart(course);
     toast.success(`${course.courseDetails} added to your favorites!`);
-  }, [foundCourse, cart, addToCart, navigate]);
+  }, [course, cart, addToCart, navigate]);
 
-
-  // Loading / Error / Not Found states
+  // Loading State
   if (loading) return <ShimmerLoader />;
 
+  // Error UI
   if (error)
     return (
       <main className="w-full min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center">
         <h2 className="text-2xl md:text-3xl font-semibold text-red-600 mb-2">
           Failed to load course
         </h2>
-        <p className="text-gray-600 text-sm md:text-base max-w-md">
-          {error.message || "Please try again later."}
-        </p>
+        <p className="text-gray-600 text-sm md:text-base">{error}</p>
       </main>
     );
 
+  // Not Found
   if (!course)
     return (
       <main className="w-full min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center">
@@ -124,7 +124,6 @@ const DynamicCourse = () => {
       </main>
     );
 
-  // ========== Main Render ==========
   return (
     <AnimatePresence mode="wait">
       <motion.main
@@ -152,49 +151,37 @@ const DynamicCourse = () => {
 
         {/* Stages */}
         <motion.section variants={fadeInUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="w-full">
-          <StagesOfSSC item={foundCourse} />
+          <StagesOfSSC item={course} />
         </motion.section>
 
-   {/* Perks of Course */}
-<motion.div 
-  className="flex flex-wrap items-center gap-3 mt-4"
-  initial="hidden"
-  animate="visible"
-  variants={{
-    hidden: { opacity: 0 },
-    visible: { opacity: 1, transition: { staggerChildren: 0.08 } }
-  }}
->
-  {course?.perks?.map((perk, index) => (
-    <motion.span
-      key={index}
-      variants={{
-        hidden: { opacity: 0, y: 10 },
-        visible: { opacity: 1, y: 0 }
-      }}
-      className="
-        px-4 py-1.5 
-        rounded-full 
-        bg-gradient-to-r from-red-50 to-red-100 
-        text-red-700 border border-red-200 
-        text-sm font-semibold 
-        shadow-md hover:shadow-lg 
-        hover:from-red-100 hover:to-red-200
-        transition-all duration-300
-        flex items-center gap-2
-      "
-    >
-      <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-      {perk}
-    </motion.span>
-  ))}
-</motion.div>
-
-
+        {/* Perks */}
+        <motion.div
+          className="flex flex-wrap items-center gap-3 mt-4"
+          initial="hidden"
+          animate="visible"
+          variants={{
+            hidden: { opacity: 0 },
+            visible: { opacity: 1, transition: { staggerChildren: 0.08 } },
+          }}
+        >
+          {course?.perks?.map((perk, index) => (
+            <motion.span
+              key={index}
+              variants={{
+                hidden: { opacity: 0, y: 10 },
+                visible: { opacity: 1, y: 0 },
+              }}
+              className="px-4 py-1.5 rounded-full bg-gradient-to-r from-red-50 to-red-100 text-red-700 border border-red-200 text-sm font-semibold shadow-md hover:shadow-lg hover:from-red-100 hover:to-red-200 transition-all duration-300 flex items-center gap-2"
+            >
+              <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+              {perk}
+            </motion.span>
+          ))}
+        </motion.div>
 
         {/* Masterclass */}
         <motion.section variants={fadeInUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="w-full">
-          <Masterclass item={foundCourse} />
+          <Masterclass item={course} />
         </motion.section>
 
         {/* Quiz and Notes */}

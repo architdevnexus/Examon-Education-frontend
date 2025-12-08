@@ -25,7 +25,7 @@ const Courses = () => {
   useEffect(() => {
     fetchBatches();
   }, []);
-console.log(batchData)
+  console.log(batchData)
   // Search debounce
   useEffect(() => {
     const handler = setTimeout(() => setDebouncedTerm(searchTerm.toLowerCase()), 300);

@@ -142,7 +142,7 @@ function App() {
           draggable
           theme="colored"
         />
-        <ReminderPopup/>
+        <ReminderPopup />
       </div>
     </Router>
   );
