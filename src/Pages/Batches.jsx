@@ -12,7 +12,7 @@ const Batches = () => {
 
   useEffect(() => {
     fetchBatches();
-  }, [fetchBatches]);
+  }, []);
 
   // SEARCH FILTER
   const filteredData = useMemo(() => {

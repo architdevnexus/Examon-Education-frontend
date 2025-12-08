@@ -14,7 +14,7 @@ const LiveRecordedBatches = () => {
 
   useEffect(() => {
     fetchBatches();
-  }, [fetchBatches]);
+  }, []);
 
   // ✔ Always guarantee minimum 3 slides
   const preparedSlides = useMemo(() => {

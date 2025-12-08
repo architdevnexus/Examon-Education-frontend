@@ -11,7 +11,7 @@ const ViewQuizPage = () => {
   // Fetch on mount
   useEffect(() => {
     fetchQuiz();
-  }, [fetchQuiz]);
+  }, []);
 
   // Extract attempts
   const attempts = useMemo(() => {

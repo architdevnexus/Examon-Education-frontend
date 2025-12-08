@@ -17,7 +17,7 @@ const Blog = () => {
   // Fetch blogs on mount
   useEffect(() => {
     fetchBlogs();
-  }, [fetchBlogs]);
+  }, []);
 
   // Debounce search
   useEffect(() => {
