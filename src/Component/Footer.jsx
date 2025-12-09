@@ -9,14 +9,16 @@ import {
 } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import NewsLetter from "./NewsLetter";
+import { useNavigate } from "react-router-dom";
 
 import Privacy from "../Pages/Policy/PrivatePolicy";
 import Refund from "../Pages/Policy/Refund";
 import Terms from "../Pages/Policy/Terms";
 
 const Footer = () => {
-  const [openPolicy, setOpenPolicy] = useState(null); 
+  const [openPolicy, setOpenPolicy] = useState(null);
   // values = "privacy", "terms", "refund", null
+  const Navigate = useNavigate()
 
   const Links = [
     { link: "Home", path: "/home" },
@@ -29,9 +31,9 @@ const Footer = () => {
   ];
 
   const Policies = [
-    { link: "Privacy Policy", key: "privacy" },
-    { link: "Terms & Conditions", key: "terms" },
-    { link: "Refund Policy", key: "refund" },
+    { link: "Privacy Policy", key: "privacy", link2: "/privacy" },
+    { link: "Terms & Conditions", key: "terms", link2: "/terms" },
+    { link: "Refund Policy", key: "refund", link2: "/refund" },
   ];
 
   const SocialIcon = ({ Icon, url }) => (
@@ -100,7 +102,7 @@ const Footer = () => {
             {Policies.map((item, i) => (
               <button
                 key={i}
-                onClick={() => setOpenPolicy(item.key)}
+                onClick={() => Navigate(item.link2)}
                 className="hover:text-white transition-colors block text-sm text-left"
               >
                 {item.link}
@@ -128,7 +130,7 @@ const Footer = () => {
           <div className="flex items-center gap-2 mt-3 md:mt-0">
 
             <button
-              onClick={() => setOpenPolicy("privacy")}
+              onClick={() => Navigate("/privacy")}
               className="hover:text-white transition"
             >
               Privacy
@@ -137,7 +139,7 @@ const Footer = () => {
             <GoDotFill size={10} />
 
             <button
-              onClick={() => setOpenPolicy("terms")}
+              onClick={() => Navigate("/terms")}
               className="hover:text-white transition"
             >
               Terms & Conditions

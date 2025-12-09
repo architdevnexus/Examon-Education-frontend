@@ -13,6 +13,9 @@ import Whatsapp from "./Component/Whatsapp";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import PopupManager from "./Component/Popup/NotificationPopup"
 import ReminderPopup from "./Component/Remider";
+import PrivatePolicy from "./Pages/Policy/PrivatePolicy";
+import Terms from "./Pages/Policy/Terms";
+import Refund from "./Pages/Policy/Refund";
 /* Lazy-loaded pages */
 const Home = lazy(() => import("./Pages/Home"));
 const Aboutus = lazy(() => import("./Pages/Aboutus"));
@@ -86,6 +89,9 @@ function App() {
               <Route path="/blog" element={<Blog />} />
               <Route path="/blog/:id" element={<DynamicBlog />} />
               <Route path="/batches" element={<Batches />} />
+              <Route path="/privacy" element={<PrivatePolicy />} />
+              <Route path="/terms" element={<Terms />} />
+              <Route path='/refund' element={<Refund />} />
 
               {/* Dynamic */}
               <Route path="/courses/:courseId" element={<DynamicCourses />} />
