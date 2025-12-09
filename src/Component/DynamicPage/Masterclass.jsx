@@ -81,7 +81,7 @@ const Masterclass = ({ item }) => {
           What You’ll Learn in this
         </p>
         <h2 className="text-2xl md:text-4xl font-bold text-[var(--primary-color)] leading-snug">
-          {item?.examCategory || "SSC JE"} Masterclass
+          {item?.batchName || "Examon"} Masterclass
         </h2>
       </motion.div>
 
