@@ -25,9 +25,9 @@ const HomeNumber = () => {
       ]
     : [
         { num: 0, unit: "K", text: "Active Users" },
-        { num: 0, unit: "%", text: "Customer Satisfaction" },
+        { num: 0, unit: "%", text: "Student’s Satisfaction" },
         { num: 0, unit: "+", text: "Courses" },
-        { num: 0, unit: "%", text: "Passing Rate" },
+        { num: 0, unit: "+", text: "Our Selections" },
       ];
 
   const containerVariants = {
