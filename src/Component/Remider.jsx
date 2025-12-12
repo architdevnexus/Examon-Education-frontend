@@ -45,7 +45,7 @@ export default function ReminderPopup({ item }) {
   useEffect(() => {
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
-  }, [handleScroll]);
+  }, []);
 
   /* ---------------- CLOSE ---------------- */
   const closePopup = () => {
