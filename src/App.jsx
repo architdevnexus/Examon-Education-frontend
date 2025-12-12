@@ -1,4 +1,4 @@
-import React, { Suspense, lazy, useState, useEffect } from "react";
+import React, { Suspense, lazy } from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 
 import { ToastContainer } from "react-toastify";
@@ -7,16 +7,19 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./App.css";
 
+/* Layout Components */
 import Navbar from "./Component/Navbar/Navbar";
 import Footer from "./Component/Footer";
 import Whatsapp from "./Component/Whatsapp";
+import PopupManager from "./Component/Popup/NotificationPopup";
 import ProtectedRoute from "./auth/ProtectedRoute";
-import PopupManager from "./Component/Popup/NotificationPopup"
 
+/* Static Pages */
 import PrivatePolicy from "./Pages/Policy/PrivatePolicy";
 import Terms from "./Pages/Policy/Terms";
 import Refund from "./Pages/Policy/Refund";
-/* Lazy-loaded pages */
+
+/* Lazy Pages */
 const Home = lazy(() => import("./Pages/Home"));
 const Aboutus = lazy(() => import("./Pages/Aboutus"));
 const ContactUs = lazy(() => import("./Pages/ContactUs"));
@@ -34,37 +37,21 @@ const Login = lazy(() => import("./auth/Login"));
 const Register = lazy(() => import("./auth/Register"));
 const ViewQuizPop = lazy(() => import("./Component/ViewQuizPop"));
 const Batches = lazy(() => import("./Pages/Batches"));
-
 const ForgotPassword = lazy(() => import("./Form/ForgotPassword"));
-const NewPassword = lazy(() => import("./Form/NewPassword"))
+const NewPassword = lazy(() => import("./Form/NewPassword"));
 
 /* ------------------------------------------------------------------
-    MAIN APP COMPONENT
+    MAIN APP COMPONENT (Optimized)
 -------------------------------------------------------------------*/
-function App() {
-
-
+export default function App() {
   return (
     <Router>
       <div className="App flex flex-col min-h-screen bg-white text-gray-900">
 
-        {/* Navbar always visible */}
+        {/* Navbar */}
         <Navbar />
 
-        {/* -----------------------------------------------------------
-           3️ GLOBAL NOTIFICATION POPUPS (QUEUE)
-        ------------------------------------------------------------*/}
-        {/* {notifications.map((popup) => (
-          <NotificationPopup
-            key={popup.id}
-            {...popup}
-            onClose={() => removeNotification(popup.id)}
-          />
-        ))} */}
-
-        {/* -----------------------------------------------------------
-           ROUTES
-        ------------------------------------------------------------*/}
+        {/* PAGE LOADER */}
         <Suspense
           fallback={
             <div className="flex justify-center items-center h-[70vh] text-gray-500 animate-pulse text-lg font-medium">
@@ -72,34 +59,38 @@ function App() {
             </div>
           }
         >
-          <div className="mt-29">
+          <main className="flex-grow mt-28">
             <Routes>
-              {/* Public Routes */}
+
+              {/* PUBLIC ROUTES */}
               <Route path="/" element={<Home />} />
-              {/* <Route path="/" element={<div>Home</div>} /> */}
               <Route path="/about" element={<Aboutus />} />
               <Route path="/courses" element={<Courses />} />
               <Route path="/quiz" element={<Quiz />} />
               <Route path="/study-material" element={<StudyMaterial />} />
               <Route path="/contact" element={<ContactUs />} />
+              <Route path="/blog" element={<Blog />} />
+              <Route path="/blog/:id" element={<DynamicBlog />} />
+              <Route path="/batches" element={<Batches />} />
+
+              {/* AUTH ROUTES */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password/:token" element={<NewPassword />} />
-              <Route path="/blog" element={<Blog />} />
-              <Route path="/blog/:id" element={<DynamicBlog />} />
-              <Route path="/batches" element={<Batches />} />
+
+              {/* POLICY PAGES */}
               <Route path="/privacy" element={<PrivatePolicy />} />
               <Route path="/terms" element={<Terms />} />
-              <Route path='/refund' element={<Refund />} />
+              <Route path="/refund" element={<Refund />} />
 
-              {/* Dynamic */}
+              {/* DYNAMIC ROUTES */}
               <Route path="/courses/:courseId" element={<DynamicCourses />} />
               <Route path="/exams/:_id" element={<DynamicExam />} />
               <Route path="/quiz/:_id" element={<DynamicQuiz />} />
               <Route path="/view-quiz/:finalQuizId" element={<ViewQuizPop />} />
 
-              {/* Protected */}
+              {/* PROTECTED ROUTES */}
               <Route
                 path="/profile"
                 element={
@@ -108,6 +99,7 @@ function App() {
                   </ProtectedRoute>
                 }
               />
+
               <Route
                 path="/cart"
                 element={
@@ -117,41 +109,40 @@ function App() {
                 }
               />
 
-              {/* 404 */}
+              {/* 404 PAGE */}
               <Route
                 path="*"
                 element={
                   <div className="flex justify-center items-center h-screen text-xl font-semibold text-gray-500">
-                    <img src="/404.jpg" alt="" srcset="" />
+                    <img src="/404.jpg" alt="Not Found" />
                   </div>
                 }
               />
+
             </Routes>
-          </div>
+          </main>
         </Suspense>
 
-        {/* Floating WhatsApp button */}
+        {/* Floating WhatsApp Button */}
         <Whatsapp />
 
         {/* Footer */}
         <Footer />
 
+        {/* Global Popup Manager */}
         <PopupManager />
 
         {/* Toast */}
         <ToastContainer
           position="top-right"
           autoClose={1000}
-          hideProgressBar={false}
           closeOnClick
           pauseOnHover
           draggable
           theme="colored"
         />
-        
+
       </div>
     </Router>
   );
 }
-
-export default App;
