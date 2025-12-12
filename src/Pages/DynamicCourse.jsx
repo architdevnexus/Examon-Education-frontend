@@ -2,7 +2,7 @@ import React, { useEffect, useState, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
-
+import ReminderPop from "../Component/Remider"
 // Components
 import DHero from "../Component/DynamicPage/DHero";
 import { StagesOfSSC } from "../Component/StagesOfSSC";
@@ -19,7 +19,7 @@ import { useCourseStore } from "../Zustand/GetAllCourses";
 
 // ---------------------- SHIMMER LOADER ----------------------
 const ShimmerLoader = () => (
-  <div className="w-full min-h-screen flex flex-col items-center justify-center p-6 bg-gray-50 animate-pulse">
+  <div className="w-full min-h-screen mb-20 flex flex-col items-center justify-center p-6 bg-gray-50 animate-pulse">
     <div className="w-full max-w-4xl space-y-4">
       <div className="h-48 bg-gray-200 rounded-lg"></div>
       <div className="h-6 w-3/4 bg-gray-200 rounded"></div>
@@ -127,7 +127,7 @@ const DynamicCourse = () => {
       </main>
     );
 
-
+  console.log(course)
   // ---------------------- FULL UI LAYOUT (UNCHANGED) ----------------------
   return (
     <AnimatePresence mode="wait">
@@ -164,16 +164,26 @@ const DynamicCourse = () => {
           animate="visible"
           variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08 } } }}
         >
-          {(course.perks || []).map((perk, index) => (
-            <motion.span
-              key={index}
-              variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-              className="px-4 py-1.5 rounded-full bg-gradient-to-r from-red-50 to-red-100 text-red-700 border border-red-200 text-sm font-semibold shadow-md"
-            >
-              <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-              {perk}
-            </motion.span>
-          ))}
+
+          <motion.div
+            className="flex flex-wrap items-center gap-3 mt-4"
+            initial="hidden"
+            animate="visible"
+            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08 } } }}
+          >
+            {course?.perks?.split(",").map((perk, index) => (
+              <motion.span
+                key={index}
+                variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
+                className="px-4 py-1.5 rounded-full bg-gradient-to-r from-red-50 to-red-100 text-red-700 border border-red-200 text-sm font-semibold shadow-md flex items-center gap-2"
+              >
+                <span className="w-2 h-2 bg-red-500 rounded-full"></span>
+                {perk.trim()}
+              </motion.span>
+            ))}
+          </motion.div>
+
+
         </motion.div>
 
 
@@ -206,6 +216,7 @@ const DynamicCourse = () => {
           <CoursesYouLike title={false} />
         </motion.section>
       </motion.main>
+      <ReminderPop item={course} />
     </AnimatePresence>
   );
 };

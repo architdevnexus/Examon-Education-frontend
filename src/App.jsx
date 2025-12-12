@@ -12,7 +12,7 @@ import Footer from "./Component/Footer";
 import Whatsapp from "./Component/Whatsapp";
 import ProtectedRoute from "./auth/ProtectedRoute";
 import PopupManager from "./Component/Popup/NotificationPopup"
-import ReminderPopup from "./Component/Remider";
+
 import PrivatePolicy from "./Pages/Policy/PrivatePolicy";
 import Terms from "./Pages/Policy/Terms";
 import Refund from "./Pages/Policy/Refund";
@@ -148,7 +148,7 @@ function App() {
           draggable
           theme="colored"
         />
-        <ReminderPopup />
+        
       </div>
     </Router>
   );
