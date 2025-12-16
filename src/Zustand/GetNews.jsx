@@ -8,7 +8,7 @@ export const useNewsStore = create((set) => ({
     fetchNews: async () => {
         set({loading: true, error: null});
         try {
-            const response = await axios.get("https://backend.palgharhome.com/api/news/all");
+            const response = await axios.get("https://backend.mastersaab.co.in//news/all");
             set({news: response.data, loading: false});
         }
         catch (error) {

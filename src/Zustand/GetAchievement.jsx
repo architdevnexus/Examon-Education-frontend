@@ -1,6 +1,6 @@
 import { create } from "zustand";
 import axios from "axios";
-const base_api_url = 'https://backend.palgharhome.com/api';
+const base_api_url = 'https://backend.mastersaab.co.in/';
 
 
 export const useAchievementStore = create((set) => ({

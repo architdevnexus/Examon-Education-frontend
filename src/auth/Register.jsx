@@ -125,7 +125,7 @@ const Register = () => {
     }
 
     try {
-      const res = await fetch("https://backend.palgharhome.com/api/verify-otp", {
+      const res = await fetch("https://backend.mastersaab.co.in//verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -152,7 +152,7 @@ const Register = () => {
   // -------------------------------
   const handleResend = async () => {
     try {
-      const res = await fetch("https://backend.palgharhome.com/api/resend-otp", {
+      const res = await fetch("https://backend.mastersaab.co.in//resend-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email }),
@@ -215,7 +215,7 @@ const Register = () => {
 
                 {/* Full Name */}
                 <div>
-                  <label className="text-sm font-medium">Full Name</label>
+                  <label className="text-sm text-gray-500 dark:text-white font-medium">Full Name</label>
                   <input
                     id="fullname"
                     name="fullname"
@@ -233,7 +233,7 @@ const Register = () => {
 
                 {/* Email */}
                 <div>
-                  <label className="text-sm font-medium">Email</label>
+                  <label className="text-sm text-gray-500 dark:text-white font-medium">Email</label>
                   <input
                     id="email"
                     name="email"
@@ -251,7 +251,7 @@ const Register = () => {
 
                 {/* Password */}
                 <div>
-                  <label className="text-sm font-medium">Password</label>
+                  <label className="text-sm text-gray-500 dark:text-white font-medium">Password</label>
                   <input
                     id="password"
                     name="password"

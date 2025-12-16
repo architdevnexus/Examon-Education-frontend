@@ -53,7 +53,7 @@ const Login = () => {
     setLoading(true);
     try {
       const { data } = await axios.post(
-        "https://backend.palgharhome.com/api/signin",
+        "https://backend.mastersaab.co.in//signin",
         formData,
         {
           headers: { "Content-Type": "application/json" },
@@ -129,7 +129,7 @@ const Login = () => {
             <form onSubmit={handleSubmit} noValidate className="flex flex-col gap-4">
               {/* Email */}
               <div>
-                <label htmlFor="email" className="block text-sm font-medium mb-1">
+                <label htmlFor="email" className="block text-gray-500 dark:text-white text-sm font-medium mb-1">
                   Email
                 </label>
                 <input
@@ -151,7 +151,7 @@ const Login = () => {
 
               {/* Password */}
               <div>
-                <label htmlFor="password" className="block text-sm font-medium mb-1">
+                <label htmlFor="password" className="block text-gray-500 dark:text-white text-sm font-medium mb-1">
                   Password
                 </label>
                 <div className="relative">
@@ -170,7 +170,7 @@ const Login = () => {
                   <button
                     type="button"
                     onClick={() => setShowPassword((prev) => !prev)}
-                    className="absolute right-4 top-3 text-gray-500 text-sm"
+                    className="absolute cursor-pointer right-4 top-3 text-gray-500 text-sm"
                   >
                     {showPassword ? "Hide" : "Show"}
                   </button>

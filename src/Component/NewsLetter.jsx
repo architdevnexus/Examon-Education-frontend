@@ -5,7 +5,7 @@ import axios from "axios";
 
 // Axios Instance (optimized)
 const api = axios.create({
-  baseURL: "https://backend.palgharhome.com/api",
+  baseURL: "https://backend.mastersaab.co.in/",
   timeout: 10000,
 });
 

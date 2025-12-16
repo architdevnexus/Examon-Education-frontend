@@ -44,7 +44,7 @@ export default function NewPassword() {
 
     try {
       const res = await fetch(
-        `https://backend.palgharhome.com/api/reset-password/${id}`,
+        `https://backend.mastersaab.co.in//reset-password/${id}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

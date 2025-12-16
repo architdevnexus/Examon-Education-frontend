@@ -20,7 +20,7 @@ export const useProfileData = create((set, get) => ({
 
       //  Fetch user data
       const response = await axios.get(
-        `https://backend.palgharhome.com/api/profile/${userId}`,
+        `https://backend.mastersaab.co.in//profile/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,

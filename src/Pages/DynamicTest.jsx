@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import QuizPageComponent from "../Component/Quiz/QuizPageComponent";
 import CategoryCourses from "../Component/CategoryCourses";
 
-const API_BASE = "https://backend.palgharhome.com/api";
+const API_BASE = "https://backend.mastersaab.co.in/";
 
 const DynamicTest = () => {
   const { _id } = useParams();

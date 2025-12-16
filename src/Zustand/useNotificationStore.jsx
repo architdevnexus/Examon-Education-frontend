@@ -20,7 +20,7 @@ export const useNotificationStore = create((set, get) => ({
     console.log("📡 Fetching initial notifications from API...");
 
     try {
-      const res = await fetch("https://backend.palgharhome.com/api/notifications/discount/latest");
+      const res = await fetch("https://backend.mastersaab.co.in//notifications/discount/latest");
       console.log(res)
       const json = await res.json();
 
