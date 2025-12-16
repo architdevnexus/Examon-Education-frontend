@@ -10,7 +10,7 @@ export const useHomeQuiz = create((set) => ({
   fetchHomeQuiz: async () => {
     set({ loading: true, error: null });
     try {
-      const { data } = await axios.get("https://backend.mastersaab.co.in//home/quizzes");
+      const { data } = await axios.get("https://backend.mastersaab.co.in/home/quizzes");
 
       // Assuming the API returns { quizzes: [...] }
       set({ data: data || data, loading: false });

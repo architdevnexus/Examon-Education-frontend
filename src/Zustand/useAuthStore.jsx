@@ -12,7 +12,7 @@ const safeParse = (str) => {
 };
 
 /**  Base API URL */
-const API_BASE = "https://backend.mastersaab.co.in/";
+const API_BASE = "https://backend.mastersaab.co.in";
 
 /**  Zustand Auth Store */
 export const useAuthStore = create((set) => ({

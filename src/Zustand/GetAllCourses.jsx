@@ -2,7 +2,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_BASE = "https://backend.mastersaab.co.in/";
+const API_BASE = "https://backend.mastersaab.co.in";
 
 axios.defaults.withCredentials = true;
 axios.defaults.headers.common["Content-Type"] = "application/json";
