@@ -41,7 +41,7 @@ export default function ForgotPassword() {
 
     try {
       const response = await fetch(
-        "https://backend.mastersaab.co.in/forgot-password",
+        "https://backend.mastersaab.co.in/api/forgot-password",
         {
           method: "POST",
           credentials: "include",

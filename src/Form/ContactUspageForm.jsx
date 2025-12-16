@@ -33,7 +33,7 @@ const ContactUspageForm = () => {
   };
 
   //  API base URL (for maintainability)
-  const API_BASE = "https://backend.mastersaab.co.in";
+  const API_BASE = "https://backend.mastersaab.co.in/api";
 
   //  Handle form submission
   const handleSubmit = async (e) => {

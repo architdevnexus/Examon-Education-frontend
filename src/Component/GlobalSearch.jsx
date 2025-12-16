@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef, useCallback } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 
-const BASE_API = "https://backend.mastersaab.co.in";
+const BASE_API = "https://backend.mastersaab.co.in/api";
 
 const GlobalSearchModal = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState("");

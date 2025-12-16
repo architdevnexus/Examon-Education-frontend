@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import axios from "axios";
 
-const API_BASE = "https://backend.mastersaab.co.in";
+const API_BASE = "https://backend.mastersaab.co.in/api";
 
 export const useNotesStore = create((set) => ({
   notesData: [],

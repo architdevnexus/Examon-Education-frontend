@@ -22,7 +22,7 @@ import ChangePassword from "../Component/Profile/ChangePassword";
 import { ReviewSection } from "../Component/Review/ReivewSection";
 import UserProfileHeader from "../Component/Profile/UserProfileHeader";
 
-const API_BASE = "https://backend.mastersaab.co.in";
+const API_BASE = "https://backend.mastersaab.co.in/api";
 const api = axios.create({ baseURL: API_BASE, withCredentials: true });
 
 const UserProfile = () => {

@@ -2,7 +2,7 @@ import axios from "axios";
 import { decryptData } from "../utils/cryptoHelper";
 
 const instance = axios.create({
-  baseURL: "https://backend.mastersaab.co.in",
+  baseURL: "https://backend.mastersaab.co.in/api",
   headers: { "Content-Type": "application/json" },
   withCredentials: true,
 });

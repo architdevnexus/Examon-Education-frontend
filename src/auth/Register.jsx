@@ -125,7 +125,7 @@ const Register = () => {
     }
 
     try {
-      const res = await fetch("https://backend.mastersaab.co.in/verify-otp", {
+      const res = await fetch("https://backend.mastersaab.co.in/api/verify-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
@@ -152,7 +152,7 @@ const Register = () => {
   // -------------------------------
   const handleResend = async () => {
     try {
-      const res = await fetch("https://backend.mastersaab.co.in/resend-otp", {
+      const res = await fetch("https://backend.mastersaab.co.in/api/resend-otp", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email: formData.email }),

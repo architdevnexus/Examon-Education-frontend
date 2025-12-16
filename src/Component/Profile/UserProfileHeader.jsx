@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { useCourseStore } from "../../Zustand/GetAllCourses";
 import { useProfileData } from "../../Zustand/GetuseProfile";
 
-const API_BASE = "https://backend.mastersaab.co.in";
+const API_BASE = "https://backend.mastersaab.co.in/api";
 
 const ProfileEditDropdown = () => {
   const { data: coursesData = [] } = useCourseStore();

@@ -69,7 +69,7 @@ export const ReviewSection = () => {
       console.log("Submitting review:", reviewPayload);
 
       await axios.post(
-        "https://backend.mastersaab.co.in/review/create",
+        "https://backend.mastersaab.co.in/api/review/create",
         reviewPayload,
         {
           headers: {

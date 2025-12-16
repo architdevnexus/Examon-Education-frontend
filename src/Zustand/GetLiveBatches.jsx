@@ -10,7 +10,7 @@ export const useBatchesStore = create((set) => ({
   fetchBatches: async () => {
     set({ loading: true, error: null });
     try {
-      const response = await axios.get("https://backend.mastersaab.co.in/live/batches");
+      const response = await axios.get("https://backend.mastersaab.co.in/api/live/batches");
       const categories = response.data?.categories || [];
 
       // Flatten all batches with their category name

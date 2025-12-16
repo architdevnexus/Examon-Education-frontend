@@ -8,7 +8,7 @@ import { create } from "zustand";
 import axios from "axios";
 
 // Base API URL (Use HTTPS in production for security)
-const API_BASE = "https://backend.mastersaab.co.in";
+const API_BASE = "https://backend.mastersaab.co.in/api";
 
 // Global Axios defaults
 axios.defaults.withCredentials = true; // allows cookies (for auth sessions)
