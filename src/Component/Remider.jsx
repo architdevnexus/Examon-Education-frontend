@@ -67,7 +67,7 @@ export default function ReminderPopup({ item }) {
         {/* Close Button */}
         <button
           onClick={closePopup}
-          className="absolute top-2 right-2 text-gray-500 hover:text-red-600 
+          className="absolute cursor-pointer top-2 right-2 text-gray-500 hover:text-red-600 
           text-xl font-bold"
         >
           ✕
@@ -76,7 +76,7 @@ export default function ReminderPopup({ item }) {
         {/* Image */}
         <div className="w-28 h-24 rounded-lg overflow-hidden border border-gray-200 shadow-sm">
           <img
-            src={data.images?.[0]}
+            src={data.images?.[1]}
             alt={data.name}
             className="w-full h-full object-cover"
           />
@@ -84,20 +84,16 @@ export default function ReminderPopup({ item }) {
 
         {/* Course Info */}
         <div className="flex-1 w-full">
-          <h2 className="text-lg font-bold text-gray-900 leading-tight">
-            {data.name}
+          <h2 className="text-sm font-bold text-gray-900 leading-tight">
+            {data.batchName}
           </h2>
 
           <div className="flex items-end gap-3 mt-2">
             <p className="text-2xl font-bold text-blue-600">
               ₹{data.price}
             </p>
-            <p className="line-through text-gray-500 text-sm">
-              ₹{data.actualPrice}
-            </p>
-            <span className="text-green-600 font-semibold text-sm">
-              {data.offer}% OFF
-            </span>
+
+
           </div>
 
           <p className="text-xs text-gray-500 mt-1">
@@ -105,15 +101,15 @@ export default function ReminderPopup({ item }) {
           </p>
         </div>
 
-        {/* CTA Button */}
-        <button
-          onClick={() => navigate(data.link)}
-          className="px-5 py-2 bg-blue-600 hover:bg-blue-700 
+        {/* C TA Button */}
+        <a href={data?.enrollLink}
+        
+          className="px-5 py-2 bg-(--primary-color) 
           text-white rounded-lg font-semibold text-sm shadow-lg 
           active:scale-95 transition"
         >
           Explore Course
-        </button>
+        </a>
       </div>
     </div>
   );

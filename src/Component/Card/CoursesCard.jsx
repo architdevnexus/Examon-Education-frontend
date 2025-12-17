@@ -1,143 +1,135 @@
-import React from "react";
+import React, { useCallback, useMemo } from "react";
 import { TiTickOutline } from "react-icons/ti";
 import { FaRegHeart, FaHeart } from "react-icons/fa";
-import { CiPercent } from "react-icons/ci";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useCourseStore } from "../../Zustand/GetAllCourses";
 
+const MAX_DESC_WORDS = 15;
+
 const CoursesCard = ({
   id,
   img,
+  batchName,
   duration,
-  actualprice,
-  previousprice,
-  percent,
-  courseDetails,
-  insideCourses = [],
-  perks = [],
-  Discount,
-  amount,
+  price,
+  description = "",
+  syllabus,
+  teachers = [],
+  enrollLink,
 }) => {
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
-
   const { cart, addToCart, removeFromCart } = useCourseStore();
-  const isInCart = cart.some((item) => item.id === id);
 
-  /** Toggle Cart Button */
-  const handleCartToggle = (e) => {
-    e.stopPropagation();
+  const token = useMemo(() => localStorage.getItem("token"), []);
+  const isInCart = useMemo(() => cart.some(i => i.id === id), [cart, id]);
 
-    if (!token) {
-      toast.error("Please login to manage your cart");
-      setTimeout(() => navigate("/login"), 1200);
-      return;
-    }
+  /* ------------------ TRIM DESCRIPTION ------------------ */
+  const trimmedDescription = useMemo(() => {
+    const words = description.trim().split(/\s+/);
+    return words.length > MAX_DESC_WORDS
+      ? words.slice(0, MAX_DESC_WORDS).join(" ") + "..."
+      : description;
+  }, [description]);
 
-    if (isInCart) {
-      removeFromCart(id);
-      toast.info("Removed from cart");
-    } else {
-      addToCart({
-        id,
-        img,
-        actualprice,
-        previousprice,
-        percent,
-        courseDetails,
-        insideCourses,
-        perks,
-        Discount,
-        amount,
-      });
-      toast.success("Added to cart");
-    }
-  };
+  /* ------------------ HANDLERS ------------------ */
+  const handleNavigate = useCallback(() => {
+    navigate(`/courses/${id}`);
+  }, [id, navigate]);
 
-  /** Navigate to single course */
-  const handleNavigate = () => navigate(`/courses/${id}`);
+  const handleCartToggle = useCallback(
+    (e) => {
+      e.stopPropagation();
+
+      if (!token) {
+        toast.error("Please login to manage your cart");
+        navigate("/login");
+        return;
+      }
+
+      if (isInCart) {
+        removeFromCart(id);
+        toast.info("Removed from cart");
+      } else {
+        addToCart({ id, batchName, img, price });
+        toast.success("Added to cart");
+      }
+    },
+    [token, isInCart, id, batchName, img, price, addToCart, removeFromCart, navigate]
+  );
 
   return (
     <div
       className="
-        bg-white rounded-xl shadow-xl overflow-hidden 
-        flex flex-col transition-transform hover:scale-[1.02] duration-300
-        h-[600px] max-h-[600px]
+        bg-white rounded-xl shadow-xl 
+        flex flex-col h-[600px] 
+        transition-transform hover:scale-[1.02]
       "
     >
-      {/* ==== IMAGE SECTION ==== */}
-      <div className="relative p-2 rounded-2xl w-full shadow-2xl h-52 md:h-60 overflow-hidden">
+      {/* ================= IMAGE ================= */}
+      <div className="relative h-52 md:h-60">
         <img
           src={img}
-          alt={courseDetails}
+          alt={batchName}
+          loading="lazy"
           className="w-full h-full object-cover rounded-2xl cursor-pointer"
           onClick={handleNavigate}
         />
-
-        {/* ==== PRICE BANNER ==== */}
-        <div className="absolute bottom-0 left-0 w-full bg-white px-4 py-1 flex justify-between items-center text-sm">
-          <span className="font-bold text-black">₹{actualprice}</span>
-          <span className="line-through text-gray-400">₹{previousprice}</span>
-          <span className="text-red-500 font-semibold">{percent}% OFF</span>
+        <div className="absolute flex justify-between w-[98%] mx-auto left-1 -bottom-2 bg-white px-4 py-1 rounded-lg font-bold shadow">
+          <span>Price: </span>
+        <span >
+          ₹{price} /only
+        </span>
         </div>
       </div>
 
-      {/* ==== TITLE + MODULES ==== */}
+      {/* ================= CONTENT ================= */}
       <div className="px-4 py-3 flex flex-col gap-2">
-        {/* Title */}
-        <span className="font-semibold text-black text-md line-clamp-2 h-[48px]">
-          {courseDetails} - <span className="font-semibold text-black text-xs line-clamp-2 h-[48px]">
-          {duration}
-        </span>
-        </span>
-       
+        <h3 className="font-semibold text-black text-md line-clamp-2 min-h-[44px]">
+          {batchName}
+        </h3>
 
-        {/* Inside Modules */}
-        <ul className="text-sm text-gray-600 space-y-1 h-[110px] overflow-y-auto pr-1">
-          {insideCourses.map((item, index) => (
-            <li key={index} className="flex items-start gap-2">
+        <p className="text-xs text-gray-500">Duration: {duration}</p>
+
+        {/* DESCRIPTION (fixed height) */}
+        <p className="text-sm text-gray-600 min-h-[60px]">
+          {trimmedDescription}
+        </p>
+
+        {/* SYLLABUS */}
+        <ul className="text-sm text-gray-700 space-y-1 h-[70px] overflow-y-auto pr-1">
+          {syllabus?.split("+").map((item, i) => (
+            <li key={i} className="flex gap-2">
               <TiTickOutline className="text-green-600 mt-1" />
-              <span>{item}</span>
+              <span>{item.trim()}</span>
             </li>
           ))}
         </ul>
       </div>
 
-      {/* ==== PERKS & DISCOUNT ==== */}
-      <div className="px-4">
-        <div className="flex flex-wrap gap-2 mt-1">
-          {perks.map((perk, i) => (
+      {/* ================= FACULTY ================= */}
+      <div className="px-4 mb-2">
+        <p className="text-xs font-semibold text-gray-700 mb-1">Faculty</p>
+        <div className="flex flex-wrap gap-2 max-h-[52px] overflow-hidden">
+          {teachers.map((t, i) => (
             <span
               key={i}
-              className={`px-3 py-1 rounded-md text-white text-xs font-medium ${
-                perk.toLowerCase() === "new"
-                  ? "bg-red-600"
-                  : "bg-[var(--text-color)]"
-              }`}
+              className="px-3 py-1 bg-gray-100 text-xs rounded-full"
             >
-              {perk}
+              {t}
             </span>
           ))}
         </div>
-
-        {Discount && (
-          <div className="flex items-center gap-2 text-sm text-red-600 font-medium mt-2">
-            <CiPercent className="text-xl" />
-            <span>EXTRA ₹{amount} COUPON DISCOUNT</span>
-          </div>
-        )}
       </div>
 
-      {/* ==== BOTTOM ACTIONS ==== */}
+      {/* ================= ACTIONS ================= */}
       <div
         onClick={handleNavigate}
-        className="mt-auto px-4 py-3 flex items-center justify-between bg-white border-t cursor-pointer"
+        className="mt-auto px-4 py-3 flex justify-between items-center border-t cursor-pointer"
       >
-        {/* Heart Button */}
         <div
           onClick={handleCartToggle}
-          className="p-2 rounded-full bg-black hover:scale-110 transition-transform"
+          className="p-2 bg-black rounded-full hover:scale-110 transition"
         >
           {isInCart ? (
             <FaHeart className="text-red-500 text-lg" />
@@ -146,7 +138,12 @@ const CoursesCard = ({
           )}
         </div>
 
-        <button className="px-6 py-2 bg-[var(--primary-color)] cursor-pointer text-white rounded-2xl font-semibold text-sm hover:bg-opacity-90">
+        <button
+          onClick={()=>navigate(id)}
+          target="_blank"
+          rel="noreferrer"
+          className="px-6 py-2 cursor-pointer bg-[var(--primary-color)] text-white rounded-2xl text-sm font-semibold hover:bg-opacity-90"
+        >
           Explore
         </button>
       </div>
@@ -154,4 +151,4 @@ const CoursesCard = ({
   );
 };
 
-export default CoursesCard;
+export default React.memo(CoursesCard);

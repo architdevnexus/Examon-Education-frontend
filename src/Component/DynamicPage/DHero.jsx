@@ -5,12 +5,23 @@ import { toast } from "react-toastify";
 import { useCourseStore } from "../../Zustand/GetAllCourses";
 import { useNavigate } from "react-router-dom";
 
+/* -------------------- ANIMATION VARIANTS -------------------- */
+const fadeIn = {
+  hidden: { opacity: 0, y: 40 },
+  show: {
+    opacity: 1,
+    y: 0,
+    transition: { duration: 0.7, ease: "easeOut" },
+  },
+};
+
 const DHero = ({
-  title,              // batchName
-  image,              // images[1]
-  actualprice,        // price or actualprice
-  date,               // optional, if you add later
-  insideCourses = [], // teachers[]
+  title,
+  image,
+  actualprice,
+  date,
+  insideCourses = [],
+  perks,
   onEnroll,
   bgLeft = "/Ellipse2.svg",
   bgRight = "/Ellipse1.svg",
@@ -20,34 +31,35 @@ const DHero = ({
   const { addToCart } = useCourseStore();
   const [liked, setLiked] = useState(false);
 
+  /* -------------------- AUTH TOKEN -------------------- */
   const token = useMemo(() => {
-    const auth = JSON.parse(localStorage.getItem("auth"));
-    return auth?.token;
+    try {
+      const auth = JSON.parse(localStorage.getItem("auth"));
+      return auth?.token || null;
+    } catch {
+      return null;
+    }
   }, []);
 
-  // -------------------- LIKE HANDLER --------------------
+  /* -------------------- LIKE HANDLER -------------------- */
   const handleLike = useCallback(() => {
     if (!token) {
-      toast.info("Please login to save this batch ❤️");
+      toast.info("Please login to save this batch");
       setTimeout(() => navigate("/login"), 700);
       return;
     }
 
-    if (liked) {
-      setLiked(false);
-      toast.warning("Removed from favorites");
-    } else {
-      setLiked(true);
-      addToCart({ title, image });
-      toast.success("Added to favorites!");
-    }
-  }, [liked, token, addToCart, navigate, title, image]);
-
-  // -------------------- ANIMATION VARIANTS --------------------
-  const fadeIn = {
-    hidden: { opacity: 0, y: 40 },
-    show: { opacity: 1, y: 0, transition: { duration: 0.7, ease: "easeOut" } },
-  };
+    setLiked((prev) => {
+      if (prev) {
+        toast.warning("Removed from favorites");
+        return false;
+      } else {
+        addToCart({ title, image });
+        toast.success("Added to favorites!");
+        return true;
+      }
+    });
+  }, [token, addToCart, navigate, title, image]);
 
   return (
     <motion.section
@@ -70,33 +82,56 @@ const DHero = ({
         }}
       />
 
-      {/* ===== LEFT SIDE ===== */}
+      {/* ===== LEFT CONTENT ===== */}
       <motion.div variants={fadeIn} className="z-10 flex flex-col gap-6 max-w-3xl">
-        
-        {/* 🎖 Badges */}
-        {badges?.length > 0 && (
+
+        {/* BADGES */}
+        {badges.length > 0 && (
           <div className="flex flex-wrap gap-2">
             {badges.map((badge, index) => (
               <motion.img
                 key={index}
                 src={badge}
+                alt="badge"
                 className="h-10 drop-shadow-md"
                 whileHover={{ scale: 1.05 }}
+                loading="lazy"
               />
             ))}
           </div>
         )}
 
         {/* TITLE */}
-        <motion.h1
-          className="text-xl md:text-3xl font-bold text-[var(--primary-color)] leading-snug drop-shadow-sm"
-        >
+        <h1 className="text-xl md:text-3xl font-bold text-[var(--primary-color)] leading-snug drop-shadow-sm">
           {title}
-        </motion.h1>
+        </h1>
+
+        {/* SYLLABUS */}
+        {perks && (
+          <p className="text-sm font-bold text-[var(--primary-color)]">
+            Syllabus: {perks}
+          </p>
+        )}
+
+        {/* FACULTY */}
+        {insideCourses.length > 0 && (
+          <div className="flex items-center flex-wrap gap-3">
+            <span className="font-semibold text-[var(--primary-color)]">
+              Faculty:
+            </span>
+            {insideCourses.map((teacher, index) => (
+              <span
+                key={index}
+                className="px-3 py-1 bg-white text-[var(--primary-color)] font-semibold rounded-full text-sm shadow-md"
+              >
+                {teacher}
+              </span>
+            ))}
+          </div>
+        )}
 
         {/* DATE + PRICE */}
         <motion.div variants={fadeIn} className="flex flex-col w-full sm:w-1/2 gap-3">
-          {/* DATE — optional (only if you pass from parent) */}
           {date && (
             <div
               className="flex items-center gap-3 bg-[#0071BD] shadow-md p-2 rounded-md"
@@ -109,7 +144,6 @@ const DHero = ({
             </div>
           )}
 
-          {/* PRICE */}
           <div
             className="flex items-center gap-3 bg-[#0071BD] shadow-md p-2 rounded-md"
             style={{ clipPath: "polygon(0 0, 90% 0, 100% 100%, 0% 100%)" }}
@@ -121,30 +155,17 @@ const DHero = ({
           </div>
         </motion.div>
 
-        {/* TEACHERS LIST */}
-        <div className="flex items-center flex-wrap gap-3">
-          {insideCourses?.map((teacher, index) => (
-            <span
-              key={index}
-              className="px-3 py-1 bg-white text-[var(--primary-color)] font-semibold rounded-full text-sm shadow-md"
-            >
-              {teacher}
-            </span>
-          ))}
-        </div>
-
-        {/* ACTION BUTTONS */}
+        {/* CTA */}
         <div className="flex items-center gap-4 mt-3">
-          {/* ENROLL NOW */}
           <motion.button
             whileHover={{ scale: 1.05 }}
             onClick={onEnroll}
-            className="flex items-center gap-3 px-6 py-3 bg-[var(--primary-color)] text-white rounded-full font-semibold transition-all shadow-md hover:shadow-lg"
+            className="flex items-center gap-3 px-6 py-3 bg-[var(--primary-color)] text-white rounded-full font-semibold shadow-md hover:shadow-lg transition-all"
           >
             Enroll Now
-            <motion.span className="p-2 rounded-full bg-gray-200 text-[var(--primary-color)]">
+            <span className="p-2 rounded-full bg-gray-200 text-[var(--primary-color)]">
               <FaArrowRightLong />
-            </motion.span>
+            </span>
           </motion.button>
         </div>
       </motion.div>
@@ -154,7 +175,7 @@ const DHero = ({
         variants={fadeIn}
         className="z-10 w-full md:w-[40%] flex justify-center items-center mt-10 md:mt-0"
       >
-        <motion.img
+        <img
           src={image}
           alt="Batch Visual"
           className="w-full max-w-md object-contain drop-shadow-3xl"
@@ -162,7 +183,7 @@ const DHero = ({
         />
       </motion.div>
 
-      {/* LIGHT OVERLAY */}
+      {/* OVERLAY */}
       <div className="absolute inset-0 bg-gradient-to-r from-white via-transparent to-white opacity-10 pointer-events-none" />
     </motion.section>
   );

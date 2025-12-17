@@ -134,7 +134,7 @@ const DynamicCourse = () => {
         </p>
       </main>
     );
-
+console.log(course)
   // ---------------------- UI (UNCHANGED) ----------------------
   return (
     <AnimatePresence mode="wait">
@@ -148,14 +148,47 @@ const DynamicCourse = () => {
       >
         <motion.section variants={fadeInUp} initial="hidden" animate="show" className="w-full">
           <DHero
-            title={course.batchName}
-            image={course.images?.[1]}
-            actualprice={course.price}
-            insideCourses={course.teachers}
+            title={course?.batchName}
+            image={course?.images?.[1]}
+            actualprice={course?.price}
+            insideCourses={course?.teachers}
+            perks={course?.syllabus}
             onEnroll={handleEnroll}
           />
         </motion.section>
 
+   <motion.section
+      variants={fadeInUp}
+      initial="hidden"
+      whileInView="show"
+      viewport={{ once: true }}
+  
+      className="
+        w-[90%]
+        bg-white
+        rounded-2xl
+        shadow-lg
+        border border-gray-100
+        p-6 md:p-8
+        relative
+        overflow-hidden
+        top-4
+      "
+    >
+      {/* Accent Gradient */}
+      <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500" />
+
+      {/* Title */}
+      <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-4">
+        Course Overview
+      </h2>
+
+      {/* Description */}
+      <p className="text-(--primary-color) leading-relaxed text-sm md:text-base">
+        {course?.description}
+      </p>
+    </motion.section>
+  
         <motion.section variants={fadeInUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="w-full">
           <StagesOfSSC item={course} />
         </motion.section>

@@ -82,7 +82,7 @@ const StudyMaterial = () => {
 
   // Reset page when filters or viewMode change
   useEffect(() => setPage(1), [search, categoryFilter, levelFilter, viewMode]);
-
+console.log(filteredNotes)
   return (
     <div className="relative flex flex-col gap-6 p-4 md:py-6 mb-14">
       <main className="flex-1 flex flex-col gap-6">
@@ -287,7 +287,7 @@ const StudyMaterial = () => {
                   <div className="mb-6">
                     <h3 className="text-sm font-semibold text-gray-600 mb-2">Level</h3>
                     <div className="flex flex-col gap-2">
-                      {["All", "Beginner", "Intermediate", "Medium", "Advanced"].map(
+                      {["All", "Easy", "Medium", "Hard"].map(
                         (level) => (
                           <label
                             key={level}

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { IoIosCall, IoMdMail } from "react-icons/io";
 import { RiMapPin2Fill } from "react-icons/ri";
+import { IoLogoGooglePlaystore } from "react-icons/io5";
 import {
   FaYoutube,
   FaLinkedin,
   FaInstagramSquare,
   FaFacebook,
+  FaTelegram
 } from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
 import NewsLetter from "./NewsLetter";
@@ -72,10 +74,10 @@ const Footer = () => {
               If you have any questions or need help, feel free to contact our team!
             </p>
             <div className="flex items-center gap-3">
-              <IoIosCall size={20} /> <span>+91 83688 86542</span>
+              <IoIosCall size={20} /> <span>+91 8368886452</span>
             </div>
             <div className="flex items-center gap-3">
-              <IoMdMail size={20} /> <span>help@examoneducation.com</span>
+              <IoMdMail size={20} /> <span>Shivamgupta.vits@gmail.com</span>
             </div>
             <div className="flex items-center gap-3">
               <RiMapPin2Fill size={20} /> <span>Gurgaon, Haryana, India</span>
@@ -114,10 +116,12 @@ const Footer = () => {
           <div className="space-y-4">
             <h2 className="text-white text-lg font-semibold">Follow Us</h2>
             <div className="flex gap-3">
-              <SocialIcon Icon={FaYoutube} url="#" />
-              <SocialIcon Icon={FaLinkedin} url="#" />
-              <SocialIcon Icon={FaInstagramSquare} url="#" />
-              <SocialIcon Icon={FaFacebook} url="#" />
+              <SocialIcon Icon={FaYoutube} url="https://www.youtube.com/@shivamsirmechanical" />
+              {/* <SocialIcon Icon={FaLinkedin} url="#" /> */}
+              <SocialIcon Icon={FaInstagramSquare} url="https://www.instagram.com/examon_education/" />
+              <SocialIcon Icon={FaYoutube} url="https://www.youtube.com/@ExamonEducation" />
+              <SocialIcon Icon={IoLogoGooglePlaystore} url="https://play.google.com/store/apps/details?id=co.diy17.hcdeq"/>
+              <SocialIcon Icon = {FaTelegram} url="https://t.me/ShivamSirMechanical"/>
             </div>
           </div>
         </div>

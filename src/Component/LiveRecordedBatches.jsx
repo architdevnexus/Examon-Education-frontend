@@ -4,6 +4,7 @@ import { EffectCoverflow, Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/effect-coverflow";
 import "swiper/css/navigation";
+
 import RecordedBatchesCard from "./Card/RecordedBatchesCard";
 import { FaArrowLeft, FaArrowRight } from "react-icons/fa6";
 import { useBatchesStore } from "../Zustand/GetLiveBatches";
@@ -16,24 +17,31 @@ const LiveRecordedBatches = () => {
     fetchBatches();
   }, [fetchBatches]);
 
-  if (loading)
+  if (loading) {
     return (
       <div className="flex justify-center py-20 text-lg text-gray-600">
         Loading batches...
       </div>
     );
+  }
 
-  if (error)
+  if (error) {
     return (
-      <div className="flex justify-center py-20 text-red-500">{error}</div>
+      <div className="flex justify-center py-20 text-red-500">
+        {error}
+      </div>
     );
+  }
 
-  if (!batchData || batchData.length === 0)
+  if (!batchData?.length) {
     return (
       <div className="flex justify-center py-20 text-gray-500">
         No batches available.
       </div>
     );
+  }
+
+  const shouldLoop = batchData.length > 3;
 
   return (
     <section className="w-full py-16 bg-gradient-to-b from-gray-50 to-white relative">
@@ -41,28 +49,20 @@ const LiveRecordedBatches = () => {
         Live & Recorded Batches
       </h2>
 
-      <div className="max-w-full mx-auto relative px-4">
-       <Swiper
-  ref={swiperRef}
+      <div className="max-w-full relative px-4">
+        <Swiper
   modules={[EffectCoverflow, Autoplay, Navigation]}
-
-  /* ---------------- CORE BEHAVIOR ---------------- */
   effect="coverflow"
   grabCursor
   centeredSlides
-
-  /* loop only when enough slides exist */
-  loop={batchData.length > 3}
-
+  loop={shouldLoop}
+  loopAdditionalSlides={3}
   speed={900}
   slidesPerView={1}
-
   breakpoints={{
     640: { slidesPerView: 1 },
     1024: { slidesPerView: 3 },
   }}
-
-  /* ---------------- COVERFLOW EFFECT ---------------- */
   coverflowEffect={{
     rotate: 25,
     stretch: 20,
@@ -70,50 +70,45 @@ const LiveRecordedBatches = () => {
     modifier: 1.5,
     slideShadows: true,
   }}
-
-  /* ---------------- AUTOPLAY (PROD SAFE) ---------------- */
   autoplay={{
     delay: 2300,
     disableOnInteraction: false,
     pauseOnMouseEnter: true,
-    stopOnLastSlide: false,
   }}
-
-  /* ---------------- PERFORMANCE ---------------- */
-  watchSlidesProgress
-  observer
-  observeParents
+  onSwiper={(swiper) => {
+    swiperRef.current = swiper;
+  }}
   className="px-2"
 >
-  {batchData.map((batch) => (
-    <SwiperSlide
-      key={batch._id}
-      className="!w-auto flex justify-center items-center"
-    >
-      <div className="w-[90%] md:w-[80%] lg:w-[70%]">
-        <RecordedBatchesCard {...batch} />
-      </div>
-    </SwiperSlide>
-  ))}
-</Swiper>
 
+          {batchData.map((batch) => (
+            <SwiperSlide
+              key={batch._id}
+              className="flex justify-center items-center"
+            >
+              <div className="w-[90%] md:w-[80%] lg:w-[70%]">
+                <RecordedBatchesCard {...batch} />
+              </div>
+            </SwiperSlide>
+          ))}
+        </Swiper>
 
+        {/* Navigation */}
         <div className="absolute left-1/2 -translate-x-1/2 bottom-[-50px] flex items-center gap-6 z-30">
           <button
-            onClick={() => swiperRef.current?.swiper?.slidePrev()}
-            className="bg-[var(--primary-color)] text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform"
-            aria-label="Previous Slide"
-          >
-            <FaArrowLeft />
-          </button>
+  onClick={() => swiperRef.current && swiperRef.current.slidePrev()}
+  className="bg-[var(--primary-color)] text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform"
+>
+  <FaArrowLeft />
+</button>
 
-          <button
-            onClick={() => swiperRef.current?.swiper?.slideNext()}
-            className="bg-[var(--primary-color)] text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform"
-            aria-label="Next Slide"
-          >
-            <FaArrowRight />
-          </button>
+<button
+  onClick={() => swiperRef.current && swiperRef.current.slideNext()}
+  className="bg-[var(--primary-color)] text-white p-3 rounded-full shadow-lg hover:scale-110 transition-transform"
+>
+  <FaArrowRight />
+</button>
+
         </div>
       </div>
     </section>

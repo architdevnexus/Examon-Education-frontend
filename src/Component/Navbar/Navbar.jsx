@@ -188,15 +188,15 @@ const Navbar = () => {
                           className="
               px-4 py-3 
               cursor-pointer 
-              text-gray-700 dark:text-gray-300 
-              hover:bg-gray-100 dark:hover:bg-gray-800 
+              text-gray-700 dark:text-gray-200 
+              hover:bg-gray-100 dark:hover:bg-(--primary-color)
               transition-all 
               duration-200 
               rounded-lg
               z-[999]
             "
                         >
-                          {exam.examDetailsCategory}
+                          {exam.examDetailsCategory.toUpperCase()}
                         </div>
                       ))}
                   </motion.div>

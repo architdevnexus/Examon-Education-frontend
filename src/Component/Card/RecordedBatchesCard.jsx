@@ -72,7 +72,7 @@ const RecordedBatchesCard = ({
                 mt-4 flex items-center gap-2
                 bg-[var(--primary-color)] hover:bg-[var(--secondary-color)]
                 text-white text-sm py-2 px-4 rounded-md
-                transition-all active:scale-95
+                transition-all cursor-pointer active:scale-95
               "
             >
               View <GrFormNextLink className="text-lg" />

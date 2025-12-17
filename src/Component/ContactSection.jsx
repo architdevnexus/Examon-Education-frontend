@@ -88,7 +88,7 @@ const ContactSection = () => {
               <div className="flex flex-col">
                 <span className="text-[var(--text-color)] text-sm font-medium">Email</span>
                 <span className="text-[var(--secondary-color)] font-semibold text-lg">
-                  help@gmail.com
+                  Shivamgupta.vits@gmail.com
                 </span>
               </div>
             </motion.div>
@@ -110,7 +110,7 @@ const ContactSection = () => {
                   Phone Number
                 </span>
                 <span className="text-[var(--secondary-color)] font-semibold text-lg">
-                  9852981212
+                  8368886452
                 </span>
               </div>
             </motion.div>

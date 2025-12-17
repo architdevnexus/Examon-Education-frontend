@@ -2,7 +2,8 @@ import React from "react";
 import { IoIosCall } from "react-icons/io";
 import { FaWhatsapp } from "react-icons/fa";
 import { MdEmail } from "react-icons/md";
-import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube } from "react-icons/fa";
+import { IoLogoGooglePlaystore } from "react-icons/io5";
+import { FaFacebook, FaInstagram, FaLinkedin, FaYoutube , FaTelegram , FaPlaystation } from "react-icons/fa";
 import { CiLocationOn } from "react-icons/ci";
 
 const QuickConnect = () => {
@@ -10,20 +11,20 @@ const QuickConnect = () => {
     {
       icon: <IoIosCall size={24} />,
       title: "Helpline",
-      details: "+971 110 3405",
+      details: "+91 8368886452",
       path: "tel:+9711103405",
     },
     {
       icon: <FaWhatsapp size={24} />,
       title: "SMS / Whatsapp",
-      details: "+971 110 3405",
+      details: "+91 8368886452",
       path: "https://wa.me/9711103405",
     },
     {
       icon: <MdEmail size={24} />,
       title: "Email",
-      details: "support@examon.in",
-      path: "mailto:support@examon.in",
+      details: "Shivamgupta.vits@gmail.com",
+      path: "mailto:Shivamgupta.vits@gmail.com",
     },
      {
       icon: <CiLocationOn size={24} />,
@@ -34,10 +35,12 @@ const QuickConnect = () => {
   ];
 
   const SocialLinks = [
-    { icon: <FaFacebook size={22} />, path: "#" },
-    { icon: <FaInstagram size={22} />, path: "#" },
-    { icon: <FaLinkedin size={22} />, path: "#" },
-    { icon: <FaYoutube size={22} />, path: "#" },
+    { icon: <IoLogoGooglePlaystore size={22} />, path: "https://play.google.com/store/apps/details?id=co.diy17.hcdeq" },
+    { icon: <FaInstagram size={22} />, path: "https://www.instagram.com/examon_education/" },
+    { icon: <FaTelegram size={22} />, path: "https://t.me/ShivamSirMechanical" },
+    { icon: <FaYoutube size={22} />, path: "https://www.youtube.com/@shivamsirmechanical" },
+    { icon: <FaYoutube size={22} />, path: "https://www.youtube.com/@ExamonEducation" },
+
   ];
 
   return (
