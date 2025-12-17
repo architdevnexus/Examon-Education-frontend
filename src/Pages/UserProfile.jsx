@@ -1,10 +1,4 @@
-import React, {
-  useEffect,
-  useState,
-  useMemo,
-  useCallback,
-  useRef,
-} from "react";
+import React, { useEffect, useState, useCallback, useRef } from "react";
 import { FaSignOutAlt } from "react-icons/fa";
 import { RiLockPasswordLine } from "react-icons/ri";
 import { motion } from "framer-motion";
@@ -14,35 +8,30 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 
 import { useAuthStore } from "../Zustand/UserData";
-import { useCourseStore } from "../Zustand/GetAllCourses";
 import { useProfileData } from "../Zustand/GetuseProfile";
-import AttemptedQuiz from "../Component/AttemptedQuiz"
+import AttemptedQuiz from "../Component/AttemptedQuiz";
 import ChangePassword from "../Component/Profile/ChangePassword";
-
 import { ReviewSection } from "../Component/Review/ReivewSection";
 import UserProfileHeader from "../Component/Profile/UserProfileHeader";
+import { useBatchesStore } from "../Zustand/GetLiveBatches";
 
 const API_BASE = "https://backend.mastersaab.co.in/api";
 const api = axios.create({ baseURL: API_BASE, withCredentials: true });
 
 const UserProfile = () => {
   const navigate = useNavigate();
-
-
-  const { fetchCourses } = useCourseStore();
   const { user, token, updateUser, logout, isAuthenticated } = useAuthStore();
+  const { loading, batchData, fetchBatches } = useBatchesStore();
   const { userData, fetchUserProfile } = useProfileData();
 
   const [form, setForm] = useState({ phone: "" });
-  const [selectedCourse, setSelectedCourse] = useState("");
+  const [selectedBatch, setSelectedBatch] = useState("");
   const [imagePreview, setImagePreview] = useState(null);
   const [showPassword, setShowPassword] = useState(false);
   const [pwdLoading, setPwdLoading] = useState(false);
   const fileInputRef = useRef(null);
 
-  // ===============================
-  // AUTH CHECK & INITIAL FETCH
-  // ===============================
+  // ---------------- AUTH CHECK & INITIAL FETCH ----------------
   useEffect(() => {
     if (!isAuthenticated || !token) {
       toast.error("Please log in first.");
@@ -50,30 +39,24 @@ const UserProfile = () => {
       return;
     }
 
-    fetchCourses?.();
+    fetchBatches();
     fetchUserProfile();
 
     if (user) {
       setForm({ phone: user.phone || "" });
-      setSelectedCourse(user.preferedCourse || "");
+      setSelectedBatch(user.preferedCourse || "");
       setImagePreview(user.profileImage || null);
     }
-  }, [isAuthenticated, token, user, fetchCourses, fetchUserProfile, navigate]);
-  // console.log(userData)
+  }, [isAuthenticated, token, user, fetchBatches, fetchUserProfile, navigate]);
 
-
-  // ===============================
-  // LOGOUT HANDLER
-  // ===============================
+  // ---------------- LOGOUT HANDLER ----------------
   const handleLogout = useCallback(() => {
     logout();
     toast.success("Logged out successfully!");
     setTimeout(() => navigate("/login"), 600);
   }, [logout, navigate]);
 
-  // ===============================
-  // PASSWORD UPDATE HANDLER
-  // ===============================
+  // ---------------- PASSWORD UPDATE HANDLER ----------------
   const handleSavePassword = useCallback(
     async (newPwd) => {
       if (!user?._id) return;
@@ -91,14 +74,7 @@ const UserProfile = () => {
     [user]
   );
 
-  // ===============================
-  // QUIZ STATISTICS
-  // ===============================
-
-
-  // ===============================
-  // PROFILE UPDATE HANDLER
-  // ===============================
+  // ---------------- PROFILE UPDATE HANDLER ----------------
   const handleProfileUpdate = useCallback(
     async (updates) => {
       if (!user?._id || !token) {
@@ -111,7 +87,6 @@ const UserProfile = () => {
         const { data } = await api.patch(`/user/${user._id}`, updates, {
           headers: { Authorization: `Bearer ${token}` },
         });
-
         updateUser(data?.user);
         toast.success("Profile updated successfully!");
       } catch (err) {
@@ -120,12 +95,6 @@ const UserProfile = () => {
     },
     [user, token, navigate, updateUser]
   );
-
-
-
-  // ===============================
-  // RENDER
-  // ===============================
   return (
     <div className="min-h-screen mb-18 py-8 px-4 md:px-10 relative">
       {/* HEADER */}
@@ -147,7 +116,7 @@ const UserProfile = () => {
             className="px-3 py-2 gap-3 cursor-pointer flex items-center text-gray-800 rounded-md border bg-gray-100 hover:bg-gray-200 focus:ring-2 focus:ring-gray-400 transition-all"
             title="Change Password"
           >
-          Change Password  <RiLockPasswordLine/> 
+            Change Password <RiLockPasswordLine />
           </button>
         </div>
       </header>
@@ -163,23 +132,20 @@ const UserProfile = () => {
           user={userData || user}
           form={form}
           setForm={setForm}
-          selectedCourse={selectedCourse}
-          setSelectedCourse={setSelectedCourse}
+          selectedCourse={selectedBatch}
+          setSelectedCourse={setSelectedBatch}
           imagePreview={imagePreview}
           fileInputRef={fileInputRef}
           onSave={handleProfileUpdate}
+          batchOptions={batchData} // pass batches here
         />
       </motion.div>
 
       <AttemptedQuiz />
-
-
       <div className="border-t border-gray-200 mt-10 pt-6">
         <ReviewSection />
       </div>
 
-
-      {/* PASSWORD MODAL */}
       {showPassword && (
         <ChangePassword
           isOpen={showPassword}

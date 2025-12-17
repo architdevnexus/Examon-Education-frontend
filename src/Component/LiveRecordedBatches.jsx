@@ -14,7 +14,7 @@ const LiveRecordedBatches = () => {
 
   useEffect(() => {
     fetchBatches();
-  }, []);
+  }, [fetchBatches]);
 
   if (loading)
     return (
@@ -42,44 +42,61 @@ const LiveRecordedBatches = () => {
       </h2>
 
       <div className="max-w-full mx-auto relative px-4">
-        <Swiper
-          ref={swiperRef}
-          modules={[EffectCoverflow, Autoplay, Navigation]}
-          effect="coverflow"
-          grabCursor
-          centeredSlides
-          loop={true}
-          speed={900}
-          slidesPerView={1}
-          breakpoints={{
-            640: { slidesPerView: 1 },
-            1024: { slidesPerView: 3 },
-          }}
-          coverflowEffect={{
-            rotate: 25,
-            stretch: 20,
-            depth: 150,
-            modifier: 1.5,
-            slideShadows: true,
-          }}
-          autoplay={{
-            delay: 2300,
-            disableOnInteraction: false,
-            pauseOnMouseEnter: true,
-          }}
-          className="px-2"
-        >
-          {batchData.map((batch) => (
-            <SwiperSlide
-              key={batch._id}
-              className="!w-auto flex justify-center items-center"
-            >
-              <div className="w-[90%] md:w-[80%] lg:w-[70%]">
-                <RecordedBatchesCard {...batch} />
-              </div>
-            </SwiperSlide>
-          ))}
-        </Swiper>
+       <Swiper
+  ref={swiperRef}
+  modules={[EffectCoverflow, Autoplay, Navigation]}
+
+  /* ---------------- CORE BEHAVIOR ---------------- */
+  effect="coverflow"
+  grabCursor
+  centeredSlides
+
+  /* loop only when enough slides exist */
+  loop={batchData.length > 3}
+
+  speed={900}
+  slidesPerView={1}
+
+  breakpoints={{
+    640: { slidesPerView: 1 },
+    1024: { slidesPerView: 3 },
+  }}
+
+  /* ---------------- COVERFLOW EFFECT ---------------- */
+  coverflowEffect={{
+    rotate: 25,
+    stretch: 20,
+    depth: 150,
+    modifier: 1.5,
+    slideShadows: true,
+  }}
+
+  /* ---------------- AUTOPLAY (PROD SAFE) ---------------- */
+  autoplay={{
+    delay: 2300,
+    disableOnInteraction: false,
+    pauseOnMouseEnter: true,
+    stopOnLastSlide: false,
+  }}
+
+  /* ---------------- PERFORMANCE ---------------- */
+  watchSlidesProgress
+  observer
+  observeParents
+  className="px-2"
+>
+  {batchData.map((batch) => (
+    <SwiperSlide
+      key={batch._id}
+      className="!w-auto flex justify-center items-center"
+    >
+      <div className="w-[90%] md:w-[80%] lg:w-[70%]">
+        <RecordedBatchesCard {...batch} />
+      </div>
+    </SwiperSlide>
+  ))}
+</Swiper>
+
 
         <div className="absolute left-1/2 -translate-x-1/2 bottom-[-50px] flex items-center gap-6 z-30">
           <button

@@ -3,122 +3,147 @@ import { motion, AnimatePresence } from "framer-motion";
 import { FaCamera, FaSave, FaEdit, FaTimes, FaSpinner } from "react-icons/fa";
 import axios from "axios";
 import { toast } from "react-toastify";
-import { useCourseStore } from "../../Zustand/GetAllCourses";
+import { useBatchesStore } from "../../Zustand/GetLiveBatches";
 import { useProfileData } from "../../Zustand/GetuseProfile";
 
 const API_BASE = "https://backend.mastersaab.co.in/api";
 
 const ProfileEditDropdown = () => {
-  const { data: coursesData = [] } = useCourseStore();
+  const { batchData = [] } = useBatchesStore();
   const { userData, fetchUserProfile } = useProfileData();
 
-  const [editMode, setEditMode] = useState(false);
-  const [loading, setLoading] = useState(false);
   const fileRef = useRef(null);
-
-  //  Get persistent data from localStorage (token store)
   const stored = JSON.parse(localStorage.getItem("token"))?.state || {};
   const { token, userId, name, email } = stored;
 
-  //  Local form state
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [form, setForm] = useState({
     fullname: name || "",
     email: email || "",
     phone: "",
-    course: "",
-    image: null,
+    batch: "",
+    imageFile: null, // local file
+    imageURL: null, // base64 or backend URL
   });
-
   const [preview, setPreview] = useState(null);
 
-  //  Fetch user profile (editable data)
+  // Fetch user profile on mount
   useEffect(() => {
-    if (userId && token) {
-      fetchUserProfile(userId, token);
-    }
+    if (userId && token) fetchUserProfile(userId, token);
   }, [userId, token, fetchUserProfile]);
 
-
-
-  //  When profile data changes (after fetch)
+  // Update form when profile data changes
   useEffect(() => {
-    if (userData) {
-      setForm((prev) => ({
-        ...prev,
-        phone: userData?.[0].phone || "",
-        course: userData?.[0].preferedCourse || "",
-        image: userData?.[0].profileImage || null,
-      }));
-      setPreview(userData?.[0].profileImage || null);
+    if (userData?.[0]) {
+      const user = userData[0];
+      setForm({
+        fullname: name || "",
+        email: email || "",
+        phone: user.phone || "",
+        batch: user.preferedCourse || "",
+        imageFile: null,
+        imageURL: user.profileImage || null,
+      });
+      setPreview(user.profileImage || null);
     }
-  }, [userData]);
+  }, [userData, name, email]);
 
-  // ========== Handlers ==========
   const handleChange = useCallback((key, value) => {
     setForm((prev) => ({ ...prev, [key]: value }));
   }, []);
 
+  // Convert file to Base64 for backend
+  const fileToBase64 = (file) =>
+    new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.readAsDataURL(file);
+      reader.onload = () => resolve(reader.result);
+      reader.onerror = (error) => reject(error);
+    });
+
+  // Handle file selection
   const handleFileChange = useCallback(
-    (e) => {
+    async (e) => {
       const file = e.target.files[0];
-      if (file) {
-        setPreview(URL.createObjectURL(file));
-        handleChange("image", file);
+      if (!file) return;
+
+      const objectUrl = URL.createObjectURL(file);
+      setPreview(objectUrl);
+
+      try {
+        const base64Url = await fileToBase64(file);
+        handleChange("imageFile", file);
+        handleChange("imageURL", base64Url);
+      } catch (err) {
+        toast.error("Failed to process image");
       }
     },
     [handleChange]
   );
 
-  // Update user profile
+  // Save profile
   const handleSave = async () => {
     if (!form.phone.trim()) return toast.warn("Phone number is required");
-    if (!form.course) return toast.warn("Please select a course");
-    if (!token) return toast.error("Unauthorized! Please login again.");
-    if (!userId) return toast.error("Invalid user.");
+    if (!form.batch) return toast.warn("Please select a batch");
+    if (!token || !userId) return toast.error("Unauthorized! Please login again.");
 
     setLoading(true);
-    try {
-      const payload = new FormData();
-      payload.append("phone", form.phone);
-      payload.append("preferedCourse", form.course);
-      if (form.image instanceof File) payload.append("profileImage", form.image);
 
-      const res = await axios.patch(`${API_BASE}/profile/update/${userId}`, payload, {
+    try {
+      const payload = {
+        phone: form.phone,
+        preferedCourse: form.batch,
+        profileImage: form.imageURL || null,
+      };
+
+      console.log("Sending payload to backend:", payload);
+
+      const response = await axios.patch(`${API_BASE}/profile/update/${userId}`, payload, {
         headers: {
           Authorization: `Bearer ${token}`,
-          "Content-Type": "multipart/form-data",
+          "Content-Type": "application/json",
         },
       });
 
+      console.log("Backend response:", response.data);
+
       toast.success("Profile updated successfully!");
-      fetchUserProfile(userId, token); // Refresh latest data
+      await fetchUserProfile(userId, token);
       setEditMode(false);
     } catch (err) {
-      const msg = err.response?.data?.message || "Failed to update profile";
-      toast.error(msg);
+      console.error("Error updating profile:", err);
+      toast.error(err.response?.data?.message || "Failed to update profile");
     } finally {
       setLoading(false);
     }
   };
 
-const handleCancel = () => {
-  setEditMode(false);
+  const handleCancel = () => {
+    setEditMode(false);
+    if (userData?.[0]) {
+      const user = userData[0];
+      setForm({
+        fullname: name || "",
+        email: email || "",
+        phone: user.phone || "",
+        batch: user.preferedCourse || "",
+        imageFile: null,
+        imageURL: user.profileImage || null,
+      });
+      setPreview(user.profileImage || null);
+    }
+  };
 
-  if (userData?.[0]) {
-    setForm({
-      fullname: name || "",
-      email: email || "",
-      phone: userData[0].phone || "",
-      course: userData[0].preferedCourse || "",
-      image: userData[0].profileImage || null,
-    });
+  // Cleanup object URLs
+  useEffect(() => {
+    return () => {
+      if (form.imageFile && preview?.startsWith("blob:")) {
+        URL.revokeObjectURL(preview);
+      }
+    };
+  }, [form.imageFile, preview]);
 
-    setPreview(userData[0].profileImage || null);
-  }
-};
-
-
-  // ========== Render ==========
   return (
     <div className="relative w-full max-w-full mx-auto">
       <AnimatePresence>
@@ -163,7 +188,7 @@ const handleCancel = () => {
           <div className="min-w-full grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* Profile Photo */}
             <div className="flex flex-col items-center">
-              <div className="relative w-28 h-28 rounded-full overflow-hidden border border-gray-200 shadow-sm bg-gray-50">
+              <div className="relative w-42 h-42 rounded-full overflow-hidden border border-gray-200 shadow-sm bg-gray-50">
                 {preview ? (
                   <img src={preview} alt="profile" className="object-cover w-full h-full" />
                 ) : (
@@ -176,7 +201,7 @@ const handleCancel = () => {
                     <button
                       type="button"
                       onClick={() => fileRef.current.click()}
-                      className="absolute bottom-2 right-2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
+                      className="absolute bottom-8 cursor-pointer right-2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
                     >
                       <FaCamera size={14} />
                     </button>
@@ -204,26 +229,28 @@ const handleCancel = () => {
                 disabled={!editMode}
               />
 
+              {/* Batch Selection */}
               <div>
                 <div className="flex items-center justify-between">
-                  <label className="block text-sm text-gray-600 mb-1">Select Course</label>
+                  <label className="block text-sm text-gray-600 mb-1">Select Batch</label>
                   <span className="text-xs text-gray-500">
-                    Your: {form.course ? form.course : "No course selected"}
+                    Your: {form.batch || "No batch selected"}
                   </span>
                 </div>
                 <select
-                  value={form.course}
-                  onChange={(e) => handleChange("course", e.target.value)}
+                  value={form.batch}
+                  onChange={(e) => handleChange("batch", e.target.value)}
                   disabled={!editMode}
-                  className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none transition ${editMode
+                  className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none transition ${
+                    editMode
                       ? "border-blue-400 focus:ring-2 focus:ring-blue-100 bg-white"
                       : "border-gray-200 bg-gray-50 text-gray-600"
-                    }`}
+                  }`}
                 >
-                  <option value="">-- Select Course --</option>
-                  {coursesData.map((c, i) => (
-                    <option key={i} value={c.courseDetails || c.name || c.title}>
-                      {c.courseDetails || c.name || c.title}
+                  <option value="">-- Select Batch --</option>
+                  {batchData.map((b) => (
+                    <option key={b._id} value={b.batchName}>
+                      {b.batchName}
                     </option>
                   ))}
                 </select>
@@ -236,7 +263,6 @@ const handleCancel = () => {
   );
 };
 
-//  Reusable Input Field
 const Field = ({ label, value, onChange, readOnly, disabled }) => (
   <div>
     <label className="block text-sm text-gray-600 mb-1">{label}</label>
@@ -246,10 +272,11 @@ const Field = ({ label, value, onChange, readOnly, disabled }) => (
       onChange={onChange}
       readOnly={readOnly}
       disabled={disabled}
-      className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none transition ${disabled || readOnly
+      className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none transition ${
+        disabled || readOnly
           ? "border-gray-200 bg-gray-50 text-gray-600"
           : "border-blue-400 focus:ring-2 focus:ring-blue-100"
-        }`}
+      }`}
     />
   </div>
 );

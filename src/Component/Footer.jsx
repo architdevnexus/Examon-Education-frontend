@@ -103,7 +103,7 @@ const Footer = () => {
               <button
                 key={i}
                 onClick={() => Navigate(item.link2)}
-                className="hover:text-white transition-colors block text-sm text-left"
+                className="hover:text-white cursor-pointer transition-colors block text-sm text-left"
               >
                 {item.link}
               </button>
