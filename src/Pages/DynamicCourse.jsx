@@ -1,8 +1,9 @@
-import React, { useEffect, useState, useMemo, useCallback } from "react";
+import React, { useEffect, useMemo, useCallback } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "react-toastify";
-import ReminderPop from "../Component/Remider"
+import ReminderPop from "../Component/Remider";
+
 // Components
 import DHero from "../Component/DynamicPage/DHero";
 import { StagesOfSSC } from "../Component/StagesOfSSC";
@@ -15,7 +16,6 @@ import MasterClassSection from "../Component/MasterClassSection";
 // Store
 import { useBatchesStore } from "../Zustand/GetLiveBatches";
 import { useCourseStore } from "../Zustand/GetAllCourses";
-
 
 // ---------------------- SHIMMER LOADER ----------------------
 const ShimmerLoader = () => (
@@ -37,43 +37,44 @@ const ShimmerLoader = () => (
   </div>
 );
 
-
 // ---------------------- ANIMATION VARIANT ----------------------
 const fadeInUp = {
   hidden: { opacity: 0, y: 40 },
   show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: "easeOut" } },
 };
 
-
 // ---------------------- PAGE COMPONENT ----------------------
 const DynamicCourse = () => {
   const { courseId } = useParams();
   const navigate = useNavigate();
 
-  const { batchData, fetchBatches, loading: batchLoading, error: batchError } = useBatchesStore();
+  const {
+    batchData,
+    fetchBatches,
+    loading: batchLoading,
+    error: batchError,
+    hasFetched,
+  } = useBatchesStore();
+
   const { cart, addToCart } = useCourseStore();
 
-  const [course, setCourse] = useState(null);
-
-  // ---------------------- FETCH DATA ----------------------
+  // ---------------------- FETCH DATA (SAFE) ----------------------
   useEffect(() => {
-    if (!batchData || batchData.length === 0) fetchBatches();
-  }, [batchData, fetchBatches]);
+    if (!hasFetched) {
+      fetchBatches();
+    }
+  }, [hasFetched, fetchBatches]);
 
+  // ---------------------- SCROLL ON COURSE CHANGE ----------------------
+  useEffect(() => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }, [courseId]);
 
-  // ---------------------- FIND BATCH ----------------------
-  const foundCourse = useMemo(() => {
+  // ---------------------- FIND COURSE ----------------------
+  const course = useMemo(() => {
     if (!Array.isArray(batchData)) return null;
     return batchData.find((item) => String(item._id) === String(courseId));
   }, [batchData, courseId]);
-
-
-  // Update UI state
-  useEffect(() => {
-    setCourse(foundCourse);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, [foundCourse]);
-
 
   // ---------------------- ENROLL HANDLER ----------------------
   const handleEnroll = useCallback(() => {
@@ -90,7 +91,9 @@ const DynamicCourse = () => {
       return;
     }
 
-    const isAlreadyInCart = cart.some((item) => item.title === course.batchName);
+    const isAlreadyInCart = cart.some(
+      (item) => item.id === course._id
+    );
 
     if (isAlreadyInCart) {
       toast.info("This batch is already in your favorites");
@@ -107,14 +110,15 @@ const DynamicCourse = () => {
     toast.success(`${course.batchName} added to your favorites!`);
   }, [course, cart, addToCart, navigate]);
 
-
-  // ---------------------- LOADER / ERRORS ----------------------
+  // ---------------------- LOADERS & ERRORS ----------------------
   if (batchLoading) return <ShimmerLoader />;
 
   if (batchError)
     return (
       <main className="w-full min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center">
-        <h2 className="text-2xl md:text-3xl font-semibold text-red-600 mb-2">Failed to load batch</h2>
+        <h2 className="text-2xl md:text-3xl font-semibold text-red-600 mb-2">
+          Failed to load batch
+        </h2>
         <p className="text-gray-600">{batchError}</p>
       </main>
     );
@@ -122,13 +126,16 @@ const DynamicCourse = () => {
   if (!course)
     return (
       <main className="w-full min-h-screen flex flex-col items-center justify-center bg-gray-50 text-center">
-        <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-2">Batch Not Found</h2>
-        <p className="text-gray-600">The batch you're looking for doesn’t exist or was removed.</p>
+        <h2 className="text-2xl md:text-3xl font-semibold text-gray-800 mb-2">
+          Batch Not Found
+        </h2>
+        <p className="text-gray-600">
+          The batch you're looking for doesn’t exist or was removed.
+        </p>
       </main>
     );
 
-  console.log(course)
-  // ---------------------- FULL UI LAYOUT (UNCHANGED) ----------------------
+  // ---------------------- UI (UNCHANGED) ----------------------
   return (
     <AnimatePresence mode="wait">
       <motion.main
@@ -139,7 +146,6 @@ const DynamicCourse = () => {
         transition={{ duration: 0.4 }}
         className="w-full flex flex-col items-center bg-white"
       >
-        {/* HERO */}
         <motion.section variants={fadeInUp} initial="hidden" animate="show" className="w-full">
           <DHero
             title={course.batchName}
@@ -150,44 +156,10 @@ const DynamicCourse = () => {
           />
         </motion.section>
 
-
-        {/* STAGES */}
         <motion.section variants={fadeInUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="w-full">
           <StagesOfSSC item={course} />
         </motion.section>
 
-
-        {/* PERKS */}
-        <motion.div
-          className="flex flex-wrap items-center gap-3 mt-4"
-          initial="hidden"
-          animate="visible"
-          variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08 } } }}
-        >
-
-          <motion.div
-            className="flex flex-wrap items-center gap-3 mt-4"
-            initial="hidden"
-            animate="visible"
-            variants={{ hidden: { opacity: 0 }, visible: { opacity: 1, transition: { staggerChildren: 0.08 } } }}
-          >
-            {course?.perks?.split(",").map((perk, index) => (
-              <motion.span
-                key={index}
-                variants={{ hidden: { opacity: 0, y: 10 }, visible: { opacity: 1, y: 0 } }}
-                className="px-4 py-1.5 rounded-full bg-gradient-to-r from-red-50 to-red-100 text-red-700 border border-red-200 text-sm font-semibold shadow-md flex items-center gap-2"
-              >
-                <span className="w-2 h-2 bg-red-500 rounded-full"></span>
-                {perk.trim()}
-              </motion.span>
-            ))}
-          </motion.div>
-
-
-        </motion.div>
-
-
-        {/* SECTIONS */}
         <motion.section variants={fadeInUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="w-full">
           <Masterclass item={course} />
         </motion.section>
@@ -204,8 +176,6 @@ const DynamicCourse = () => {
           <MeetMentor />
         </motion.section>
 
-
-        {/* RELATED COURSES */}
         <motion.section
           variants={fadeInUp}
           initial="hidden"
@@ -216,6 +186,7 @@ const DynamicCourse = () => {
           <CoursesYouLike title={false} />
         </motion.section>
       </motion.main>
+
       <ReminderPop item={course} />
     </AnimatePresence>
   );

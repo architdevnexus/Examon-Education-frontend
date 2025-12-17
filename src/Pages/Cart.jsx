@@ -15,178 +15,155 @@ const Cart = () => {
 
   const handleCheckout = () => {
     const token = JSON.parse(localStorage.getItem("token"))?.state?.token;
-    if (!token) {
-      navigate("/login");
-    } else {
-      window.open("https://classplusapp.com/", "_blank");
-    }
+    if (!token) navigate("/login");
+    else window.open("https://classplusapp.com/", "_blank");
   };
 
-  // Animation variants
-  const containerVariants = {
-    hidden: { opacity: 0 },
-    visible: {
-      opacity: 1,
-      transition: { staggerChildren: 0.1, delayChildren: 0.2 },
-    },
-  };
-
-  const itemVariants = {
-    hidden: { opacity: 0, y: 25 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.4 } },
-    exit: { opacity: 0, y: -20, transition: { duration: 0.3 } },
-  };
-
-  // Empty cart UI
+  /* ------------------ EMPTY STATE ------------------ */
   if (cart.length === 0) {
     return (
       <motion.div
-        className="flex flex-col items-center justify-center h-[80vh] text-center"
+        className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
-        transition={{ duration: 0.6 }}
       >
-        <motion.img
+        <img
           src="/empty-cart.svg"
           alt="Empty Cart"
-          className="w-56 mb-4 opacity-80"
-          loading="lazy"
-          initial={{ scale: 0.9, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ type: "spring", stiffness: 120 }}
+          className="w-60 mb-6 opacity-80"
         />
-        <h2 className="text-2xl font-semibold text-gray-700">
+        <h2 className="text-3xl font-bold text-gray-800">
           Your cart is empty
         </h2>
-        <p className="text-gray-500 mt-2">
-          Looks like you haven’t added anything yet.
+        <p className="text-gray-500 mt-2 max-w-md">
+          Explore our courses and add your favorite batch to start learning.
         </p>
+
         <motion.button
           whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.97 }}
+          whileTap={{ scale: 0.96 }}
           onClick={() => navigate("/courses")}
-          className="mt-6 bg-[var(--primary-color)] text-white px-6 py-3 rounded-full font-medium shadow-md hover:brightness-95 transition"
+          className="mt-8 bg-[var(--primary-color)] text-white px-8 py-3 rounded-full font-semibold shadow-lg"
         >
-          Browse Courses
+          Explore Courses
         </motion.button>
       </motion.div>
     );
   }
-  console.log(cart);
+
+  /* ------------------ CART ------------------ */
   return (
     <motion.div
-      className="min-h-screen mb-14 bg-gray-50 py-10 px-4 sm:px-8 md:px-12 lg:px-20"
-      initial="hidden"
-      animate="visible"
-      variants={containerVariants}
+      className="min-h-screen bg-gray-50 py-10 px-4 md:px-10 lg:px-20"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
     >
-
+      <h1 className="text-sm font-bold text-gray-800 mb-8">
+        Your Cart ({cart.length})
+      </h1>
 
       <div className="flex flex-col lg:flex-row gap-8">
-        {/* Cart Items */}
-        <motion.div
-          className="flex-1 bg-white rounded-2xl shadow-lg p-6 space-y-6"
-          variants={containerVariants}
-        >
+        {/* ---------------- CART ITEMS ---------------- */}
+        <div className="flex-1 space-y-6">
           <AnimatePresence>
             {cart.map((item) => (
               <motion.div
                 key={item.id}
-                variants={itemVariants}
-                exit="exit"
                 layout
-                className="flex flex-col sm:flex-row items-center sm:items-start gap-4 sm:gap-6 border-b pb-6 last:border-none"
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -20 }}
+                className="bg-white rounded-2xl shadow-md p-5 flex flex-col sm:flex-row gap-5"
               >
-                <motion.img
+                {/* Image */}
+                <img
                   src={item?.img || item.image}
-                  alt={item.courseDetails || item.title}
-                  className="w-32 h-24 sm:w-40 sm:h-28 object-cover rounded-xl shadow-sm"
-                  loading="lazy"
-                  whileHover={{ scale: 1.03 }}
-                  transition={{ type: "spring", stiffness: 100 }}
+                  alt={item.title}
+                  className="w-full sm:w-44 h-28 object-cover rounded-xl"
                 />
 
-                <div className="flex-1 text-center sm:text-left">
-                  <h3 className="font-semibold text-gray-800 text-lg leading-snug">
+                {/* Info */}
+                <div className="flex-1">
+                  <h3 className="text-lg font-semibold text-gray-800">
                     {item.courseDetails || item.title}
                   </h3>
+
                   {item.percent && (
-                    <p className="text-green-600 text-sm font-medium mt-1">
+                    <span className="inline-block mt-1 text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">
                       {item.percent}% OFF
-                    </p>
+                    </span>
                   )}
-                  <div className="flex flex-col sm:flex-row sm:items-center gap-2 mt-2 justify-center sm:justify-start">
-                    <span className="text-xl font-bold text-black">
+
+                  <div className="flex items-center gap-3 mt-3">
+                    <span className="text-2xl font-bold text-gray-900">
                       ₹{item.actualprice}
                     </span>
+
                     {item.previousprice && (
                       <span className="text-gray-400 line-through text-sm">
-                        ₹{item.previousprice ? item.previousprice : (
-                          <div className=""
-                            onClick={() => navigate("/courses")}
-                          >Visit</div>
-                        )}
+                        ₹{item.previousprice}
                       </span>
                     )}
                   </div>
                 </div>
 
-                <motion.button
+                {/* Remove */}
+                <button
                   onClick={() => removeFromCart(item.id)}
-                  whileHover={{ scale: 1.05, color: "#ef4444" }}
-                  whileTap={{ scale: 0.95 }}
-                  className="flex items-center cursor-pointer gap-2 text-red-500 hover:text-red-600 font-medium transition text-sm"
+                  className="flex items-center gap-2 text-sm cursor-pointer text-red-500 hover:text-red-600 self-end sm:self-center"
                 >
-                  <FiTrash2 className="text-lg" /> Remove
-                </motion.button>
+                  <FiTrash2 /> Remove
+                </button>
               </motion.div>
             ))}
           </AnimatePresence>
-        </motion.div>
+        </div>
 
-        {/* Summary */}
-        <motion.div
-          className="lg:w-1/3 bg-white rounded-2xl shadow-lg p-6 h-fit sticky top-24"
-          initial={{ opacity: 0, x: 50 }}
-          animate={{ opacity: 1, x: 0 }}
-          transition={{ duration: 0.5, delay: 0.2 }}
-        >
-          <h2 className="text-lg font-semibold text-gray-800 mb-4">
-            Order Summary
-          </h2>
-
-          <div className="flex justify-between text-gray-700 mb-2">
-            <span>Subtotal</span>
-            <span>₹{totalAmount.toFixed(2)}</span>
-          </div>
-          <div className="flex justify-between text-gray-700 mb-2">
-            <span>Discount</span>
-            <span>₹0.00</span>
-          </div>
-
-          <div className="flex justify-between text-gray-800 font-semibold text-lg border-t pt-3 mt-3">
-            <span>Total</span>
-            <span>₹{totalAmount.toFixed(2)}</span>
-          </div>
-
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={handleCheckout}
-            className="mt-6 w-full bg-[var(--primary-color)] text-white py-3 rounded-full font-semibold shadow-md hover:brightness-95 transition"
+        {/* ---------------- SUMMARY ---------------- */}
+        <div className="lg:w-[360px]">
+          <motion.div
+            className="bg-white rounded-2xl shadow-lg p-6 sticky top-24"
+            initial={{ opacity: 0, x: 40 }}
+            animate={{ opacity: 1, x: 0 }}
           >
-            Proceed to Checkout
-          </motion.button>
+            <h2 className="text-xl font-semibold text-gray-800 mb-6">
+              Order Summary
+            </h2>
 
-          <motion.button
-            whileHover={{ scale: 1.02 }}
-            whileTap={{ scale: 0.97 }}
-            onClick={() => navigate("/courses")}
-            className="mt-3 w-full border border-[var(--primary-color)] text-[var(--primary-color)] py-3 rounded-full font-semibold hover:bg-[var(--tertiary-color)] transition"
-          >
-            Continue Exploring
-          </motion.button>
-        </motion.div>
+            <div className="space-y-3 text-gray-700">
+              <div className="flex justify-between">
+                <span>Subtotal</span>
+                <span>₹{totalAmount.toFixed(2)}</span>
+              </div>
+
+              <div className="flex justify-between text-green-600">
+                <span>Discount</span>
+                <span>₹0.00</span>
+              </div>
+
+              <div className="border-t pt-4 flex justify-between text-lg font-bold text-gray-900">
+                <span>Total</span>
+                <span>₹{totalAmount.toFixed(2)}</span>
+              </div>
+            </div>
+
+            <motion.button
+              whileHover={{ scale: 1.02 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={handleCheckout}
+              className="mt-6 w-full bg-[var(--primary-color)] text-white py-3 rounded-full font-semibold shadow-md"
+            >
+              Proceed to Checkout
+            </motion.button>
+
+            <button
+              onClick={() => navigate("/courses")}
+              className="mt-3 w-full border border-[var(--primary-color)] text-[var(--primary-color)] py-3 rounded-full font-semibold hover:bg-[var(--tertiary-color)] transition"
+            >
+              Continue Exploring
+            </button>
+          </motion.div>
+        </div>
       </div>
     </motion.div>
   );

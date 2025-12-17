@@ -1,20 +1,21 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
 import "swiper/css/navigation";
 import { Autoplay } from "swiper/modules";
+
 import CoursesSmallCard from "./Card/CoursesSmallCard";
-import { useCourseStore } from "../Zustand/GetAllCourses";
+import { useBatchesStore } from "../Zustand/GetLiveBatches";
 
 const CoursesYouLike = ({ title = false }) => {
-  const { data, error, loading, fetchCourses } = useCourseStore();
+  const { fetchBatches, batchData = [], loading, error } = useBatchesStore();
 
-  // Fetch data when component mounts
+  // Fetch batches on mount
   useEffect(() => {
-    fetchCourses();
-  }, []);
+    fetchBatches();
+  }, [fetchBatches]);
 
-  // Swiper breakpoints for responsive design
+  // Responsive breakpoints
   const breakpointsConfig = title
     ? {
         640: { slidesPerView: 1 },
@@ -28,51 +29,58 @@ const CoursesYouLike = ({ title = false }) => {
         1280: { slidesPerView: 4 },
       };
 
-  // Render Swiper
-  const renderCarousel = () => (
-    <Swiper
-      direction={title ? "vertical" : "horizontal"}
-      modules={[Autoplay]}
-      slidesPerView={1}
-      spaceBetween={25}
-      loop
-      autoplay={{
-        delay: 2800,
-        disableOnInteraction: false,
-        pauseOnMouseEnter: true,
-      }}
-      speed={900}
-      breakpoints={breakpointsConfig}
-      className={`w-full ${title ? "h-[65vh]" : ""}`}
-    >
-      {Array.isArray(data) && data.length > 0 ? (
-        data.map((course) => (
-          <SwiperSlide key={course.id || course._id}>
+  // Carousel Renderer
+  const renderCarousel = useCallback(() => {
+    if (loading) {
+      return (
+        <div className="flex justify-center items-center h-40 text-gray-500">
+          Loading courses...
+        </div>
+      );
+    }
+
+    if (error) {
+      return (
+        <div className="flex justify-center items-center h-40 text-red-500">
+          Failed to load courses.
+        </div>
+      );
+    }
+
+    if (!Array.isArray(batchData) || batchData.length === 0) {
+      return (
+        <div className="flex justify-center items-center h-40 text-gray-500">
+          No courses available.
+        </div>
+      );
+    }
+
+    return (
+      <Swiper
+        direction={title ? "vertical" : "horizontal"}
+        modules={[Autoplay]}
+        slidesPerView={1}
+        spaceBetween={25}
+        loop
+        autoplay={{
+          delay: 2800,
+          disableOnInteraction: false,
+          pauseOnMouseEnter: true,
+        }}
+        speed={900}
+        breakpoints={breakpointsConfig}
+        className={`w-full ${title ? "h-[90vh]" : ""}`}
+      >
+        {batchData.map((batch) => (
+          <SwiperSlide key={batch._id}>
             <div className="transition-all duration-500 ease-out transform rounded-2xl bg-white border border-gray-100">
-              <CoursesSmallCard
-                image={course.img}
-                courseName={course.courseDetails}
-                actualPrice={course.actualprice}
-                previousPrice={course.amount}
-                discount={course.percent}
-                courseId={course.id || course._id}
-              />
+              <CoursesSmallCard batch={batch} />
             </div>
           </SwiperSlide>
-        ))
-      ) : (
-        <SwiperSlide>
-          <div className="flex justify-center items-center h-40 text-gray-500">
-            {loading
-              ? "Loading courses..."
-              : error
-              ? "Failed to load courses."
-              : "No courses available."}
-          </div>
-        </SwiperSlide>
-      )}
-    </Swiper>
-  );
+        ))}
+      </Swiper>
+    );
+  }, [batchData, loading, error, title, breakpointsConfig]);
 
   return (
     <section
@@ -97,23 +105,22 @@ const CoursesYouLike = ({ title = false }) => {
               backgroundPosition: "left center",
             }}
           >
-            {/* Sticky Header for Sidebar */}
+            {/* Sticky Header */}
             <div className="sticky top-0 z-20 w-full backdrop-blur-sm py-1 flex flex-col items-center gap-2">
-              <h2 className="text-2xl font-bold text-[var(--primary-color)] leading-snug">
+              <h2 className="text-2xl font-bold text-[var(--primary-color)]">
                 Courses You May Like!
               </h2>
               <p className="text-gray-600 text-sm md:text-base max-w-lg">
                 Scroll through batches designed for your growth.
               </p>
-              <div className="w-16 h-1 bg-[var(--primary-color)] rounded-full"></div>
+              <div className="w-16 h-1 bg-[var(--primary-color)] rounded-full" />
             </div>
 
-            {/* Vertical Swiper */}
             <div className="w-full">{renderCarousel()}</div>
           </div>
         ) : (
           <>
-            {/* Horizontal Layout for homepage */}
+            {/* Homepage Header */}
             <div className="text-center mb-8">
               <h2 className="text-2xl md:text-4xl font-bold text-gray-800">
                 Courses You Might Like
@@ -121,8 +128,9 @@ const CoursesYouLike = ({ title = false }) => {
               <p className="text-gray-500 mt-2 text-sm md:text-base">
                 Scroll through curated batches for your success
               </p>
-              <div className="w-16 h-1 bg-[var(--primary-color)] rounded-full mx-auto mt-3"></div>
+              <div className="w-16 h-1 bg-[var(--primary-color)] rounded-full mx-auto mt-3" />
             </div>
+
             {renderCarousel()}
           </>
         )}
