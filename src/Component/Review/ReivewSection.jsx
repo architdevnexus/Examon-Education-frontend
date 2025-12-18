@@ -37,76 +37,55 @@ export const ReviewSection = () => {
   const profileImage = userData?.[0]?.profileImage || "";
 
   /* ---------------- HANDLERS ---------------- */
-  const handleSubmit = useCallback(
-    async (e) => {
-      e.preventDefault();
+  const handleSubmit = async (e) => {
+  e.preventDefault();
 
-      if (!isAuthenticated || !token) {
-        toast.error("You must be logged in to submit a review.");
-        return;
+  if (!isAuthenticated || !token) {
+    toast.error("You must be logged in.");
+    return;
+  }
+
+  if (!selectedBatch || !rating || !reviewText.trim()) {
+    toast.error("All fields are required.");
+    return;
+  }
+
+  try {
+    setLoading(true);
+
+    const formData = new FormData();
+    formData.append("clientname", userName);
+    formData.append("star", rating);
+    formData.append("review", reviewText.trim());
+    formData.append("course", selectedBatch); 
+
+    // image file (must be File object)
+    if (profileImage instanceof File) {
+      formData.append("profilePicture", profileImage);
+    }
+
+    await axios.post(
+      "https://backend.mastersaab.co.in/api/review/create",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          
+        },
       }
+    );
 
-      if (!selectedBatch) {
-        toast.error("Please select a batch.");
-        return;
-      }
+    toast.success("Review submitted successfully!");
+    setSelectedBatch("");
+    setRating(0);
+    setReviewText("");
+  } catch (err) {
+    toast.error(err?.response?.data?.message || "Submission failed");
+  } finally {
+    setLoading(false);
+  }
+};
 
-      if (!rating) {
-        toast.error("Please provide a rating.");
-        return;
-      }
-
-      if (!reviewText.trim()) {
-        toast.error("Please write a review.");
-        return;
-      }
-
-      try {
-        setLoading(true);
-
-        const payload = {
-          clientname: userName,
-          profilePicture: profileImage,
-          batch: selectedBatch,
-          star: rating,
-          review: reviewText.trim(),
-        };
-      
-        await axios.post(
-          "https://backend.mastersaab.co.in/api/review/create",
-          payload,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-              "Content-Type": "application/json",
-            },
-          }
-        );
-
-        toast.success("Review submitted successfully!");
-
-        // Reset form
-        setSelectedBatch("");
-        setRating(0);
-        setReviewText("");
-      } catch (error) {
-        toast.error(
-          error?.response?.data?.message || "Failed to submit review."
-        );
-      } finally {
-        setLoading(false);
-      }
-    },
-    [
-      isAuthenticated,
-      token,
-      selectedBatch,
-      rating,
-      reviewText,
-      userName,
-      profileImage,
-    ]
-  );
 
   /* ---------------- UI ---------------- */
   return (

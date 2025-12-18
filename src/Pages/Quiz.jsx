@@ -4,7 +4,7 @@ import React, {
   useMemo,
   useCallback,
   Suspense,
-  lazy,
+  lazy, 
 } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiFilter } from "react-icons/fi";
@@ -100,50 +100,50 @@ const Quiz = () => {
             />
           </div>
         </header>
-<div className="flex flex-col lg:flex-row items-start gap-8 px-2 md:px-4">
-  {/* --- Content --- */}
-  <section className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
-    {loading ? (
-      <div className="col-span-full text-center py-10 text-gray-500">
-        Loading quizzes...
-      </div>
-    ) : error ? (
-      <div className="col-span-full text-center py-10 text-red-500">
-        {error}
-      </div>
-    ) : paginatedData.length > 0 ? (
-      paginatedData.map((quiz) => (
-        <motion.div
-          key={quiz._id}
-          initial={{ opacity: 0, y: 20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.2 }}
-        >
-          <ExamCard examData={quiz} />
-        </motion.div>
-      ))
-    ) : (
-      <div className="text-gray-500 col-span-full text-center py-10">
-        No quizzes found.
-      </div>
-    )}
-  </section>
+        <div className="flex flex-col lg:flex-row items-start gap-8 px-2 md:px-4">
+          {/* --- Content --- */}
+          <section className="flex-1 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mt-4">
+            {loading ? (
+              <div className="col-span-full text-center py-10 text-gray-500">
+                Loading quizzes...
+              </div>
+            ) : error ? (
+              <div className="col-span-full text-center py-10 text-red-500">
+                {error}
+              </div>
+            ) : paginatedData.length > 0 ? (
+              paginatedData.map((quiz) => (
+                <motion.div
+                  key={quiz._id}
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  <ExamCard examData={quiz} />
+                </motion.div>
+              ))
+            ) : (
+              <div className="text-gray-500 col-span-full text-center py-10">
+                No quizzes found.
+              </div>
+            )}
+          </section>
 
-  {/* --- Sidebar --- */}
-  <aside className="w-full lg:w-80 flex-shrink-0">
-    <Suspense fallback={<div className="text-gray-500">Loading courses...</div>}>
-      {/* Desktop Sticky Sidebar */}
-      <div className="hidden lg:block sticky top-24">
-        <CoursesYouLike title />
-      </div>
+          {/* --- Sidebar --- */}
+          <aside className="w-full lg:w-80 flex-shrink-0">
+            <Suspense fallback={<div className="text-gray-500">Loading courses...</div>}>
+              {/* Desktop Sticky Sidebar */}
+              <div className="hidden lg:block sticky top-24">
+                <CoursesYouLike title />
+              </div>
 
-      {/* Mobile / Tablet Sidebar (below grid) */}
-      <div className="block lg:hidden mt-8">
-        <CoursesYouLike title={false} />
-      </div>
-    </Suspense>
-  </aside>
-</div>
+              {/* Mobile / Tablet Sidebar (below grid) */}
+              <div className="block lg:hidden mt-8">
+                <CoursesYouLike title={false} />
+              </div>
+            </Suspense>
+          </aside>
+        </div>
 
 
         {/* --- Pagination --- */}
@@ -152,11 +152,10 @@ const Quiz = () => {
             <button
               onClick={() => setPage((p) => Math.max(p - 1, 1))}
               disabled={page === 1}
-              className={`px-4 py-2 rounded-xl ${
-                page === 1
+              className={`px-4 py-2 rounded-xl ${page === 1
                   ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                   : "bg-white text-gray-700 border hover:bg-gray-50"
-              }`}
+                }`}
             >
               Prev
             </button>
@@ -165,11 +164,10 @@ const Quiz = () => {
               <button
                 key={i}
                 onClick={() => setPage(i + 1)}
-                className={`px-4 py-2 rounded-xl ${
-                  page === i + 1
+                className={`px-4 py-2 rounded-xl ${page === i + 1
                     ? "bg-[var(--primary-color)] text-white"
                     : "bg-white text-gray-700 border hover:bg-gray-50"
-                }`}
+                  }`}
               >
                 {i + 1}
               </button>
@@ -178,18 +176,17 @@ const Quiz = () => {
             <button
               onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
               disabled={page === totalPages}
-              className={`px-4 py-2 rounded-xl ${
-                page === totalPages
+              className={`px-4 py-2 rounded-xl ${page === totalPages
                   ? "bg-gray-200 text-gray-400 cursor-not-allowed"
                   : "bg-white text-gray-700 border hover:bg-gray-50"
-              }`}
+                }`}
             >
               Next
             </button>
           </div>
         )}
 
-        
+
       </main>
 
       {/* --- Floating Filter Sidebar --- */}

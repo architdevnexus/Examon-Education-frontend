@@ -27,6 +27,7 @@ const DynamicTest = ({ quizData }) => {
       setTimeLeft(totalSeconds);
     }
   }, [quizData]);
+  // console.log(quizData)
 
   /** Countdown Timer **/
   useEffect(() => {
@@ -96,7 +97,7 @@ const DynamicTest = ({ quizData }) => {
           timeout: 10000,
         }
       );
-      // console.log(answers)
+      console.log(answers)
 
       toast.success("Quiz submitted successfully!");
       setHasSubmitted(true);
@@ -111,7 +112,7 @@ const DynamicTest = ({ quizData }) => {
   const handleSubmitSafe = useCallback(() => {
     setTimeout(() => {
       handleSubmit();
-    }, 150);
+    }, 200);
   }, [handleSubmit]);
 
 
@@ -232,21 +233,21 @@ const DynamicTest = ({ quizData }) => {
               >
                 Skip
               </button>
-             <button
-  onClick={
-    currentQuestionIndex === quizData.questions.length - 1
-      ? handleSubmitSafe    
-      : handleNext          
-  }
-  disabled={submitting}
-  className="px-6 cursor-pointer py-2 bg-[var(--primary-color)] text-white rounded-xl hover:bg-[var(--secondary-color)] transition-all disabled:opacity-60"
->
-  {
-    currentQuestionIndex === quizData.questions.length - 1
-      ? (submitting ? "Submitting..." : "Submit")
-      : "Next"
-  }
-</button>
+              <button
+                onClick={
+                  currentQuestionIndex === quizData.questions.length - 1
+                    ? handleSubmitSafe
+                    : handleNext
+                }
+                disabled={submitting}
+                className="px-6 cursor-pointer py-2 bg-[var(--primary-color)] text-white rounded-xl hover:bg-[var(--secondary-color)] transition-all disabled:opacity-60"
+              >
+                {
+                  currentQuestionIndex === quizData.questions.length - 1
+                    ? (submitting ? "Submitting..." : "Submit")
+                    : "Next"
+                }
+              </button>
 
             </div>
           </div>
