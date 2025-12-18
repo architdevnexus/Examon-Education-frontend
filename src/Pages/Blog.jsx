@@ -4,8 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { useBlogStore } from "../Zustand/GetBlog";
 import Courses from "../Component/CoursesYouLike";
 
-const normalizeCategory = (cat) =>
-  cat?.trim()?.toLowerCase() || "general";
+const normalizeCategory = (cat = "") => cat.trim().toLowerCase();
 
 const Blog = () => {
   const navigate = useNavigate();
@@ -29,32 +28,37 @@ const Blog = () => {
     return () => clearTimeout(timer);
   }, [searchTerm]);
 
-  const blogs = Array.isArray(blogData) ? blogData : [];
+  /* =================================================
+     🔥 FLATTEN BLOGS FROM RESPONSE (IMPORTANT)
+     ================================================= */
+  const blogs = useMemo(() => {
+    if (!Array.isArray(blogData?.categories)) return [];
+
+    return blogData.categories.flatMap((cat) =>
+      (cat.blogs || []).map((blog) => ({
+        ...blog,
+        category: cat.blogCategory, // attach category to each blog
+      }))
+    );
+  }, [blogData]);
 
   /* ---------------- Dynamic Categories ---------------- */
   const categories = useMemo(() => {
-    const map = new Map();
-
-    blogs.forEach((blog) => {
-      const raw = blog.category || "General";
-      const normalized = normalizeCategory(raw);
-
-      if (!map.has(normalized)) {
-        map.set(normalized, raw.trim());
-      }
-    });
-
-    return ["All", ...Array.from(map.values())];
+    const unique = new Set(
+      blogs.map((b) => b.category?.trim()).filter(Boolean)
+    );
+    return ["All", ...Array.from(unique)];
   }, [blogs]);
 
   /* ---------------- Filter Blogs ---------------- */
   const filteredBlogs = useMemo(() => {
+    const search = debouncedSearch.toLowerCase();
     const normalizedCategory = normalizeCategory(category);
 
     return blogs.filter((blog) => {
       const matchesSearch =
-        blog.title?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
-        blog.blogContent?.toLowerCase().includes(debouncedSearch.toLowerCase());
+        blog.title?.toLowerCase().includes(search) ||
+        blog.blogContent?.toLowerCase().includes(search);
 
       const matchesCategory =
         category === "All" ||
@@ -74,22 +78,17 @@ const Blog = () => {
     startIndex + blogsPerPage
   );
 
-  const BlogSkeletonCard = () => {
-  return (
+  const BlogSkeletonCard = () => (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden animate-pulse">
       <div className="w-full h-48 bg-gray-200" />
-
       <div className="p-5 space-y-3">
         <div className="h-3 w-24 bg-gray-200 rounded" />
         <div className="h-4 w-full bg-gray-200 rounded" />
         <div className="h-4 w-5/6 bg-gray-200 rounded" />
-        <div className="h-3 w-full bg-gray-200 rounded" />
         <div className="h-10 w-full bg-gray-200 rounded-xl mt-4" />
       </div>
     </div>
   );
-};
-
 
   return (
     <section className="min-h-screen bg-gray-50 pb-20">
@@ -136,7 +135,6 @@ const Blog = () => {
       <div className="max-w-full mx-auto px-4 md:px-6 mt-14 grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* BLOG LIST */}
         <div className="lg:col-span-3">
-          {/* SKELETON LOADER */}
           {loading && (
             <div className="grid gap-8 sm:grid-cols-2">
               {Array.from({ length: blogsPerPage }).map((_, i) => (
@@ -145,22 +143,17 @@ const Blog = () => {
             </div>
           )}
 
-          {/* ERROR */}
           {error && !loading && (
             <div className="text-center text-red-600 mt-10">
               Failed to load blogs. Please try again later.
             </div>
           )}
 
-          {/* BLOG GRID */}
           {!loading && !error && currentBlogs.length > 0 && (
             <>
               <div className="grid gap-8 sm:grid-cols-2">
                 {currentBlogs.map((blog, index) => {
-                  const createdDate = new Date(
-                    blog.createdAt
-                  ).toLocaleDateString();
-
+                  const createdDate = new Date(blog.createdAt).toLocaleDateString();
                   const textSnippet = blog.blogContent
                     ?.replace(/<[^>]+>/g, "")
                     ?.slice(0, 120);
@@ -182,7 +175,7 @@ const Blog = () => {
 
                       <div className="p-5 flex flex-col flex-1">
                         <span className="text-sm text-gray-500 mb-2">
-                          {createdDate}
+                          {createdDate} • {blog.category}
                         </span>
 
                         <h2 className="text-lg font-semibold mb-2 line-clamp-2">
