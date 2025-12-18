@@ -66,9 +66,9 @@ const MeetMentor = () => {
 
                     <div className="relative flex justify-center items-center w-full md:w-1/2 p-6 z-10">
                       <img
-                        src={mentor.imageUrl || "/default-avatar.png"}
+                        src={"https://res.cloudinary.com/dximnweqf/image/upload/v1766047992/WhatsApp_Image_2025-12-18_at_2.21.38_PM_pqgygs.jpg"}
                         alt={mentor.name}
-                        className="relative w-64 h-72 md:w-80 md:h-80 object-cover rounded-2xl shadow-md"
+                        className="relative w-64 h-72 md:w-80 md:h-80 object-center object-contain rounded-2xl "
                         loading="lazy"
                       />
                     </div>

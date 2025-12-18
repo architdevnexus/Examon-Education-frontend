@@ -125,8 +125,8 @@ const HomeQuiz = () => {
               whileHover={{ scale: 1.05 }}
               transition={{ duration: 0.2 }}
               className={`whitespace-nowrap border-t-2 border-b-2 cursor-pointer px-4 py-2 text-sm font-semibold rounded-md transition-all duration-200 ${index === activeQuizIndex
-                  ? "text-[var(--primary-color)] border-[var(--primary-color)] bg-blue-50"
-                  : "text-gray-400 border-gray-400"
+                ? "text-[var(--primary-color)] border-[var(--primary-color)] bg-blue-50"
+                : "text-gray-400 border-gray-400"
                 }`}
             >
               {quiz.title}

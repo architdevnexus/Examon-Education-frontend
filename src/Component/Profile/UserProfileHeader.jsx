@@ -18,22 +18,24 @@ const ProfileEditDropdown = () => {
 
   const [editMode, setEditMode] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [uploadProgress, setUploadProgress] = useState(0);
+
   const [form, setForm] = useState({
     fullname: name || "",
     email: email || "",
     phone: "",
     batch: "",
-    imageFile: null, // local file
-    imageURL: null, // base64 or backend URL
+    imageFile: null,
   });
+
   const [preview, setPreview] = useState(null);
 
-  // Fetch user profile on mount
+  /* ---------------- Fetch Profile ---------------- */
   useEffect(() => {
     if (userId && token) fetchUserProfile(userId, token);
   }, [userId, token, fetchUserProfile]);
 
-  // Update form when profile data changes
+  /* ---------------- Sync Profile ---------------- */
   useEffect(() => {
     if (userData?.[0]) {
       const user = userData[0];
@@ -43,7 +45,6 @@ const ProfileEditDropdown = () => {
         phone: user.phone || "",
         batch: user.preferedCourse || "",
         imageFile: null,
-        imageURL: user.profileImage || null,
       });
       setPreview(user.profileImage || null);
     }
@@ -53,74 +54,66 @@ const ProfileEditDropdown = () => {
     setForm((prev) => ({ ...prev, [key]: value }));
   }, []);
 
-  // Convert file to Base64 for backend
-  const fileToBase64 = (file) =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
-      reader.onerror = (error) => reject(error);
-    });
+  /* ---------------- File Upload ---------------- */
+  const handleFileChange = useCallback((e) => {
+    const file = e.target.files[0];
+    if (!file) return;
 
-  // Handle file selection
-  const handleFileChange = useCallback(
-    async (e) => {
-      const file = e.target.files[0];
-      if (!file) return;
+    setForm((prev) => ({ ...prev, imageFile: file }));
+    setPreview(URL.createObjectURL(file));
+  }, []);
 
-      const objectUrl = URL.createObjectURL(file);
-      setPreview(objectUrl);
-
-      try {
-        const base64Url = await fileToBase64(file);
-        handleChange("imageFile", file);
-        handleChange("imageURL", base64Url);
-      } catch (err) {
-        toast.error("Failed to process image");
-      }
-    },
-    [handleChange]
-  );
-
-  // Save profile
+  /* ---------------- Save Profile ---------------- */
   const handleSave = async () => {
     if (!form.phone.trim()) return toast.warn("Phone number is required");
     if (!form.batch) return toast.warn("Please select a batch");
-    if (!token || !userId) return toast.error("Unauthorized! Please login again.");
+    if (!token || !userId) return toast.error("Unauthorized");
 
     setLoading(true);
+    setUploadProgress(0);
 
     try {
-      const payload = {
-        phone: form.phone,
-        preferedCourse: form.batch,
-        profileImage: form.imageURL || null,
-      };
+      const formData = new FormData();
+      formData.append("phone", form.phone);
+      formData.append("preferedCourse", form.batch);
 
-      console.log("Sending payload to backend:", payload);
+      if (form.imageFile) {
+        formData.append("profileImage", form.imageFile);
+      }
 
-      const response = await axios.patch(`${API_BASE}/profile/update/${userId}`, payload, {
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
-        },
-      });
-
-      console.log("Backend response:", response.data);
+      await axios.patch(
+        `${API_BASE}/profile/update/${userId}`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          onUploadProgress: (progressEvent) => {
+            if (!progressEvent.total) return;
+            const percent = Math.round(
+              (progressEvent.loaded * 100) / progressEvent.total
+            );
+            setUploadProgress(percent);
+          },
+        }
+      );
 
       toast.success("Profile updated successfully!");
       await fetchUserProfile(userId, token);
       setEditMode(false);
     } catch (err) {
-      console.error("Error updating profile:", err);
-      toast.error(err.response?.data?.message || "Failed to update profile");
+      console.error(err);
+      toast.error(err.response?.data?.message || "Profile update failed");
     } finally {
       setLoading(false);
+      setTimeout(() => setUploadProgress(0), 500);
     }
   };
 
   const handleCancel = () => {
     setEditMode(false);
+    setUploadProgress(0);
+
     if (userData?.[0]) {
       const user = userData[0];
       setForm({
@@ -129,54 +122,51 @@ const ProfileEditDropdown = () => {
         phone: user.phone || "",
         batch: user.preferedCourse || "",
         imageFile: null,
-        imageURL: user.profileImage || null,
       });
       setPreview(user.profileImage || null);
     }
   };
 
-  // Cleanup object URLs
+  /* ---------------- Cleanup ---------------- */
   useEffect(() => {
     return () => {
-      if (form.imageFile && preview?.startsWith("blob:")) {
+      if (preview?.startsWith("blob:")) {
         URL.revokeObjectURL(preview);
       }
     };
-  }, [form.imageFile, preview]);
+  }, [preview]);
 
   return (
     <div className="relative w-full max-w-full mx-auto">
       <AnimatePresence>
         <motion.div
-          key="dropdown"
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: -10 }}
-          transition={{ duration: 0.25, ease: "easeOut" }}
-          className="bg-white/90 backdrop-blur-md border border-gray-200 shadow-xl rounded-2xl p-6"
+          className="bg-white/90 backdrop-blur-md border shadow-xl rounded-2xl p-6"
         >
           {/* Header */}
-          <div className="flex justify-end items-center mb-5">
+          <div className="flex justify-end mb-5">
             {!editMode ? (
               <button
                 onClick={() => setEditMode(true)}
-                className="flex items-end gap-2 text-sm text-blue-600 hover:text-blue-700"
+                className="flex gap-2 text-sm text-blue-600"
               >
                 <FaEdit /> Edit
               </button>
             ) : (
-              <div className="flex items-center gap-3">
+              <div className="flex gap-3">
                 <button
                   onClick={handleSave}
                   disabled={loading}
-                  className="flex items-center gap-2 text-sm bg-blue-600 text-white px-4 py-2 rounded-xl hover:bg-blue-700 transition disabled:opacity-60"
+                  className="flex items-center gap-2 text-sm bg-blue-600 text-white px-4 py-2 rounded-xl disabled:opacity-60"
                 >
                   {loading ? <FaSpinner className="animate-spin" /> : <FaSave />}
                   Save
                 </button>
                 <button
                   onClick={handleCancel}
-                  className="flex items-center gap-2 text-sm text-gray-600 hover:text-gray-800"
+                  className="flex items-center gap-2 text-sm text-gray-600"
                 >
                   <FaTimes /> Cancel
                 </button>
@@ -184,13 +174,23 @@ const ProfileEditDropdown = () => {
             )}
           </div>
 
+          {/* Upload Progress Bar */}
+          {uploadProgress > 0 && (
+            <div className="w-full h-2 bg-gray-200 rounded-full mb-4 overflow-hidden">
+              <div
+                className="h-full bg-blue-600 transition-all duration-300"
+                style={{ width: `${uploadProgress}%` }}
+              />
+            </div>
+          )}
+
           {/* Profile Fields */}
-          <div className="min-w-full grid grid-cols-1 md:grid-cols-2 gap-6">
-            {/* Profile Photo */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            {/* Image */}
             <div className="flex flex-col items-center">
-              <div className="relative w-42 h-42 rounded-full overflow-hidden border border-gray-200 shadow-sm bg-gray-50">
+              <div className="relative w-42 h-42 rounded-full overflow-hidden border bg-gray-50">
                 {preview ? (
-                  <img src={preview} alt="profile" className="object-cover w-full h-full" />
+                  <img src={preview} className="w-full h-full object-cover" />
                 ) : (
                   <div className="flex items-center justify-center h-full text-gray-400">
                     <FaCamera size={28} />
@@ -201,7 +201,7 @@ const ProfileEditDropdown = () => {
                     <button
                       type="button"
                       onClick={() => fileRef.current.click()}
-                      className="absolute bottom-8 cursor-pointer right-2 bg-white p-2 rounded-full shadow-md hover:bg-gray-100 transition"
+                      className="absolute bottom-8 right-2 bg-white p-2 rounded-full shadow"
                     >
                       <FaCamera size={14} />
                     </button>
@@ -215,37 +215,28 @@ const ProfileEditDropdown = () => {
                   </>
                 )}
               </div>
-              {editMode && <p className="text-xs text-gray-500 mt-2">Upload new photo</p>}
             </div>
 
-            {/* Text Fields */}
+            {/* Inputs */}
             <div className="space-y-4">
               <Field label="Full Name" value={form.fullname} readOnly />
               <Field label="Email" value={form.email} readOnly />
               <Field
                 label="Phone Number"
                 value={form.phone}
-                onChange={(e) => handleChange("phone", e.target.value)}
                 disabled={!editMode}
+                onChange={(e) => handleChange("phone", e.target.value)}
               />
 
-              {/* Batch Selection */}
               <div>
-                <div className="flex items-center justify-between">
-                  <label className="block text-sm text-gray-600 mb-1">Select Batch</label>
-                  <span className="text-xs text-gray-500">
-                    Your: {form.batch || "No batch selected"}
-                  </span>
-                </div>
+                <label className="text-sm text-gray-600 mb-1 block">
+                  Select Batch
+                </label>
                 <select
                   value={form.batch}
-                  onChange={(e) => handleChange("batch", e.target.value)}
                   disabled={!editMode}
-                  className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none transition ${
-                    editMode
-                      ? "border-blue-400 focus:ring-2 focus:ring-blue-100 bg-white"
-                      : "border-gray-200 bg-gray-50 text-gray-600"
-                  }`}
+                  onChange={(e) => handleChange("batch", e.target.value)}
+                  className="w-full border rounded-xl px-3 py-2 text-sm"
                 >
                   <option value="">-- Select Batch --</option>
                   {batchData.map((b) => (
@@ -265,20 +256,16 @@ const ProfileEditDropdown = () => {
 
 const Field = ({ label, value, onChange, readOnly, disabled }) => (
   <div>
-    <label className="block text-sm text-gray-600 mb-1">{label}</label>
+    <label className="text-sm text-gray-600 mb-1 block">{label}</label>
     <input
-      type="text"
       value={value}
       onChange={onChange}
       readOnly={readOnly}
       disabled={disabled}
-      className={`w-full border rounded-xl px-3 py-2 text-sm focus:outline-none transition ${
-        disabled || readOnly
-          ? "border-gray-200 bg-gray-50 text-gray-600"
-          : "border-blue-400 focus:ring-2 focus:ring-blue-100"
-      }`}
+      className="w-full border rounded-xl px-3 py-2 text-sm bg-gray-50"
     />
   </div>
 );
 
 export default React.memo(ProfileEditDropdown);
+  

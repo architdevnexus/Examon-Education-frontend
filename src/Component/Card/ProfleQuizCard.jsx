@@ -92,13 +92,13 @@ const ProfileQuizCard = ({ quiz }) => {
             <FaCalendarAlt size={13} />
             <span>{year}</span>
           </div>
-
+{/* 
           <img
             src={icon}
             alt={altText}
             className="w-14 h-14 object-contain pointer-events-none select-none"
             loading="lazy"
-          />
+          /> */}
         </div>
 
         <div className="h-px bg-gray-200" />
@@ -114,7 +114,7 @@ const ProfileQuizCard = ({ quiz }) => {
           <div className="flex items-center gap-2">
             <FaMedal className="text-blue-500" />
             <p className="text-sm text-gray-700">
-              <span className="font-semibold">Result:</span> {result}
+              {/* <span className="font-semibold">Result:</span> {result} */}
             </p>
           </div>
         </div>

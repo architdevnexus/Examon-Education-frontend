@@ -114,9 +114,11 @@ const MeetYourMentor = () => {
                       }}
                     >
                       <img
-                        src={mentor.imageUrl || mentor.image}
+                        src={"https://res.cloudinary.com/dximnweqf/image/upload/v1766047992/WhatsApp_Image_2025-12-18_at_2.21.38_PM_pqgygs.jpg"}
+
+                        // src={mentor.imageUrl || mentor.image}
                         alt={mentor.name}
-                        className="w-80 md:mb-28 rounded-md object-contain"
+                        className="w-72 rounded-md object-center object-contain"
                       />
                     </div>
                   </div>
