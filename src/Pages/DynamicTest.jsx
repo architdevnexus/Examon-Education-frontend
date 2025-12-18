@@ -49,8 +49,8 @@ const DynamicTest = () => {
 
       setError(
         err.response?.data?.message ||
-          err.message ||
-          "Failed to load quiz. Try again later."
+        err.message ||
+        "Failed to load quiz. Try again later."
       );
     } finally {
       setLoading(false);
@@ -157,7 +157,7 @@ const DynamicTest = () => {
   return (
     <main className="min-h-screen bg-gradient-to-b from-[#f9fbff] to-white mb-24 md:mb-1 px-4 md:px-8 pb-6">
       <div className="max-w-full mx-auto grid grid-cols-1 lg:grid-cols-3 gap-8 items-start">
-        
+
         {/* QUIZ MAIN SECTION */}
         <section className="lg:col-span-2 mb-12 bg-white rounded-2xl shadow-md hover:shadow-lg transition-all duration-300 p-4 md:p-6 mt-4">
           <QuizPageComponent

@@ -5,10 +5,10 @@ import { Autoplay } from "swiper/modules";
 import CoursesSmallCard from "./Card/CoursesSmallCard";
 import { useCourseStore } from "../Zustand/GetAllCourses";
 import { motion } from "framer-motion";
-
+import { useRef } from "react";
 const CategoryCourses = ({ category }) => {
     const { data, loading, error, fetchCourses } = useCourseStore();
-
+const hasFetched = useRef(false);
     // Track screen size for changing swiper direction
     const [isDesktop, setIsDesktop] = useState(false);
 
@@ -22,12 +22,12 @@ const CategoryCourses = ({ category }) => {
 
         return () => window.removeEventListener("resize", checkScreen);
     }, []);
-
-    useEffect(() => {
-        if (!data || data.length === 0) {
-            fetchCourses();
-        }
-    }, [fetchCourses, data]);
+useEffect(() => {
+    if (!hasFetched.current) {
+      fetchCourses();
+      hasFetched.current = true;
+    }
+  }, [fetchCourses]);
 
     const filteredCourses = useMemo(() => {
         if (!data || !category) return [];

@@ -17,7 +17,7 @@ const MeetMentor = () => {
     fetchMentors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log(mentorData)
   return (
     <section className="w-full py-16 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-12">
@@ -79,11 +79,12 @@ const MeetMentor = () => {
                           {mentor.name || "Unknown"}
                         </h3>
                         <p className="text-base font-medium text-[var(--primary-color)]">
-                          {mentor.designation || "Mentor"}
+                          {mentor?.subjectTaught || "Mentor"}
                         </p>
+
                         <p className="text-sm text-gray-500 mt-1">
                           {mentor.experience
-                            ? `${mentor.experience} years of experience`
+                            ? `${mentor.experience} of experience`
                             : "Experience not specified"}
                         </p>
                       </div>
@@ -93,6 +94,12 @@ const MeetMentor = () => {
                           Specialization:{" "}
                           <span className="font-medium text-gray-800">
                             {mentor.specialization || "N/A"}
+                          </span>
+                        </p>
+                        <p className="text-sm italic">
+                          Courses:{" "}
+                          <span className="font-medium text-gray-800">
+                            {mentor?.CoursesHandled?.[0]}
                           </span>
                         </p>
 
