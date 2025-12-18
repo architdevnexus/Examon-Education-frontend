@@ -117,8 +117,8 @@ const DynamicExam = () => {
             key={item._id}
             onClick={() => setActiveIndex(index)}
             className={`px-4 py-2 rounded-lg text-sm font-medium transition-all whitespace-nowrap 
-              ${activeIndex === index 
-                ? "bg-[var(--primary-color)] text-white shadow-md" 
+              ${activeIndex === index
+                ? "bg-[var(--primary-color)] text-white shadow-md"
                 : "bg-gray-100 text-gray-700 hover:bg-gray-200"
               }`}
           >

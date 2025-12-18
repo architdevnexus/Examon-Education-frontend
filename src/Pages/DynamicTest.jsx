@@ -150,6 +150,7 @@ const DynamicTest = () => {
       </div>
     );
   }
+  console.log(quizData)
 
   /** ------------------------------------------
    *  Final Layout

@@ -1,39 +1,36 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Autoplay } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
 import { FaLinkedin, FaInstagram } from "react-icons/fa";
 import { useMentorStore } from "../../Zustand/GetMentor";
-import { useCourseStore } from "../../Zustand/GetAllCourses";
+import { useBatchesStore } from "../../Zustand/GetLiveBatches";
 import { useParams } from "react-router-dom";
 
 const MeetYourMentor = () => {
   const { courseId } = useParams();
   const { loading, error, mentorData, fetchMentors } = useMentorStore();
-  const { data: courses, fetchCourses } = useCourseStore();
+  const { fetchBatches, batchData } = useBatchesStore();
 
-  // Fetch mentors and courses on mount
+  // Fetch mentors and batches on mount
   useEffect(() => {
     fetchMentors();
-    fetchCourses();
-  }, [fetchMentors, fetchCourses]);
+    fetchBatches();
+  }, []);
 
   // Find the current course
-  const currentCourse = useMemo(() => {
-    if (!Array.isArray(courses)) return null;
-    return courses.find((c) => String(c.id || c._id) === String(courseId));
-  }, [courses, courseId]);
+  const currentCourse = batchData?.find((batch) => batch._id === courseId);
 
-  // Filter mentors who handle this course
-  const mentorsForCourse = useMemo(() => {
-    if (!Array.isArray(mentorData) || !currentCourse) return [];
-    return mentorData.filter((mentor) =>
-      Array.isArray(mentor.CoursesHandled)
-        ? mentor.CoursesHandled.includes(currentCourse.id || currentCourse._id)
-        : false
-    );
-  }, [mentorData, currentCourse]);
+  // Filter mentors for this course based on teachers
+  const mentorsForCourse = mentorData?.filter((mentor) =>
+    currentCourse?.teachers?.some((teacherName) =>
+      teacherName.toLowerCase().includes(mentor.name.toLowerCase())
+    )
+  );
+
+  console.log("Current Course:", currentCourse);
+  console.log("Mentors for this Course:", mentorsForCourse);
 
   if (!currentCourse) return null; // course not found
 
@@ -44,13 +41,15 @@ const MeetYourMentor = () => {
           Meet Your Mentors
         </h2>
 
-        {mentorsForCourse.length === 0 && (
+        {/* No mentors */}
+        {mentorsForCourse?.length === 0 && (
           <p className="text-gray-500 text-center mb-8">
             No mentors assigned for this course yet.
           </p>
         )}
 
-        {mentorsForCourse.length > 0 && (
+        {/* Mentors Swiper */}
+        {mentorsForCourse?.length > 0 && (
           <Swiper
             modules={[Navigation, Autoplay]}
             navigation={false}
@@ -59,16 +58,17 @@ const MeetYourMentor = () => {
             className="w-full"
           >
             {mentorsForCourse.map((mentor) => (
-              <SwiperSlide key={mentor._id || mentor.id}>
+              <SwiperSlide key={mentor._id || mentor.name}>
                 <div className="flex flex-col-reverse md:flex-row items-center justify-between gap-10 md:gap-20 w-full">
+
                   {/* Left Content */}
                   <div className="w-full md:w-1/2 flex flex-col items-start text-left md:pl-6">
                     <h3 className="text-2xl md:text-3xl font-extrabold text-[#111827] uppercase tracking-wide mb-3">
                       {mentor.name}
                     </h3>
-                    {mentor.designation && (
+                    {mentor.specialization && (
                       <p className="text-base md:text-lg text-gray-700 font-medium mb-1">
-                        {mentor.designation}
+                        {mentor.specialization}
                       </p>
                     )}
                     {mentor.experience && (
@@ -116,7 +116,7 @@ const MeetYourMentor = () => {
                       <img
                         src={mentor.imageUrl || mentor.image}
                         alt={mentor.name}
-                        className="w-80 md:mb-28 object-contain"
+                        className="w-80 md:mb-28 rounded-md object-contain"
                       />
                     </div>
                   </div>

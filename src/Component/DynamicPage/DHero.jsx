@@ -178,7 +178,7 @@ const DHero = ({
         <img
           src={image}
           alt="Batch Visual"
-          className="w-full max-w-md object-contain drop-shadow-3xl"
+          className="w-full rounded-md max-w-md object-contain drop-shadow-3xl"
           loading="lazy"
         />
       </motion.div>

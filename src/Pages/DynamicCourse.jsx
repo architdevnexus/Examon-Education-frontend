@@ -134,7 +134,7 @@ const DynamicCourse = () => {
         </p>
       </main>
     );
-console.log(course)
+ 
   // ---------------------- UI (UNCHANGED) ----------------------
   return (
     <AnimatePresence mode="wait">
@@ -157,13 +157,13 @@ console.log(course)
           />
         </motion.section>
 
-   <motion.section
-      variants={fadeInUp}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true }}
-  
-      className="
+        <motion.section
+          variants={fadeInUp}
+          initial="hidden"
+          whileInView="show"
+          viewport={{ once: true }}
+
+          className="
         w-[90%]
         bg-white
         rounded-2xl
@@ -174,21 +174,21 @@ console.log(course)
         overflow-hidden
         top-4
       "
-    >
-      {/* Accent Gradient */}
-      <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500" />
+        >
+          {/* Accent Gradient */}
+          <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500" />
 
-      {/* Title */}
-      <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-4">
-        Course Overview
-      </h2>
+          {/* Title */}
+          <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-4">
+            Course Overview
+          </h2>
 
-      {/* Description */}
-      <p className="text-(--primary-color) leading-relaxed text-sm md:text-base">
-        {course?.description}
-      </p>
-    </motion.section>
-  
+          {/* Description */}
+          <p className="text-(--primary-color) leading-relaxed text-sm md:text-base">
+            {course?.description}
+          </p>
+        </motion.section>
+
         <motion.section variants={fadeInUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="w-full">
           <StagesOfSSC item={course} />
         </motion.section>

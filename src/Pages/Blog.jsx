@@ -4,6 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { useBlogStore } from "../Zustand/GetBlog";
 import Courses from "../Component/CoursesYouLike";
 
+const normalizeCategory = (cat) =>
+  cat?.trim()?.toLowerCase() || "general";
+
 const Blog = () => {
   const navigate = useNavigate();
   const { blogData, fetchBlogs, loading, error } = useBlogStore();
@@ -12,14 +15,15 @@ const Blog = () => {
   const [debouncedSearch, setDebouncedSearch] = useState("");
   const [category, setCategory] = useState("All");
   const [currentPage, setCurrentPage] = useState(1);
+
   const blogsPerPage = 9;
 
-  // Fetch blogs on mount
+  /* ---------------- Fetch Blogs ---------------- */
   useEffect(() => {
     fetchBlogs();
-  }, []);
+  }, [fetchBlogs]);
 
-  // Debounce search
+  /* ---------------- Debounce Search ---------------- */
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchTerm), 400);
     return () => clearTimeout(timer);
@@ -27,65 +31,102 @@ const Blog = () => {
 
   const blogs = Array.isArray(blogData) ? blogData : [];
 
-  // Extract unique categories
+  /* ---------------- Dynamic Categories ---------------- */
   const categories = useMemo(() => {
-    const unique = new Set(blogs.map((b) => b.category || "General"));
-    return ["All", ...unique];
+    const map = new Map();
+
+    blogs.forEach((blog) => {
+      const raw = blog.category || "General";
+      const normalized = normalizeCategory(raw);
+
+      if (!map.has(normalized)) {
+        map.set(normalized, raw.trim());
+      }
+    });
+
+    return ["All", ...Array.from(map.values())];
   }, [blogs]);
 
-  // Filter blogs
+  /* ---------------- Filter Blogs ---------------- */
   const filteredBlogs = useMemo(() => {
+    const normalizedCategory = normalizeCategory(category);
+
     return blogs.filter((blog) => {
       const matchesSearch =
         blog.title?.toLowerCase().includes(debouncedSearch.toLowerCase()) ||
         blog.blogContent?.toLowerCase().includes(debouncedSearch.toLowerCase());
-      const matchesCategory = category === "All" || blog.category === category;
+
+      const matchesCategory =
+        category === "All" ||
+        normalizeCategory(blog.category) === normalizedCategory;
+
       return matchesSearch && matchesCategory;
     });
   }, [blogs, debouncedSearch, category]);
 
-  // Reset pagination when filters change
+  /* ---------------- Pagination ---------------- */
   useEffect(() => setCurrentPage(1), [debouncedSearch, category]);
 
-  // Pagination logic
   const totalPages = Math.ceil(filteredBlogs.length / blogsPerPage);
   const startIndex = (currentPage - 1) * blogsPerPage;
-  const currentBlogs = filteredBlogs.slice(startIndex, startIndex + blogsPerPage);
+  const currentBlogs = filteredBlogs.slice(
+    startIndex,
+    startIndex + blogsPerPage
+  );
+
+  const BlogSkeletonCard = () => {
+  return (
+    <div className="bg-white rounded-2xl shadow-md overflow-hidden animate-pulse">
+      <div className="w-full h-48 bg-gray-200" />
+
+      <div className="p-5 space-y-3">
+        <div className="h-3 w-24 bg-gray-200 rounded" />
+        <div className="h-4 w-full bg-gray-200 rounded" />
+        <div className="h-4 w-5/6 bg-gray-200 rounded" />
+        <div className="h-3 w-full bg-gray-200 rounded" />
+        <div className="h-10 w-full bg-gray-200 rounded-xl mt-4" />
+      </div>
+    </div>
+  );
+};
+
 
   return (
     <section className="min-h-screen bg-gray-50 pb-20">
       {/* HEADER */}
-      <header className="flex flex-col justify-center px-6 md:px-12 h-[40vh] bg-[var(--primary-color)] text-center md:text-left">
+      <header className="flex flex-col justify-center px-6 md:px-12 h-[40vh] bg-[var(--primary-color)]">
         <h1 className="text-4xl md:text-5xl font-bold text-gray-100 mb-2">
           Our Course Blogs
         </h1>
-        <p className="text-gray-200 max-w-2xl text-lg mx-auto md:mx-0">
+        <p className="text-gray-200 max-w-2xl text-lg">
           Explore expert insights on trending technologies and real-world projects.
         </p>
       </header>
 
-      {/* SEARCH & FILTER — centered floating box */}
+      {/* SEARCH & FILTER */}
       <motion.div
         className="relative z-10 flex justify-center -mt-10 px-4"
         initial={{ opacity: 0, y: 40 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.4 }}
       >
-        <div className="bg-white shadow-xl w-full max-w-4xl rounded-2xl p-5 flex flex-col sm:flex-row gap-4 items-center">
+        <div className="bg-white shadow-xl w-full max-w-4xl rounded-2xl p-5 flex flex-col sm:flex-row gap-4">
           <input
             type="text"
             placeholder="Search blogs..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[var(--primary-color)] outline-none text-gray-700"
+            className="flex-1 border border-gray-300 rounded-xl px-4 py-2"
           />
+
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="border border-gray-300 rounded-xl px-4 py-2 focus:ring-2 focus:ring-[var(--primary-color)] outline-none text-gray-700"
+            className="border border-gray-300 rounded-xl px-4 py-2"
           >
             {categories.map((cat) => (
-              <option key={cat}>{cat}</option>
+              <option key={cat} value={cat}>
+                {cat}
+              </option>
             ))}
           </select>
         </div>
@@ -95,36 +136,40 @@ const Blog = () => {
       <div className="max-w-full mx-auto px-4 md:px-6 mt-14 grid grid-cols-1 lg:grid-cols-4 gap-6">
         {/* BLOG LIST */}
         <div className="lg:col-span-3">
-          {/* LOADING */}
+          {/* SKELETON LOADER */}
           {loading && (
-            <div className="flex justify-center items-center mt-10">
-              <div className="animate-spin h-10 w-10 border-t-2 border-b-2 border-[var(--primary-color)] rounded-full"></div>
-              <p className="ml-3 text-gray-600">Loading blogs...</p>
+            <div className="grid gap-8 sm:grid-cols-2">
+              {Array.from({ length: blogsPerPage }).map((_, i) => (
+                <BlogSkeletonCard key={i} />
+              ))}
             </div>
           )}
 
           {/* ERROR */}
-          {error && (
+          {error && !loading && (
             <div className="text-center text-red-600 mt-10">
               Failed to load blogs. Please try again later.
             </div>
           )}
 
           {/* BLOG GRID */}
-          {!loading && !error && currentBlogs.length > 0 ? (
+          {!loading && !error && currentBlogs.length > 0 && (
             <>
               <div className="grid gap-8 sm:grid-cols-2">
                 {currentBlogs.map((blog, index) => {
-                  const createdDate = new Date(blog.createdAt).toLocaleDateString();
+                  const createdDate = new Date(
+                    blog.createdAt
+                  ).toLocaleDateString();
+
                   const textSnippet = blog.blogContent
                     ?.replace(/<[^>]+>/g, "")
                     ?.slice(0, 120);
 
                   return (
                     <motion.article
-                      key={blog._id || index}
-                      className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col"
-                      initial={{ opacity: 0, y: 40 }}
+                      key={blog._id}
+                      className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition overflow-hidden flex flex-col"
+                      initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
                     >
@@ -134,19 +179,23 @@ const Blog = () => {
                         className="w-full h-48 object-cover"
                         loading="lazy"
                       />
-                      <div className="flex flex-col flex-1 p-5">
-                        <div className="flex items-center gap-2 text-sm text-gray-500 mb-2">
-                          <span>{createdDate}</span>
-                        </div>
-                        <h2 className="text-lg font-semibold text-gray-800 mb-2 line-clamp-2">
+
+                      <div className="p-5 flex flex-col flex-1">
+                        <span className="text-sm text-gray-500 mb-2">
+                          {createdDate}
+                        </span>
+
+                        <h2 className="text-lg font-semibold mb-2 line-clamp-2">
                           {blog.title}
                         </h2>
-                        <p className="text-gray-600 text-sm mb-4 line-clamp-3">
+
+                        <p className="text-sm text-gray-600 line-clamp-3 mb-4">
                           {textSnippet || "No description available."}
                         </p>
+
                         <button
                           onClick={() => navigate(`/blog/${blog._id}`)}
-                          className="mt-auto bg-[var(--primary-color)] text-white text-sm font-medium py-2.5 rounded-xl transition hover:opacity-90"
+                          className="mt-auto bg-[var(--primary-color)] text-white py-2.5 rounded-xl"
                         >
                           Read More
                         </button>
@@ -158,53 +207,44 @@ const Blog = () => {
 
               {/* PAGINATION */}
               {totalPages > 1 && (
-                <div className="flex justify-center items-center gap-3 mt-10">
+                <div className="flex justify-center gap-4 mt-10">
                   <button
-                    onClick={() => setCurrentPage((p) => Math.max(p - 1, 1))}
                     disabled={currentPage === 1}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium border transition ${
-                      currentPage === 1
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-white hover:bg-gray-100 border-gray-300"
-                    }`}
+                    onClick={() => setCurrentPage((p) => p - 1)}
+                    className="px-4 py-2 border rounded-lg"
                   >
                     Previous
                   </button>
 
-                  <span className="text-gray-600 font-medium">
+                  <span className="font-medium">
                     Page {currentPage} of {totalPages}
                   </span>
 
                   <button
-                    onClick={() => setCurrentPage((p) => Math.min(p + 1, totalPages))}
                     disabled={currentPage === totalPages}
-                    className={`px-4 py-2 rounded-lg text-sm font-medium border transition ${
-                      currentPage === totalPages
-                        ? "bg-gray-200 text-gray-500 cursor-not-allowed"
-                        : "bg-white hover:bg-gray-100 border-gray-300"
-                    }`}
+                    onClick={() => setCurrentPage((p) => p + 1)}
+                    className="px-4 py-2 border rounded-lg"
                   >
                     Next
                   </button>
                 </div>
               )}
             </>
-          ) : (
-            !loading &&
-            !error && (
-              <div className="text-center text-gray-500 mt-10">
-                No blogs found matching your criteria.
-              </div>
-            )
+          )}
+
+          {!loading && !error && currentBlogs.length === 0 && (
+            <div className="text-center text-gray-500 mt-10">
+              No blogs found matching your criteria.
+            </div>
           )}
         </div>
 
         {/* SIDEBAR */}
-        <aside className="lg:col-span-1 space-y-6">
+        <aside className="lg:col-span-1">
           <div className="hidden lg:block sticky top-12 bg-white rounded-2xl">
-            <Courses title={true} />
+            <Courses title />
           </div>
-          <div className="block lg:hidden">
+          <div className="lg:hidden">
             <Courses title={false} />
           </div>
         </aside>
