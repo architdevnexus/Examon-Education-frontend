@@ -97,13 +97,13 @@ console.log(filteredNotes)
             {/* --- Right Controls --- */}
             <div className="flex items-center gap-3">
               {/* Filter Button */}
-              <button
+              {/* <button
                 onClick={() => setShowFilter(true)}
                 className="flex items-center gap-2 bg-white/20 hover:bg-white/30 text-white px-3 py-2 rounded-lg backdrop-blur-sm transition"
               >
                 <FiFilter className="text-lg" />
                 <span className="hidden sm:inline">Filters</span>
-              </button>
+              </button> */}
 
               {/* Notes/PYQ Toggle */}
               <div className="flex items-center gap-2 bg-gray-300 rounded-xl overflow-hidden">

@@ -65,7 +65,7 @@ const CoursesSmallCard = ({ batch }) => {
 
         {categoryName && (
           <span className="absolute top-2 right-2 bg-[#F11A28] text-white text-xs font-semibold px-2 py-1 rounded-md">
-            {categoryName}
+            {categoryName.toUpperCase()}
           </span>
         )}
       </div>
