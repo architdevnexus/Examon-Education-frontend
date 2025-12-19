@@ -4,6 +4,8 @@ import { FaSearch } from "react-icons/fa";
 import ContactSection from "../Component/ContactSection";
 import { useBatchesStore } from "../Zustand/GetLiveBatches";
 import CoursesCard from "../Component/Card/CoursesCard";
+import { useBanners } from "../Zustand/GetBanners";
+
 
 /* -------------------- CONSTANTS -------------------- */
 const PER_PAGE = 6;
@@ -35,6 +37,18 @@ const Courses = () => {
   useEffect(() => {
     fetchBatches();
   }, [fetchBatches]);
+
+  const [banner, setbanner] = useState()
+  const { fetchBanners, banners } = useBanners();
+  useEffect(() => {
+    fetchBanners()
+  }, [])
+
+  // Derived banner URL (no extra state)
+  const aboutBannerUrl = useMemo(() => {
+    return banners?.[0]?.courseBanner?.[0]?.url || "";
+  }, [banners]);
+  console.log(banners?.[0])
 
   /* -------------------- DEBOUNCE SEARCH -------------------- */
   useEffect(() => {
@@ -96,7 +110,13 @@ const Courses = () => {
   return (
     <main className="flex flex-col items-center w-full bg-white min-h-screen">
       {/* ================= HERO ================= */}
-      <section className="relative w-full py-20 px-6 md:px-12 bg-gradient-to-r from-[var(--primary-color)] to-blue-800 text-white">
+      <section className="relative w-full py-20 px-6 md:px-12  text-white"
+        style={{
+          background: `url(${aboutBannerUrl})`,
+          backgroundRepeat: "no-repeat",
+          backgroundPosition: "cover"
+        }}
+      >
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -199,11 +219,10 @@ const Courses = () => {
             {Array.from({ length: totalPages }).map((_, i) => (
               <span
                 key={i}
-                className={`w-12 h-1 rounded-full ${
-                  i + 1 === currentPage
+                className={`w-12 h-1 rounded-full ${i + 1 === currentPage
                     ? "bg-[var(--primary-color)] scale-125"
                     : "bg-gray-300"
-                }`}
+                  }`}
               />
             ))}
           </div>

@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { useBlogStore } from "../Zustand/GetBlog";
 import Courses from "../Component/CoursesYouLike";
+import { useBanners } from "../Zustand/GetBanners";
 
 const normalizeCategory = (cat = "") => cat.trim().toLowerCase();
 
@@ -18,10 +19,19 @@ const Blog = () => {
   const blogsPerPage = 9;
 
   /* ---------------- Fetch Blogs ---------------- */
+  const [banner, setbanner] = useState()
+  const { fetchBanners, banners } = useBanners();
+  useEffect(() => {
+    fetchBanners()
+  }, [])
+
+  // Derived banner URL (no extra state)
+  const aboutBannerUrl = useMemo(() => {
+    return banners?.[0]?.blogBanner?.[0]?.url || "";
+  }, [banners]);
   useEffect(() => {
     fetchBlogs();
   }, [fetchBlogs]);
-
   /* ---------------- Debounce Search ---------------- */
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchTerm), 400);
@@ -93,7 +103,13 @@ const Blog = () => {
   return (
     <section className="min-h-screen bg-gray-50 pb-20">
       {/* HEADER */}
-      <header className="flex flex-col justify-center px-6 md:px-12 h-[40vh] bg-[var(--primary-color)]">
+      <header className="flex flex-col justify-center px-6 md:px-12 h-[40vh]"
+        style={{
+          background: `url(${aboutBannerUrl})`,
+          backgroundRepeat:"no-repeat",
+          backgroundPosition:"cover"
+        }}
+      >
         <h1 className="text-4xl md:text-5xl font-bold text-gray-100 mb-2">
           Our Course Blogs
         </h1>

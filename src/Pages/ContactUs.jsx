@@ -1,9 +1,24 @@
-import React from "react";
+import React , {useState , useEffect , useMemo} from "react";
 import { motion } from "framer-motion";
 import Hero from "../Component/Hero";
 import ContactForm from "../Form/ContactUspageForm";
-import Map from "../Component/Map/Map"
+import Map from "../Component/Map/Map";
+import { useBanners } from "../Zustand/GetBanners";
+
 const ContactUs = () => {
+
+    const [banner, setbanner] = useState()
+    const { fetchBanners, loading, banners } = useBanners();
+    useEffect(() => {
+      fetchBanners()
+    }, [])
+
+     // Derived banner URL (no extra state)
+      const aboutContact = useMemo(() => {
+        return banners?.[0]?.contactBanner?.[0]?.url || "";
+      }, [banners]);
+      console.log(aboutContact)
+
   return (
     <div className="flex flex-col w-full min-h-screen bg-white overflow-hidden">
       {/* Hero Section */}
@@ -15,7 +30,7 @@ const ContactUs = () => {
       >
         <Hero
           Title=""
-          bg="/ContactUs.png"
+          bg={aboutContact}
           desc=""
           alt="Contact background image"
         />

@@ -1,5 +1,6 @@
-import React, { Suspense, lazy, memo } from "react";
+import React, { Suspense, lazy, memo, useMemo, useState, useEffect } from "react";
 import Hero from "../Component/Hero";
+import { useBanners } from "../Zustand/GetBanners";
 
 // Lazy-load heavy sections for performance
 const FourStepSelection = lazy(() =>
@@ -17,13 +18,24 @@ const LoadingFallback = () => (
 );
 
 const Aboutus = () => {
+  const [banner, setbanner] = useState()
+  const { fetchBanners, loading, banners } = useBanners();
+  useEffect(() => {
+    fetchBanners()
+  }, [])
+
+  // Derived banner URL (no extra state)
+  const aboutBannerUrl = useMemo(() => {
+    return banners?.[0]?.aboutBanner?.[0]?.url || "";
+  }, [banners]);
   return (
     <main className="flex flex-col min-h-screen w-full bg-white text-gray-800 overflow-hidden">
       {/*  Hero Section */}
       <Hero
         Title=""
         desc=""
-        bg="/AboutUs2.png"
+        bg={aboutBannerUrl}
+        loading={loading}
       />
 
       {/*  Async Sections */}
