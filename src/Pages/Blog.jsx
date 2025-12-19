@@ -32,6 +32,9 @@ const Blog = () => {
   useEffect(() => {
     fetchBlogs();
   }, [fetchBlogs]);
+
+  console.log(aboutBannerUrl)
+
   /* ---------------- Debounce Search ---------------- */
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchTerm), 400);
@@ -103,13 +106,17 @@ const Blog = () => {
   return (
     <section className="min-h-screen bg-gray-50 pb-20">
       {/* HEADER */}
-      <header className="flex flex-col justify-center px-6 md:px-12 h-[40vh]"
-        style={{
-          background: `url(${aboutBannerUrl})`,
-          backgroundRepeat:"no-repeat",
-          backgroundPosition:"cover"
-        }}
-      >
+      <header
+  className="relative flex flex-col justify-center px-6 md:px-12 h-[40vh] w-full overflow-hidden"
+  style={{
+    backgroundImage: `url(${aboutBannerUrl})`,
+    backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+    {/* Optional overlay for better text contrast */}
+  <div className="absolute -inset-0 bg-black/20" />
         <h1 className="text-4xl md:text-5xl font-bold text-gray-100 mb-2">
           Our Course Blogs
         </h1>

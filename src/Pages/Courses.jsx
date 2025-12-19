@@ -113,10 +113,13 @@ const Courses = () => {
       <section className="relative w-full py-20 px-6 md:px-12  text-white"
         style={{
           background: `url(${aboutBannerUrl})`,
-          backgroundRepeat: "no-repeat",
-          backgroundPosition: "cover"
-        }}
-      >
+           backgroundSize: "cover",
+    backgroundPosition: "center",
+    backgroundRepeat: "no-repeat",
+  }}
+>
+    {/* Optional overlay for better text contrast */}
+  <div className="absolute -inset-t-1 bg-black/40" />
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
@@ -220,8 +223,8 @@ const Courses = () => {
               <span
                 key={i}
                 className={`w-12 h-1 rounded-full ${i + 1 === currentPage
-                    ? "bg-[var(--primary-color)] scale-125"
-                    : "bg-gray-300"
+                  ? "bg-[var(--primary-color)] scale-125"
+                  : "bg-gray-300"
                   }`}
               />
             ))}
