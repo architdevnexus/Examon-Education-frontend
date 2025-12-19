@@ -110,7 +110,7 @@ const Courses = () => {
   return (
     <main className="flex flex-col items-center w-full bg-white min-h-screen">
       {/* ================= HERO ================= */}
-      <section className="relative w-full py-20 px-6 md:px-12  text-white"
+      <section className="relative w-full  py-20 px-6 md:px-12  text-white"
         style={{
           background: `url(${aboutBannerUrl})`,
            backgroundSize: "cover",

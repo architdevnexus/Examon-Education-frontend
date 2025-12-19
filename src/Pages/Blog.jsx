@@ -107,7 +107,7 @@ const Blog = () => {
     <section className="min-h-screen bg-gray-50 pb-20">
       {/* HEADER */}
       <header
-  className="relative flex flex-col justify-center px-6 md:px-12 h-[40vh] w-full overflow-hidden"
+  className="relative flex flex-col justify-center px-6 md:px-12 h-[41.5vh] md:h-[55vh] w-full overflow-hidden"
   style={{
     backgroundImage: `url(${aboutBannerUrl})`,
     backgroundSize: "cover",
