@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { socket } from "../socket";
+import { getSocket } from "../socket";
 
 export const useNotificationStore = create((set, get) => ({
   notifications: [],
@@ -17,30 +17,34 @@ export const useNotificationStore = create((set, get) => ({
     // --------------------------
     // STEP 1: Fetch Initial Data
     // --------------------------
-    console.log("📡 Fetching initial notifications from API...");
-
     try {
-      const res = await fetch("https://backend.mastersaab.co.in/api/notifications/discount/latest");
-      console.log(res)
+      console.log("📡 Fetching initial notifications...");
+      const res = await fetch(
+        "https://backend.mastersaab.co.in/api/notifications/discount/latest"
+      );
       const json = await res.json();
 
-      console.log("📦 API Notifications:", json.data);
-
-      set({ notifications: json.data });
+      set({ notifications: json.data || [] });
     } catch (error) {
-      console.log("❌ API Fetch Error:", error);
+      console.error("❌ API Fetch Error:", error);
     }
 
+    // --------------------------
+    // STEP 2: Init Socket (CORRECT)
+    // --------------------------
+    const socket = getSocket(); // ✅ SINGLETON
 
-    // --------------------------
-    // STEP 2: Init Socket
-    // --------------------------
+    if (!socket.connected) {
+      socket.connect();
+    }
+
+    socket.off(); // 🔥 prevents duplicate listeners
+
     socket.on("connect", () => {
       console.log("⚡ Socket connected:", socket.id);
       set({ socketConnected: true });
     });
 
-    // LISTEN FOR LIVE UPDATES
     socket.on("new_notification", (data) => {
       console.log("🔥 NEW LIVE NOTIFICATION:", data);
       set((state) => ({
@@ -49,7 +53,7 @@ export const useNotificationStore = create((set, get) => ({
     });
 
     socket.on("disconnect", () => {
-      console.log("❌ Socket Disconnected");
+      console.log("🔌 Socket disconnected");
       set({ socketConnected: false });
     });
   },

@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { socket } from "../socket";
+import { getSocket } from "../socket";
 
 export const useNotificationStore2 = create((set, get) => ({
   popnotifications: [],
@@ -13,28 +13,37 @@ export const useNotificationStore2 = create((set, get) => ({
 
   initSocket: async () => {
     if (get().listenersAttached) {
-      console.log(" Listeners already attached");
+      console.log("⚠️ Listeners already attached");
       return;
     }
 
     set({ listenersAttached: true });
 
-    console.log(" Fetching initial notifications from API...");
-
+    // --------------------------
+    // STEP 1: Fetch Initial Data
+    // --------------------------
     try {
-      const res = await fetch("https://backend.mastersaab.co.in/api/notification/latest");
+      console.log("📡 Fetching popup notifications...");
+      const res = await fetch(
+        "https://backend.mastersaab.co.in/api/notification/latest"
+      );
       const json = await res.json();
-
-      console.log("📦 API Notifications2:", json.data);
-
-      set({ popnotifications: json.data });
+      set({ popnotifications: json.data || [] });
     } catch (error) {
-      console.log("❌ API Fetch Error:", error);
+      console.error("❌ API Fetch Error:", error);
     }
 
     // --------------------------
-    // STEP 2: Init Socket
+    // STEP 2: Init Socket (CORRECT WAY)
     // --------------------------
+    const socket = getSocket();   // ✅ IMPORTANT
+
+    if (!socket.connected) {
+      socket.connect();
+    }
+
+    socket.off(); // 🔥 prevents duplicate listeners
+
     socket.on("connect", () => {
       console.log("⚡ Socket connected:", socket.id);
       set({ socketConnected: true });
@@ -42,11 +51,11 @@ export const useNotificationStore2 = create((set, get) => ({
 
     socket.on("new_notification", (data) => {
       console.log("🔥 NEW LIVE POPUP:", data);
-      get().addPopupNotification(data); // auto add to popup
+      get().addPopupNotification(data);
     });
 
     socket.on("disconnect", () => {
-      console.log("❌ Socket Disconnected");
+      console.log("🔌 Socket disconnected");
       set({ socketConnected: false });
     });
   },
