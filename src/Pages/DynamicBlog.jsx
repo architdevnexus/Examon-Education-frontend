@@ -8,41 +8,35 @@ import { useBlogStore } from "../Zustand/GetBlog";
 const CoursesYouLike = lazy(() => import("../Component/CoursesYouLike"));
 
 const DynamicBlog = () => {
-  const { id } = useParams();
+  const { id } = useParams(); // id of the blog
   const navigate = useNavigate();
   const { blogData: allBlogs = [], fetchBlogs, loading } = useBlogStore();
 
   // Fetch blogs only if not already loaded
   useEffect(() => {
-    if (!allBlogs.length) fetchBlogs();
-  }, [allBlogs.length, fetchBlogs]);
+    if (allBlogs.length === 0 && !loading) {
+      fetchBlogs();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
-  // Memoize current blog lookup
-  const blog = useMemo(() => allBlogs.find((b) => b._id === id), [allBlogs, id]);
-
-  // Handle loading
-  if (loading || !allBlogs.length) {
+  // 🔑 Find the blog by ID inside all categories
+  const blog = useMemo(() => {
+    if (!Array.isArray(allBlogs)) return null;
+    for (let category of allBlogs) {
+      if (!category.blogs) continue;
+      const found = category.blogs.find(b => b._id === id);
+      if (found) return found;
+    }
+    return null;
+  }, [allBlogs, id]);
+console.log(blog)
+  if (loading || !blog) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <p className="text-gray-600 text-lg animate-pulse">Loading blog...</p>
-      </div>
-    );
-  }
-
-  // Handle not found
-  if (!blog) {
-    return (
-      <div className="flex flex-col items-center justify-center min-h-screen bg-gray-50 text-center p-6">
-        <h2 className="text-3xl font-bold text-gray-800 mb-3">Blog Not Found</h2>
-        <p className="text-gray-500 mb-6">
-          The article you’re looking for doesn’t exist or may have been removed.
+        <p className="text-gray-600 text-lg animate-pulse">
+          Loading blog...
         </p>
-        <button
-          onClick={() => navigate("/blog")}
-          className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-xl transition"
-        >
-          Back to Blogs
-        </button>
       </div>
     );
   }

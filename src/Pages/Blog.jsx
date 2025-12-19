@@ -147,7 +147,7 @@ const Blog = () => {
           >
             {categories.map((cat) => (
               <option key={cat} value={cat}>
-                {cat}
+                {cat.toUpperCase}
               </option>
             ))}
           </select>
