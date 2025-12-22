@@ -26,7 +26,7 @@ const Blog = () => {
   }, [])
 
   // Derived banner URL (no extra state)
-  const aboutBannerUrl = useMemo(() => {
+  const blogbannerurl = useMemo(() => {
     return banners?.[0]?.blogBanner?.[0]?.url || "";
   }, [banners]);
   useEffect(() => {
@@ -88,7 +88,7 @@ const Blog = () => {
     startIndex,
     startIndex + blogsPerPage
   );
-// console.log(currentBlogs)
+
   const BlogSkeletonCard = () => (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden animate-pulse">
       <div className="w-full h-48 bg-gray-200" />
@@ -102,19 +102,19 @@ const Blog = () => {
   );
 
   return (
-    <section className="min-h-screen bg-gray-50 pb-20">
+    <section className="flex flex-col pb-18 w-full bg-white min-h-screen">
       {/* HEADER */}
       <header
-  className="relative flex flex-col justify-center px-6 md:px-12 h-[41.5vh] md:h-[55vh] w-full overflow-hidden"
-  style={{
-    backgroundImage: `url(${aboutBannerUrl})`,
-    backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  }}
->
-    {/* Optional overlay for better text contrast */}
-  <div className="absolute -inset-0 bg-black/20" />
+        className="relative flex flex-col h-[60vh] sm:h-[40vh] justify-center w-full py-20 px-6 md:px-12  text-white"
+        style={{
+          backgroundImage: `url(${blogbannerurl})`,
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Optional overlay for better text contrast */}
+        <div className="absolute -inset-0 bg-black/20" />
         <h1 className="text-4xl md:text-5xl font-bold text-gray-100 mb-2">
           Our Course Blogs
         </h1>

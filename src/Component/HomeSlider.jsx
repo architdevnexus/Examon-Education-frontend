@@ -107,7 +107,7 @@ const HomeSlider = () => {
     );
 
   const batch = batchData[current];
-
+console.log(batch)
   return (
     <div className="p-2">
       <div
@@ -149,7 +149,7 @@ const HomeSlider = () => {
                 <button
                   onClick={() =>
                     window.open(
-                      batch.link || "https://classplusapp.com/",
+                      batch?.enrollLink || "https://classplusapp.com/",
                       "_blank"
                     )
                   }

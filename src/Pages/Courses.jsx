@@ -110,16 +110,16 @@ const Courses = () => {
   return (
     <main className="flex flex-col items-center w-full bg-white min-h-screen">
       {/* ================= HERO ================= */}
-      <section className="relative w-full  py-20 px-6 md:px-12  text-white"
+      <section className="relative w-full h-[60vh] sm:h-[40vh] py-20 px-6 md:px-12 text-white"
         style={{
           background: `url(${aboutBannerUrl})`,
-           backgroundSize: "cover",
-    backgroundPosition: "center",
-    backgroundRepeat: "no-repeat",
-  }}
->
-    {/* Optional overlay for better text contrast */}
-  <div className="absolute -inset-t-1 bg-black/40" />
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+        }}
+      >
+        {/* Optional overlay for better text contrast */}
+        <div className="absolute -inset-t-1 bg-black/40" />
         <motion.div
           initial={{ opacity: 0, y: -30 }}
           animate={{ opacity: 1, y: 0 }}
