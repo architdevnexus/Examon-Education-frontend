@@ -77,21 +77,28 @@ const DynamicCourse = () => {
   }, [batchData, courseId]);
 
   // ---------------------- ENROLL HANDLER ----------------------
-  const handleEnroll = useCallback(() => {
-    const token = JSON.parse(localStorage.getItem("auth"))?.token;
+ const handleEnroll = useCallback(
+  (enrollLink) => {
+    const storedToken = JSON.parse(localStorage.getItem("token"))?.state?.token;
+   
 
-    if (!token) {
+    if (!storedToken) {
       toast.info("Please login to add this batch to your favorites");
       setTimeout(() => navigate("/login"), 700);
       return;
     }
 
-    if (!course) {
+    if (!course || !course._id) {
       toast.error("Unable to add batch right now. Please try again.");
       return;
     }
 
-    const isAlreadyInCart = cart.some(
+    if (!enrollLink) {
+      toast.error("Enrollment link not available.");
+      return;
+    }
+
+    const isAlreadyInCart = cart?.some(
       (item) => item.id === course._id
     );
 
@@ -100,15 +107,21 @@ const DynamicCourse = () => {
       return;
     }
 
-    addToCart({
-      title: course.batchName,
-      image: course.images?.[1],
-      id: course._id,
-      price: course.price,
-    });
+  
+
+    // ✅ Open enroll link in new tab
+    const newTab = window.open(enrollLink, "_blank", "noopener,noreferrer");
+
+    if (!newTab) {
+      toast.error("Popup blocked. Please allow popups.");
+      return;
+    }
 
     toast.success(`${course.batchName} added to your favorites!`);
-  }, [course, cart, addToCart, navigate]);
+  },
+  [course, cart, addToCart, navigate]
+);
+
 
   // ---------------------- LOADERS & ERRORS ----------------------
   if (batchLoading) return <ShimmerLoader />;
@@ -134,7 +147,7 @@ const DynamicCourse = () => {
         </p>
       </main>
     );
- 
+
   // ---------------------- UI (UNCHANGED) ----------------------
   return (
     <AnimatePresence mode="wait">
@@ -147,14 +160,15 @@ const DynamicCourse = () => {
         className="w-full flex flex-col items-center bg-white"
       >
         <motion.section variants={fadeInUp} initial="hidden" animate="show" className="w-full">
-          <DHero
-            title={course?.batchName}
-            image={course?.images?.[1]}
-            actualprice={course?.price}
-            insideCourses={course?.teachers}
-            perks={course?.syllabus}
-            onEnroll={handleEnroll}
-          />
+         <DHero
+  title={course?.batchName}
+  image={course?.images?.[1]}
+  actualprice={course?.price}
+  insideCourses={course?.teachers}
+  perks={course?.syllabus}
+  onEnroll={() => handleEnroll(course?.enrollLink)}
+/>
+
         </motion.section>
 
         <motion.section

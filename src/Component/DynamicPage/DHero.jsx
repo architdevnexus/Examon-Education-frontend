@@ -34,7 +34,7 @@ const DHero = ({
   /* -------------------- AUTH TOKEN -------------------- */
   const token = useMemo(() => {
     try {
-      const auth = JSON.parse(localStorage.getItem("auth"));
+      const auth = JSON.parse(localStorage.getItem("token"));
       return auth?.token || null;
     } catch {
       return null;
