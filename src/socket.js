@@ -1,7 +1,7 @@
 // socket.js
 import { io } from "socket.io-client";
 
-const SOCKET_URL = "https://backend.palgharhome.com";
+const SOCKET_URL = "https://backend.mastersaab.co.in";
 
 let socket;
 

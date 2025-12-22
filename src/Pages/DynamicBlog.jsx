@@ -19,18 +19,29 @@ const DynamicBlog = () => {
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-
+  console.log(allBlogs)
   // 🔑 Find the blog by ID inside all categories
   const blog = useMemo(() => {
-    if (!Array.isArray(allBlogs)) return null;
-    for (let category of allBlogs) {
-      if (!category.blogs) continue;
-      const found = category.blogs.find(b => b._id === id);
-      if (found) return found;
+    if (!Array.isArray(allBlogs?.categories)) return null;
+
+    for (const category of allBlogs.categories) {
+      if (!Array.isArray(category.blogs)) continue;
+
+      const found = category.blogs.find(
+        (b) => b._id === id
+      );
+
+      if (found) {
+        return {
+          ...found,
+          category: category.blogCategory, // attach category name
+        };
+      }
     }
+
     return null;
   }, [allBlogs, id]);
-console.log(blog)
+
   if (loading || !blog) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">

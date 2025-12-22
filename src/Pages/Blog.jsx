@@ -33,8 +33,6 @@ const Blog = () => {
     fetchBlogs();
   }, [fetchBlogs]);
 
-  console.log(aboutBannerUrl)
-
   /* ---------------- Debounce Search ---------------- */
   useEffect(() => {
     const timer = setTimeout(() => setDebouncedSearch(searchTerm), 400);
@@ -90,7 +88,7 @@ const Blog = () => {
     startIndex,
     startIndex + blogsPerPage
   );
-
+// console.log(currentBlogs)
   const BlogSkeletonCard = () => (
     <div className="bg-white rounded-2xl shadow-md overflow-hidden animate-pulse">
       <div className="w-full h-48 bg-gray-200" />
@@ -147,7 +145,7 @@ const Blog = () => {
           >
             {categories.map((cat) => (
               <option key={cat} value={cat}>
-                {cat.toUpperCase}
+                {cat.toUpperCase()}
               </option>
             ))}
           </select>
