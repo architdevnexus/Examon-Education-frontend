@@ -17,12 +17,14 @@ const CoursesCard = ({
   syllabus,
   teachers = [],
   enrollLink,
+  categoryName,
+  perks,
 }) => {
   const navigate = useNavigate();
   const { cart, addToCart, removeFromCart } = useCourseStore();
 
   const token = useMemo(() => localStorage.getItem("token"), []);
-  const isInCart = useMemo(() => cart.some(i => i.id === id), [cart, id]);
+  const isInCart = useMemo(() => cart.some((i) => i.id === id), [cart, id]);
 
   /* ------------------ TRIM DESCRIPTION ------------------ */
   const trimmedDescription = useMemo(() => {
@@ -32,11 +34,12 @@ const CoursesCard = ({
       : description;
   }, [description]);
 
-  /* ------------------ HANDLERS ------------------ */
+  /* ------------------ NAVIGATION ------------------ */
   const handleNavigate = useCallback(() => {
     navigate(`/courses/${id}`);
   }, [id, navigate]);
 
+  /* ------------------ CART HANDLER ------------------ */
   const handleCartToggle = useCallback(
     (e) => {
       e.stopPropagation();
@@ -50,22 +53,49 @@ const CoursesCard = ({
       if (isInCart) {
         removeFromCart(id);
         toast.info("Removed from cart");
-      } else {
-        addToCart({ id, batchName, img, price });
-        toast.success("Added to cart");
+        return;
       }
+
+      // ✅ FULL COURSE PAYLOAD (LOGIC FIX)
+      const coursePayload = {
+        _id: id,
+        batchName,
+        categoryName,
+        description,
+        duration,
+        enrollLink,
+        images: img ? [img] : [],
+        perks,
+        price,
+        syllabus,
+        teachers,
+      };
+
+      addToCart(coursePayload);
+      toast.success("Added to cart");
     },
-    [token, isInCart, id, batchName, img, price, addToCart, removeFromCart, navigate]
+    [
+      token,
+      isInCart,
+      id,
+      batchName,
+      categoryName,
+      description,
+      duration,
+      enrollLink,
+      img,
+      perks,
+      price,
+      syllabus,
+      teachers,
+      addToCart,
+      removeFromCart,
+      navigate,
+    ]
   );
 
   return (
-    <div
-      className="
-        bg-white rounded-xl shadow-xl 
-        flex flex-col h-[600px] 
-        transition-transform hover:scale-[1.02]
-      "
-    >
+    <div className="bg-white rounded-xl shadow-xl flex flex-col h-[600px] transition-transform hover:scale-[1.02]">
       {/* ================= IMAGE ================= */}
       <div className="relative h-52 md:h-60">
         <img
@@ -77,9 +107,7 @@ const CoursesCard = ({
         />
         <div className="absolute flex justify-between w-[98%] mx-auto left-1 -bottom-2 bg-white px-4 py-1 rounded-lg font-bold shadow">
           <span>Price: </span>
-        <span >
-          ₹{price} /only
-        </span>
+          <span>₹{price} /only</span>
         </div>
       </div>
 
@@ -91,12 +119,10 @@ const CoursesCard = ({
 
         <p className="text-xs text-gray-500">Duration: {duration}</p>
 
-        {/* DESCRIPTION (fixed height) */}
         <p className="text-sm text-gray-600 min-h-[60px]">
           {trimmedDescription}
         </p>
 
-        {/* SYLLABUS */}
         <ul className="text-sm text-gray-700 space-y-1 h-[70px] overflow-y-auto pr-1">
           {syllabus?.split("+").map((item, i) => (
             <li key={i} className="flex gap-2">
@@ -139,9 +165,7 @@ const CoursesCard = ({
         </div>
 
         <button
-          onClick={()=>navigate(id)}
-          target="_blank"
-          rel="noreferrer"
+          onClick={() => navigate(id)}
           className="px-6 py-2 cursor-pointer bg-[var(--primary-color)] text-white rounded-2xl text-sm font-semibold hover:bg-opacity-90"
         >
           Explore

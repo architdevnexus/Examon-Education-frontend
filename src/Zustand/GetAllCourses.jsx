@@ -84,17 +84,50 @@ export const useCourseStore = create((set, get) => ({
     const { totalPages } = get();
     if (page >= 1 && page <= totalPages) set({ currentPage: page });
   },
-
-  // --- ADD TO CART ---
+  // --- ADD TO CART (BACKEND COURSE → CART SNAPSHOT) ---
   addToCart: (course) => {
-    const { cart } = get();
-    const exists = cart.some((item) => item.id === course.id);
-    if (exists) return; // avoid duplicates
+    if (!course || !course._id) {
+      console.error("Invalid backend course data");
+      return;
+    }
 
-    const updatedCart = [...cart, course];
+    const { cart } = get();
+
+    const exists = cart.some((item) => item.id === course._id);
+    if (exists) return;
+
+    const cartItem = {
+      // IDs
+      id: course._id,
+      categoryName: course.categoryName,
+
+      // Display
+      title: course.batchName,
+      image: course.images?.[0] || null,
+      description: course.description,
+
+      // Pricing
+      price: course.price,
+
+      // Academic
+      teachers: course.teachers,
+      syllabus: course.syllabus,
+      perks: course.perks,
+
+      // Enrollment
+      enrollLink: course.enrollLink,
+      duration: course.duration,
+
+      // Meta
+      addedAt: Date.now(),
+    };
+
+    const updatedCart = [...cart, cartItem];
     localStorage.setItem("cart", JSON.stringify(updatedCart));
     set({ cart: updatedCart });
   },
+
+
 
   // --- REMOVE FROM CART ---
   removeFromCart: (courseId) => {
