@@ -19,10 +19,9 @@ const HomeTestimonial = () => {
 
   // Filter only approved (active) reviews for display
   const approvedReviews = useMemo(
-    () => reviewData?.filter((r) => r.status === "active"),
+    () => reviewData?.filter((r) => r.status === "approved"),
     [reviewData]
   );
-
   // 🎬 Animation Variants
   const textVariant = {
     hidden: { opacity: 0, y: 40 },
