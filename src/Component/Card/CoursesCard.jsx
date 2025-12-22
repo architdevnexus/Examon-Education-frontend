@@ -23,11 +23,21 @@ const CoursesCard = ({
   const navigate = useNavigate();
   const { cart, addToCart, removeFromCart } = useCourseStore();
 
-  const token = useMemo(() => localStorage.getItem("token"), []);
-  const isInCart = useMemo(() => cart.some((i) => i.id === id), [cart, id]);
+  /* ------------------ AUTH ------------------ */
+  const token = useMemo(
+    () => JSON.parse(localStorage.getItem("token"))?.state?.token,
+    []
+  );
 
-  /* ------------------ TRIM DESCRIPTION ------------------ */
+  /* ------------------ CART MATCH (CRITICAL FIX) ------------------ */
+  const isInCart = useMemo(
+    () => cart.some((item) => String(item.id) === String(id)),
+    [cart, id]
+  );
+
+  /* ------------------ DESCRIPTION ------------------ */
   const trimmedDescription = useMemo(() => {
+    if (!description) return "";
     const words = description.trim().split(/\s+/);
     return words.length > MAX_DESC_WORDS
       ? words.slice(0, MAX_DESC_WORDS).join(" ") + "..."
@@ -39,7 +49,7 @@ const CoursesCard = ({
     navigate(`/courses/${id}`);
   }, [id, navigate]);
 
-  /* ------------------ CART HANDLER ------------------ */
+  /* ------------------ CART TOGGLE ------------------ */
   const handleCartToggle = useCallback(
     (e) => {
       e.stopPropagation();
@@ -56,11 +66,13 @@ const CoursesCard = ({
         return;
       }
 
-      // ✅ FULL COURSE PAYLOAD (LOGIC FIX)
-      const coursePayload = {
+      /**
+       * ✅ EXACT PAYLOAD EXPECTED BY Zustand addToCart
+       */
+      addToCart({
         _id: id,
-        batchName,
         categoryName,
+        batchName,
         description,
         duration,
         enrollLink,
@@ -69,17 +81,16 @@ const CoursesCard = ({
         price,
         syllabus,
         teachers,
-      };
+      });
 
-      addToCart(coursePayload);
       toast.success("Added to cart");
     },
     [
       token,
       isInCart,
       id,
-      batchName,
       categoryName,
+      batchName,
       description,
       duration,
       enrollLink,
@@ -96,7 +107,7 @@ const CoursesCard = ({
 
   return (
     <div className="bg-white rounded-xl shadow-xl flex flex-col h-[600px] transition-transform hover:scale-[1.02]">
-      {/* ================= IMAGE ================= */}
+      {/* IMAGE */}
       <div className="relative h-52 md:h-60">
         <img
           src={img}
@@ -106,12 +117,12 @@ const CoursesCard = ({
           onClick={handleNavigate}
         />
         <div className="absolute flex justify-between w-[98%] mx-auto left-1 -bottom-2 bg-white px-4 py-1 rounded-lg font-bold shadow">
-          <span>Price: </span>
+          <span>Price:</span>
           <span>₹{price} /only</span>
         </div>
       </div>
 
-      {/* ================= CONTENT ================= */}
+      {/* CONTENT */}
       <div className="px-4 py-3 flex flex-col gap-2">
         <h3 className="font-semibold text-black text-md line-clamp-2 min-h-[44px]">
           {batchName}
@@ -133,7 +144,7 @@ const CoursesCard = ({
         </ul>
       </div>
 
-      {/* ================= FACULTY ================= */}
+      {/* FACULTY */}
       <div className="px-4 mb-2">
         <p className="text-xs font-semibold text-gray-700 mb-1">Faculty</p>
         <div className="flex flex-wrap gap-2 max-h-[52px] overflow-hidden">
@@ -148,7 +159,7 @@ const CoursesCard = ({
         </div>
       </div>
 
-      {/* ================= ACTIONS ================= */}
+      {/* ACTIONS */}
       <div
         onClick={handleNavigate}
         className="mt-auto px-4 py-3 flex justify-between items-center border-t cursor-pointer"
@@ -165,8 +176,8 @@ const CoursesCard = ({
         </div>
 
         <button
-          onClick={() => navigate(id)}
-          className="px-6 py-2 cursor-pointer bg-[var(--primary-color)] text-white rounded-2xl text-sm font-semibold hover:bg-opacity-90"
+          onClick={handleNavigate}
+          className="px-6 py-2 bg-[var(--primary-color)] text-white rounded-2xl text-sm font-semibold hover:bg-opacity-90"
         >
           Explore
         </button>

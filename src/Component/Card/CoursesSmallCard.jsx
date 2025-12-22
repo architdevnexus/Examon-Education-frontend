@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaShoppingCart, FaTrashAlt } from "react-icons/fa";
 import { toast } from "react-toastify";
@@ -7,7 +7,12 @@ import { useCourseStore } from "../../Zustand/GetAllCourses";
 const CoursesSmallCard = ({ batch }) => {
   const navigate = useNavigate();
   const { addToCart, removeFromCart, cart } = useCourseStore();
-  const token = localStorage.getItem("token");
+
+  /* ------------------ AUTH ------------------ */
+  const token = useMemo(
+    () => JSON.parse(localStorage.getItem("token"))?.state?.token,
+    []
+  );
 
   const {
     _id,
@@ -17,16 +22,25 @@ const CoursesSmallCard = ({ batch }) => {
     categoryName,
     duration,
     perks,
+    syllabus,
+    teachers,
+    description,
+    enrollLink,
   } = batch;
 
+  /* ------------------ CART MATCH ------------------ */
   const isInCart = useMemo(
-    () => cart.some((item) => item.id === _id),
+    () => cart.some((item) => String(item.id) === String(_id)),
     [cart, _id]
   );
 
-  const handleExplore = () => navigate(`/courses/${_id}`);
+  /* ------------------ NAVIGATION ------------------ */
+  const handleExplore = useCallback(() => {
+    navigate(`/courses/${_id}`);
+  }, [_id, navigate]);
 
-  const handleCartToggle = () => {
+  /* ------------------ CART TOGGLE ------------------ */
+  const handleCartToggle = useCallback(() => {
     if (!token) {
       toast.warning("Please login first to add items to your cart.");
       navigate("/login");
@@ -36,16 +50,45 @@ const CoursesSmallCard = ({ batch }) => {
     if (isInCart) {
       removeFromCart(_id);
       toast.info("Course removed from cart.");
-    } else {
-      addToCart({
-        id: _id,
-        img: images?.[0],
-        courseDetails: batchName,
-        actualprice: price,
-      });
-      toast.success("Course added to cart!");
+      return;
     }
-  };
+
+    /**
+     * ✅ EXACT PAYLOAD EXPECTED BY Zustand addToCart
+     */
+    addToCart({
+      _id,
+      categoryName,
+      batchName,
+      description,
+      duration,
+      enrollLink,
+      images: images?.length ? images : [],
+      perks,
+      price,
+      syllabus,
+      teachers,
+    });
+
+    toast.success("Course added to cart!");
+  }, [
+    token,
+    isInCart,
+    _id,
+    categoryName,
+    batchName,
+    description,
+    duration,
+    enrollLink,
+    images,
+    perks,
+    price,
+    syllabus,
+    teachers,
+    addToCart,
+    removeFromCart,
+    navigate,
+  ]);
 
   return (
     <div
@@ -58,7 +101,7 @@ const CoursesSmallCard = ({ batch }) => {
       {/* IMAGE */}
       <div className="relative w-full h-40">
         <img
-          src={images?.[1]}
+          src={images?.[1] || images?.[0]}
           alt={batchName}
           className="w-full h-full object-cover"
         />
@@ -108,9 +151,10 @@ const CoursesSmallCard = ({ batch }) => {
             className={`
               flex items-center justify-center gap-2 px-2 py-2 
               rounded-lg font-semibold transition w-1/2
-              ${isInCart
-                ? "bg-red-500 text-white hover:bg-red-600"
-                : "border border-[var(--primary-color)] text-[var(--primary-color)] hover:bg-[var(--tertiary-color)]"
+              ${
+                isInCart
+                  ? "bg-red-500 text-white hover:bg-red-600"
+                  : "border border-[var(--primary-color)] text-[var(--primary-color)] hover:bg-[var(--tertiary-color)]"
               }
             `}
           >
@@ -130,4 +174,4 @@ const CoursesSmallCard = ({ batch }) => {
   );
 };
 
-export default CoursesSmallCard;
+export default React.memo(CoursesSmallCard);
