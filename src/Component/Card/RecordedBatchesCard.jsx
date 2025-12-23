@@ -33,16 +33,10 @@ const RecordedBatchesCard = ({
     >
       {/* Image */}
       <img
-        src={imageSrc}
-        srcSet={`
-          ${imageSrc}?w=400 400w,
-          ${imageSrc}?w=800 800w,
-          ${imageSrc}?w=1200 1200w
-        `}
-        sizes="(max-width: 640px) 340px, (max-width: 768px) 360px, 460px"
-        alt={batchName}
-        loading="lazy"
-        decoding="async"
+       src={imageSrc}
+  alt={batchName}
+  loading="lazy"
+  decoding="async"
         fetchpriority="high"
         className="
           absolute inset-0 w-full h-full
