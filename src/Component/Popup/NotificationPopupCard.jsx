@@ -43,11 +43,16 @@ const NotificationPopup = ({ items = [], onClose }) => {
     exit: { opacity: 0, x: -120, transition: { duration: 0.3 } },
   };
 
-  const handleNavigate = () => {
-    if (!item.link) return;
-    onClose();
-    setTimeout(() => navigate(`/${item.link}`), 200);
-  };
+ const handleNavigate = () => {
+  if (!item.link) return;
+
+  onClose();
+
+  setTimeout(() => {
+    window.open(`/${item.link}`, "_blank", "noopener,noreferrer");
+  }, 200);
+};
+
 
   return (
     <AnimatePresence mode="wait">
