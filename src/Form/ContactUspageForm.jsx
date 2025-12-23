@@ -8,6 +8,8 @@ import axios from "axios";
 
 const ContactUspageForm = () => {
   //  Centralized state for form fields
+  const [loading, setLoading] = useState(false);
+
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
@@ -36,55 +38,61 @@ const ContactUspageForm = () => {
   const API_BASE = "https://backend.mastersaab.co.in/api";
 
   //  Handle form submission
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+ const handleSubmit = async (e) => {
+  e.preventDefault();
 
-    const { firstName, lastName, email, phoneNo, message } = formData;
+  if (loading) return; // 🔒 Prevent double submit
+  setLoading(true);
 
-    // 🔍 Validation
-    if (!firstName || !lastName || !email || !phoneNo || !message) {
-      toast.error("Please fill all fields before submitting.");
-      return;
-    }
+  const { firstName, lastName, email, phoneNo, message } = formData;
 
-    if (!validateEmail(email)) {
-      toast.error("Please enter a valid email address.");
-      return;
-    }
+  if (!firstName || !lastName || !email || !phoneNo || !message) {
+    toast.error("Please fill all fields before submitting.");
+    setLoading(false);
+    return;
+  }
 
-    if (!validatePhone(phoneNo)) {
-      toast.error("Please enter a valid phone number (at least 10 digits).");
-      return;
-    }
+  if (!validateEmail(email)) {
+    toast.error("Please enter a valid email address.");
+    setLoading(false);
+    return;
+  }
 
-    try {
-      // 🌐 Send data to backend API
-      const response = await axios.post(`${API_BASE}/contact-us`, {
-        fname: firstName,
-        lname: lastName,
-        email,
-        phoneNo,
-        message,
+  if (!validatePhone(phoneNo)) {
+    toast.error("Please enter a valid phone number (at least 10 digits).");
+    setLoading(false);
+    return;
+  }
+
+  try {
+    const response = await axios.post(`${API_BASE}/contact-us`, {
+      fname: firstName,
+      lname: lastName,
+      email,
+      phoneNo,
+      message,
+    });
+
+    if (response.status === 200 || response.status === 201) {
+      toast.success("Message sent successfully!");
+      setFormData({
+        firstName: "",
+        lastName: "",
+        email: "",
+        phoneNo: "",
+        message: "",
       });
-
-      if (response.status === 200 || response.status === 201) {
-        toast.success(" Message sent successfully!");
-        // Reset form after success
-        setFormData({
-          firstName: "",
-          lastName: "",
-          email: "",
-          phoneNo: "",
-          message: "",
-        });
-      } else {
-        toast.error("Something went wrong. Please try again later.");
-      }
-    } catch (error) {
-      console.error(" Contact form error:", error);
-      toast.error("Failed to send message. Please check your connection.");
+    } else {
+      toast.error("Something went wrong. Please try again later.");
     }
-  };
+  } catch (error) {
+    console.error("Contact form error:", error);
+    toast.error("Failed to send message. Please check your connection.");
+  } finally {
+    setLoading(false); // ✅ Always reset
+  }
+};
+
 
   return (
     <div className="flex flex-col rounded-2xl shadow-md overflow-hidden gap-8 p-6 bg-white max-w-6xl mx-auto lg:flex-row">
@@ -183,14 +191,18 @@ const ContactUspageForm = () => {
               className="w-full rounded-2xl border border-gray-300 focus:border-[#003366] focus:ring-[#003366] px-4 py-3 outline-none transition resize-none"
             ></textarea>
           </div>
+<button
+  type="submit"
+  disabled={loading}
+  className={`bg-[#003366] text-white rounded-full px-8 py-2 font-medium transition self-end cursor-pointer ${
+    loading
+      ? "opacity-60 cursor-not-allowed"
+      : "hover:bg-[#002244]"
+  }`}
+>
+  {loading ? "Submitting..." : "Submit"}
+</button>
 
-          {/* 🚀 Submit Button */}
-          <button
-            type="submit"
-            className="bg-[#003366] text-white rounded-full px-8 py-2 font-medium hover:bg-[#002244] transition self-end cursor-pointer"
-          >
-            Submit
-          </button>
         </form>
       </div>
 
