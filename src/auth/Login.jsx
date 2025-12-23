@@ -71,13 +71,22 @@ const Login = () => {
       navigate("/profile", { replace: true });
     } catch (err) {
       console.error("Login Error:", err);
+
       const msg =
         err.response?.data?.message ||
         (err.code === "ECONNABORTED"
           ? "Request timed out. Please try again."
           : "Invalid email or password.");
+
+      // 🔥 SHOW ERROR UNDER PASSWORD FIELD
+      setErrors((prev) => ({
+        ...prev,
+        password: msg,
+      }));
+
       toast.error(msg, { duration: 3000 });
-    } finally {
+    }
+    finally {
       setLoading(false);
     }
   };
@@ -195,7 +204,7 @@ const Login = () => {
 
             {/* Register Redirect */}
             <div className="mt-6 text-center text-sm text-gray-600 dark:text-gray-400">
-            Forgot Password{" "}
+              Forgot Password{" "}
               <button
                 onClick={() => navigate("/forgot-password")}
                 className="text-blue-600 font-semibold hover:underline"
