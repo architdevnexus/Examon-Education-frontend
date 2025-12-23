@@ -33,10 +33,10 @@ const RecordedBatchesCard = ({
     >
       {/* Image */}
       <img
-       src={imageSrc}
-  alt={batchName}
-  loading="lazy"
-  decoding="async"
+        src={imageSrc}
+        alt={batchName}
+        loading="lazy"
+        decoding="async"
         fetchpriority="high"
         className="
           absolute inset-0 w-full h-full

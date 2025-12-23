@@ -98,17 +98,6 @@ const DynamicCourse = () => {
       return;
     }
 
-    const isAlreadyInCart = cart?.some(
-      (item) => item.id === course._id
-    );
-
-    if (isAlreadyInCart) {
-      toast.info("This batch is already in your favorites");
-      return;
-    }
-
-  
-
     // ✅ Open enroll link in new tab
     const newTab = window.open(enrollLink, "_blank", "noopener,noreferrer");
 
