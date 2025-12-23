@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiTrash2 } from "react-icons/fi";
@@ -7,45 +7,44 @@ import { useCourseStore } from "../Zustand/GetAllCourses";
 const Cart = () => {
   const navigate = useNavigate();
   const { cart, removeFromCart } = useCourseStore();
-console.log(cart)
-  /* ------------------ PRICE CALCULATIONS ------------------ */
+
+  /* ------------------ PRICE ENGINE ------------------ */
+  const calculatePrice = useCallback((item) => {
+    const previous = Number(item.price || item.previousprice || 0);
+    const final = Number(item.discount || previous);
+    const saving = Math.max(previous - final, 0);
+
+    return { previous, final, saving };
+  }, []);
+
+  /* ------------------ TOTALS ------------------ */
   const { subtotal, totalDiscount, totalAmount } = useMemo(() => {
     let subtotal = 0;
     let totalDiscount = 0;
+    let totalAmount = 0;
 
     cart.forEach((item) => {
-      const price = Number(item.price || 0);
-      const discount = Number(item.discount || 0);
-      const percent = Number(item.discountPercent || 0);
-
-      subtotal += price;
-
-      if (discount > 0) {
-        totalDiscount += discount;
-      } else if (percent > 0) {
-        totalDiscount += (price * percent) / 100;
-      }
+      const { previous, final, saving } = calculatePrice(item);
+      subtotal += previous;
+      totalDiscount += saving;
+      totalAmount += final;
     });
 
-    return {
-      subtotal,
-      totalDiscount,
-      totalAmount: subtotal - totalDiscount,
-    };
-  }, [cart]);
+    return { subtotal, totalDiscount, totalAmount };
+  }, [cart, calculatePrice]);
 
   /* ------------------ CHECKOUT ------------------ */
-  const handleCheckout = () => {
+  const handleCheckout = useCallback(() => {
     const token = JSON.parse(localStorage.getItem("token"))?.state?.token;
     if (!token) navigate("/login");
     else window.open("https://classplusapp.com/", "_blank");
-  };
+  }, [navigate]);
 
-  /* ------------------ EMPTY STATE ------------------ */
-  if (cart.length === 0) {
+  /* ------------------ EMPTY CART ------------------ */
+  if (!cart.length) {
     return (
       <motion.div
-        className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4"
+        className="min-h-[80vh]  flex flex-col items-center justify-center text-center px-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
@@ -54,14 +53,18 @@ console.log(cart)
           alt="Empty Cart"
           className="w-60 mb-6 opacity-80"
         />
-        <h2 className="text-3xl font-bold text-gray-800">Your cart is empty</h2>
+
+        <h2 className="text-3xl font-bold text-gray-800">
+          Your cart is empty
+        </h2>
+
         <p className="text-gray-500 mt-2 max-w-md">
-          Explore our courses and add your favorite batch to start learning.
+          Add courses to unlock amazing discounts and start learning 🚀
         </p>
 
         <motion.button
           whileHover={{ scale: 1.05 }}
-          whileTap={{ scale: 0.96 }}
+          whileTap={{ scale: 0.95 }}
           onClick={() => navigate("/courses")}
           className="mt-8 bg-[var(--primary-color)] text-white px-8 py-3 rounded-full font-semibold shadow-lg"
         >
@@ -71,33 +74,32 @@ console.log(cart)
     );
   }
 
-  /* ------------------ CART ------------------ */
+  /* ------------------ CART UI ------------------ */
   return (
     <motion.div
       className="min-h-screen bg-gray-50 py-10 px-4 md:px-10 lg:px-20"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h1 className="text-xl font-bold text-gray-800 mb-8">
+      <h1 className="text-2xl font-bold text-gray-800 mb-8">
         Your Cart ({cart.length})
       </h1>
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row gap-10">
         {/* ---------------- CART ITEMS ---------------- */}
-        <div className="flex-1 space-y-6 max-h-[70vh] overflow-auto pr-1">
+        <div className="flex-1 space-y-6 max-h-[60vh] overflow-scroll pr-1">
           <AnimatePresence>
             {cart.map((item) => {
-              const id = item._id || item.id;
-              const image = item.image || item.images?.[0] || "";
-              const title = item.batchName || item.title || "Course";
-              const price = Number(item.price || 0);
+              const id = item.id || item._id;
+              const image =
+                item.image || item.img || item.images?.[0] || "";
+              const title =
+                item.title ||
+                item.courseDetails ||
+                item.batchName ||
+                "Course";
 
-              const finalPrice =
-                item.discount > 0
-                  ? price - item.discount
-                  : item.discountPercent > 0
-                  ? price - (price * item.discountPercent) / 100
-                  : price;
+              const { previous, final, saving } = calculatePrice(item);
 
               return (
                 <motion.div
@@ -128,14 +130,23 @@ console.log(cart)
                     )}
 
                     {/* Price */}
-                    <div className="mt-2">
-                      {(item.discount > 0 || item.discountPercent > 0) && (
-                        <span className="text-sm text-gray-400 line-through mr-2">
-                          ₹{price}
-                        </span>
+                    <div className="mt-2 space-y-1">
+                      {saving > 0 && (
+                        <div className="flex items-center gap-2 text-sm">
+                          <span className="line-through text-gray-400">
+                            ₹{previous}
+                          </span>
+
+                          {item.discountPercent > 0 && (
+                            <span className="text-red-500 font-semibold">
+                              {item.discountPercent}% OFF
+                            </span>
+                          )}
+                        </div>
                       )}
+
                       <span className="text-2xl font-bold text-gray-900">
-                        ₹{finalPrice.toFixed(0)}
+                        ₹{final}
                       </span>
                     </div>
                   </div>
@@ -154,7 +165,7 @@ console.log(cart)
         </div>
 
         {/* ---------------- SUMMARY ---------------- */}
-        <div className="lg:w-[360px]">
+        <div className="lg:w-[360px] h-[50vh] mb-4 sm:mb-0">
           <motion.div
             className="bg-white rounded-2xl shadow-lg p-6 sticky top-24"
             initial={{ opacity: 0, x: 40 }}
@@ -166,23 +177,23 @@ console.log(cart)
 
             <div className="space-y-3 text-gray-700">
               <div className="flex justify-between">
-                <span>Subtotal</span>
+                <span>Subtotal (MRP)</span>
                 <span>₹{subtotal.toFixed(2)}</span>
               </div>
 
               <div className="flex justify-between text-green-600">
-                <span>Total Discount</span>
+                <span>Total Savings</span>
                 <span>- ₹{totalDiscount.toFixed(2)}</span>
               </div>
 
               <div className="border-t pt-4 flex justify-between text-lg font-bold">
-                <span>Total</span>
+                <span>Payable Amount</span>
                 <span>₹{totalAmount.toFixed(2)}</span>
               </div>
             </div>
 
             <p className="text-xs text-gray-500 mt-3">
-              * Final discount will be applied on Classplus checkout
+              * Final payment will be processed on Classplus
             </p>
 
             <motion.button

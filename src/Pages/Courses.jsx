@@ -43,7 +43,7 @@ const Courses = () => {
   useEffect(() => {
     fetchBanners()
   }, [])
-
+console.log(batchData)
   // Derived banner URL (no extra state)
   const aboutBannerUrl = useMemo(() => {
     return banners?.[0]?.courseBanner?.[0]?.url || "";

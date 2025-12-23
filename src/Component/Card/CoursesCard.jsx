@@ -52,59 +52,62 @@ const CoursesCard = ({
   }, [id, navigate]);
 
   /* ------------------ CART TOGGLE ------------------ */
-  const handleCartToggle = useCallback(
-    (e) => {
-      e.stopPropagation();
+const handleCartToggle = useCallback(
+  (e) => {
+    e.stopPropagation();
 
-      if (!token) {
-        toast.error("Please login to manage your cart");
-        navigate("/login");
-        return;
-      }
+    // 🔐 Auth guard
+    if (!token) {
+      toast.error("Please login to manage your cart");
+      navigate("/login");
+      return;
+    }
 
-      if (isInCart) {
-        removeFromCart(id);
-        toast.info("Removed from cart");
-        return;
-      }
+    // 🗑 Remove if already in cart
+    if (isInCart) {
+      removeFromCart(id);
+      toast.info("Removed from cart");
+      return;
+    }
 
-      /**
-       * ✅ EXACT PAYLOAD EXPECTED BY Zustand addToCart
-       */
-      addToCart({
-         id,                       // ✅ matches Zustand
-  img,                      // ✅
-  courseDetails: batchName, // ✅ title
-  actualprice: price,       // ✅ final price
-  previousprice: price + discount, // ✅ derived safely
-  discountPercent,
-  amount: discount,         // ✅ discount amount
-  perks,
-  insideCourses: syllabus,
-  examCategory: categoryName,
-      });
-
-      toast.success("Added to cart");
-    },
-    [
-      token,
-      isInCart,
-      id,
-      categoryName,
-      batchName,
-      description,
-      duration,
-      enrollLink,
+    // 🛒 Add to cart (ZUSTAND-COMPATIBLE PAYLOAD)
+    addToCart({
+      id, // ✅ required
+      examCategory: categoryName,
+      courseDetails: batchName,
       img,
+
+      // 💰 pricing (SAFE)
+      actualprice: Number(price) || 0,
+      previousprice: Number(price + (discount || 0)) || Number(price),
+      amount: Number(discount) || 0,
+      discountPercent: Number(discountPercent) || 0,
+
+      // 📚 academic
       perks,
-      price,
-      syllabus,
-      teachers,
-      addToCart,
-      removeFromCart,
-      navigate,
-    ]
-  );
+      insideCourses: syllabus,
+    });
+
+    toast.success("Added to cart");
+  },
+  [
+    token,
+    isInCart,
+    id,
+    categoryName,
+    batchName,
+    img,
+    price,
+    discount,
+    discountPercent,
+    perks,
+    syllabus,
+    addToCart,
+    removeFromCart,
+    navigate,
+  ]
+);
+
 
   return (
     <div className="bg-white rounded-xl shadow-xl flex flex-col h-[600px] transition-transform hover:scale-[1.02]">
@@ -117,43 +120,50 @@ const CoursesCard = ({
           className="w-full h-full object-cover rounded-2xl cursor-pointer"
           onClick={handleNavigate}
         />
-    <div
+       <div
   className="
-    absolute left-1/2 -translate-x-1/2 -bottom-3
-    w-[95%]
+    absolute left-1/2 -translate-x-1/2 -bottom-4
+    w-[94%]
     bg-white
-    px-4 py-2
-    rounded-xl
-    shadow-lg
+    px-4 py-3
+    rounded-2xl
+    shadow-xl
     flex items-center justify-between
     text-sm
-    font-semibold
   "
 >
-  {/* Discount */}
-  <div className="flex items-center gap-1 text-green-600">
-    <span className="text-base font-bold">{discountPercent}%</span>
-    <span className="uppercase tracking-wide">OFF</span>
+  {/* DISCOUNT BADGE */}
+  <div className="flex flex-col items-start">
+    <span className="text-xs text-gray-400 uppercase tracking-wide">
+      Discount
+    </span>
+    <div className="flex items-center gap-1 text-red-600 font-bold">
+      <span className="text-lg">{discountPercent}%</span>
+      <span className="text-xs uppercase">OFF</span>
+    </div>
   </div>
 
-  {/* You Save */}
-  <div className="text-sm text-gray-500">
-    Save
-    <span className="ml-1 font-semibold text-green-600">
-      ₹{discount}
+  {/* PREVIOUS PRICE */}
+  <div className="flex flex-col items-center">
+    <span className="text-xs text-gray-400 uppercase tracking-wide">
+      MRP
     </span>
-  </div>
-
-  {/* Final Price */}
-  <div className="text-right flex items-center gap-2">
-    <span className="block text-xs text-gray-400">
-      Final Price :
-    </span>
-    <span className="text-lg font-bold text-[var(--primary-color)]">
+    <span className="text-sm text-gray-500 line-through font-medium">
       ₹{price}
     </span>
   </div>
+
+  {/* FINAL PRICE */}
+  <div className="flex flex-col items-end">
+    <span className="text-xs text-gray-400 uppercase tracking-wide">
+      Pay Now
+    </span>
+    <span className="text-xl font-extrabold text-[var(--primary-color)] leading-none">
+      ₹{discount}
+    </span>
+  </div>
 </div>
+
 
 
       </div>

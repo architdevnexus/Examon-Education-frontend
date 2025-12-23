@@ -37,7 +37,7 @@ const CategoryCourses = ({ category }) => {
       batch?.description?.toLowerCase().includes(keyword)
     );
   }, [batchData, category]);
-
+  console.log(filteredBatches)
   return (
     <div className="mt-8 w-full">
       <motion.h2
@@ -83,18 +83,7 @@ const CategoryCourses = ({ category }) => {
                 animate={{ opacity: 1, scale: 1 }}
                 transition={{ duration: 0.4 }}
               >
-                <CoursesSmallCard
-                  image={batch?.images?.[0]}
-                  courseName={batch?.batchName}
-                  actualPrice={batch?.price}
-                  previousPrice={batch?.price + 1000}
-                  discount={Math.round(
-                    ((batch.price + 1000 - batch.price) /
-                      (batch.price + 1000)) *
-                      100
-                  )}
-                  courseId={batch?._id}
-                />
+                <CoursesSmallCard batch={batch} />
               </motion.div>
             </SwiperSlide>
           ))}

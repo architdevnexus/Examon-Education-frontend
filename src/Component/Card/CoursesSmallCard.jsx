@@ -14,18 +14,18 @@ const CoursesSmallCard = ({ batch }) => {
     []
   );
 
+  /* ------------------ DATA ------------------ */
   const {
     _id,
     batchName,
     price,
+    discount,          // ✅ FIXED
+    discountPercent,   // ✅ FIXED
     images,
     categoryName,
     duration,
     perks,
     syllabus,
-    teachers,
-    description,
-    enrollLink,
   } = batch;
 
   /* ------------------ CART MATCH ------------------ */
@@ -41,33 +41,34 @@ const CoursesSmallCard = ({ batch }) => {
 
   /* ------------------ CART TOGGLE ------------------ */
   const handleCartToggle = useCallback(() => {
+    // 🔐 Auth guard
     if (!token) {
       toast.warning("Please login first to add items to your cart.");
       navigate("/login");
       return;
     }
 
+    // 🗑 Remove
     if (isInCart) {
       removeFromCart(_id);
       toast.info("Course removed from cart.");
       return;
     }
 
-    /**
-     * ✅ EXACT PAYLOAD EXPECTED BY Zustand addToCart
-     */
+    // 🛒 Add (NORMALIZED PAYLOAD)
     addToCart({
-      _id,
-      categoryName,
-      batchName,
-      description,
-      duration,
-      enrollLink,
-      images: images?.length ? images : [],
+      id: _id,
+      examCategory: categoryName,
+      courseDetails: batchName,
+      img: images?.[0] || "",
+
+      actualprice: Number(price) || 0,
+      previousprice: Number(price + (discount || 0)) || Number(price),
+      amount: Number(discount) || 0,
+      discountPercent: Number(discountPercent) || 0,
+
       perks,
-      price,
-      syllabus,
-      teachers,
+      insideCourses: syllabus,
     });
 
     toast.success("Course added to cart!");
@@ -77,27 +78,19 @@ const CoursesSmallCard = ({ batch }) => {
     _id,
     categoryName,
     batchName,
-    description,
-    duration,
-    enrollLink,
     images,
-    perks,
     price,
+    discount,
+    discountPercent,
+    perks,
     syllabus,
-    teachers,
     addToCart,
     removeFromCart,
     navigate,
   ]);
 
   return (
-    <div
-      className="
-        flex flex-col bg-white rounded-2xl shadow-md hover:shadow-xl 
-        transition-all duration-300 overflow-hidden
-        h-[360px]
-      "
-    >
+    <div className="flex flex-col bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden h-[360px]">
       {/* IMAGE */}
       <div className="relative w-full h-40">
         <img
@@ -115,48 +108,38 @@ const CoursesSmallCard = ({ batch }) => {
 
       {/* CONTENT */}
       <div className="flex flex-col flex-grow p-4">
-        {/* Title */}
         <h3
-          className="text-black text-base sm:text-lg font-semibold 
-          line-clamp-2 min-h-[48px]"
+          className="text-black text-base sm:text-lg font-semibold line-clamp-2 min-h-[48px]"
           title={batchName}
         >
           {batchName}
         </h3>
 
-        {/* Meta Info */}
         <p className="text-xs text-gray-500 mt-1 line-clamp-1">
           {perks} • {duration}
         </p>
 
-        {/* Pricing */}
         <div className="mt-3 mb-2">
           <span className="text-black font-bold text-lg sm:text-xl">
             ₹{price}
           </span>
         </div>
 
-        {/* BUTTONS */}
         <div className="mt-auto flex items-center gap-2 pt-4 h-[48px]">
           <button
             onClick={handleExplore}
-            className="bg-[var(--primary-color)] text-white px-4 py-2 
-                       rounded-lg font-semibold transition w-1/2"
+            className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg font-semibold transition w-1/2"
           >
             Explore
           </button>
 
           <button
             onClick={handleCartToggle}
-            className={`
-              flex items-center justify-center gap-2 px-2 py-2 
-              rounded-lg font-semibold transition w-1/2
-              ${
-                isInCart
-                  ? "bg-red-500 text-white hover:bg-red-600"
-                  : "border border-[var(--primary-color)] text-[var(--primary-color)] hover:bg-[var(--tertiary-color)]"
-              }
-            `}
+            className={`flex items-center justify-center gap-2 px-2 py-2 rounded-lg font-semibold transition w-1/2 ${
+              isInCart
+                ? "bg-red-500 text-white hover:bg-red-600"
+                : "border border-[var(--primary-color)] text-[var(--primary-color)] hover:bg-[var(--tertiary-color)]"
+            }`}
           >
             {isInCart ? (
               <>
