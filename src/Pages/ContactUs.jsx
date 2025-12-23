@@ -17,7 +17,7 @@ const ContactUs = () => {
       const aboutContact = useMemo(() => {
         return banners?.[0]?.contactBanner?.[0]?.url || "";
       }, [banners]);
-      console.log(aboutContact)
+      // console.log(aboutContact)
 
   return (
     <div className="flex flex-col w-full min-h-screen bg-white overflow-hidden">

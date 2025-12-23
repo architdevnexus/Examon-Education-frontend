@@ -48,10 +48,9 @@ const NotificationPopup = ({ items = [], onClose }) => {
 
   onClose();
 
-  setTimeout(() => {
-    window.open(`/${item.link}`, "_blank", "noopener,noreferrer");
-  }, 200);
+  window.open(item.link, "_blank", "noopener,noreferrer");
 };
+
 
 
   return (
@@ -89,7 +88,7 @@ const NotificationPopup = ({ items = [], onClose }) => {
 
           {/* Layout (responsive) */}
           <div className="flex flex-col-reverse md:flex-row items-center gap-4 sm:gap-6">
-            
+
             {/* Text Section */}
             <div className="flex flex-col gap-2 sm:gap-3 flex-1 text-center md:text-left">
               <h3 className="text-xs sm:text-sm text-gray-300 uppercase tracking-widest">
