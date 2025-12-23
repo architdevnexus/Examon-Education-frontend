@@ -14,8 +14,8 @@ export const useQuizStore = create((set) => ({
       const token = saved?.state?.token;     // adjust if your structure is different
       const userId = saved?.state?.userId;
 
-      console.log("TOKEN:", token);
-      console.log("USER ID:", userId);
+      // console.log("TOKEN:", token);
+      // console.log("USER ID:", userId);
 
       if (!token || !userId) {
         throw new Error("Token or UserId missing from localStorage");

@@ -8,7 +8,7 @@ export const useNotificationStore = create((set, get) => ({
 
   initSocket: async () => {
     if (get().listenersAttached) {
-      console.log("⚠️ Listeners already attached");
+      // console.log("⚠️ Listeners already attached");
       return;
     }
 
@@ -18,7 +18,7 @@ export const useNotificationStore = create((set, get) => ({
     // STEP 1: Fetch Initial Data
     // --------------------------
     try {
-      console.log("📡 Fetching initial notifications...");
+      // console.log("📡 Fetching initial notifications...");
       const res = await fetch(
         "https://backend.mastersaab.co.in/api/notifications/discount/latest"
       );

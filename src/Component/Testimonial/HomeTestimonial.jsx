@@ -23,7 +23,7 @@ const HomeTestimonial = () => {
     [reviewData]
   );
 
-  console.log(approvedReviews)
+  // console.log(approvedReviews)
   // 🎬 Animation Variants
   const textVariant = {
     hidden: { opacity: 0, y: 40 },

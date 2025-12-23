@@ -8,40 +8,60 @@ import { useBlogStore } from "../Zustand/GetBlog";
 const CoursesYouLike = lazy(() => import("../Component/CoursesYouLike"));
 
 const DynamicBlog = () => {
-  const { id } = useParams(); // id of the blog
+  const { id } = useParams();
   const navigate = useNavigate();
   const { blogData: allBlogs = [], fetchBlogs, loading } = useBlogStore();
 
-  // Fetch blogs only if not already loaded
   useEffect(() => {
-    if (allBlogs.length === 0 && !loading) {
+    if (!loading && allBlogs.length === 0) {
       fetchBlogs();
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(allBlogs)
-  // 🔑 Find the blog by ID inside all categories
+
   const blog = useMemo(() => {
     if (!Array.isArray(allBlogs?.categories)) return null;
 
     for (const category of allBlogs.categories) {
       if (!Array.isArray(category.blogs)) continue;
 
-      const found = category.blogs.find(
-        (b) => b._id === id
-      );
-
+      const found = category.blogs.find(b => b._id === id);
       if (found) {
         return {
           ...found,
-          category: category.blogCategory, // attach category name
+          category: category.blogCategory,
         };
       }
     }
-
     return null;
   }, [allBlogs, id]);
 
+  // ✅ ALWAYS call hooks before returns
+  const styledHTML = useMemo(() => {
+    if (!blog?.blogContent) return "";
+
+    const clean = DOMPurify.sanitize(blog.blogContent);
+
+    return clean
+      .replaceAll(
+        /<table([^>]*)>/g,
+        '<div class="overflow-x-auto my-6"><table$1 class="min-w-full text-sm border border-gray-300 rounded-xl shadow-md">'
+      )
+      .replaceAll(/<\/table>/g, "</table></div>")
+      .replaceAll(/<thead>/g, '<thead class="bg-gray-100">')
+      .replaceAll(/<tbody>/g, '<tbody class="divide-y">')
+      .replaceAll(/<tr>/g, '<tr class="hover:bg-gray-50">')
+      .replaceAll(/<td([^>]*)>/g, '<td$1 class="px-4 py-3 border-b">')
+      .replaceAll(/<th([^>]*)>/g, '<th$1 class="px-4 py-3 border-b font-medium">')
+      .replaceAll(/<ul>/g, '<ul class="list-disc pl-6 space-y-2">')
+      .replaceAll(/<ol>/g, '<ol class="list-decimal pl-6 space-y-2">')
+      .replaceAll(/<p>/g, '<p class="mb-4 leading-relaxed">')
+      .replaceAll(/<h2([^>]*)>/g, '<h2$1 class="text-2xl font-semibold mt-8 mb-4">')
+      .replaceAll(/<h3([^>]*)>/g, '<h3$1 class="text-xl font-semibold mt-6 mb-3">')
+      .replaceAll(/<a([^>]*)>/g, '<a$1 class="text-blue-600 hover:underline">');
+  }, [blog]);
+
+  // ✅ Safe conditional return AFTER hooks
   if (loading || !blog) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-50">
@@ -51,45 +71,6 @@ const DynamicBlog = () => {
       </div>
     );
   }
-
-  // Sanitize and style HTML
-  const styledHTML = useMemo(() => {
-    if (!blog.blogContent) return "";
-    const clean = DOMPurify.sanitize(blog.blogContent);
-
-    return clean
-      .replaceAll(
-        /<table([^>]*)>/g,
-        '<div class="overflow-x-auto my-6"><table$1 class="min-w-full text-sm text-left border border-gray-300 rounded-xl overflow-hidden shadow-md">'
-      )
-      .replaceAll(/<\/table>/g, "</table></div>")
-      .replaceAll(/<thead>/g, '<thead class="bg-gray-100 text-gray-800 font-semibold">')
-      .replaceAll(/<tbody>/g, '<tbody class="divide-y divide-gray-200">')
-      .replaceAll(/<tr>/g, '<tr class="hover:bg-gray-50 transition-colors">')
-      .replaceAll(
-        /<td([^>]*)>/g,
-        '<td$1 class="px-4 py-3 border-b border-gray-200 text-gray-700 whitespace-nowrap">'
-      )
-      .replaceAll(
-        /<th([^>]*)>/g,
-        '<th$1 class="px-4 py-3 border-b border-gray-300 text-gray-900 font-medium bg-gray-50 whitespace-nowrap">'
-      )
-      .replaceAll(/<ul>/g, '<ul class="list-disc pl-6 space-y-2 text-gray-700">')
-      .replaceAll(/<ol>/g, '<ol class="list-decimal pl-6 space-y-2 text-gray-700">')
-      .replaceAll(/<p>/g, '<p class="text-gray-700 leading-relaxed mb-4">')
-      .replaceAll(
-        /<h2([^>]*)>/g,
-        '<h2$1 class="text-2xl font-semibold text-gray-900 mt-8 mb-4 border-l-4 border-blue-600 pl-3">'
-      )
-      .replaceAll(
-        /<h3([^>]*)>/g,
-        '<h3$1 class="text-xl font-semibold text-gray-900 mt-6 mb-3">'
-      )
-      .replaceAll(
-        /<a([^>]*)>/g,
-        '<a$1 class="text-blue-600 font-medium hover:underline">'
-      );
-  }, [blog.blogContent]);
 
   return (
     <motion.section

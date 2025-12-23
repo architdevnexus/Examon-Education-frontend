@@ -107,7 +107,7 @@ const HomeSlider = () => {
     );
 
   const batch = batchData[current];
-console.log(batch)
+// console.log(batch)
   return (
     <div className="p-2">
       <div

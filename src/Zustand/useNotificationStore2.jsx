@@ -13,7 +13,7 @@ export const useNotificationStore2 = create((set, get) => ({
 
   initSocket: async () => {
     if (get().listenersAttached) {
-      console.log("⚠️ Listeners already attached");
+      // console.log("⚠️ Listeners already attached");
       return;
     }
 
@@ -23,7 +23,7 @@ export const useNotificationStore2 = create((set, get) => ({
     // STEP 1: Fetch Initial Data
     // --------------------------
     try {
-      console.log("📡 Fetching popup notifications...");
+      // console.log("📡 Fetching popup notifications...");
       const res = await fetch(
         "https://backend.mastersaab.co.in/api/notification/latest"
       );
@@ -45,7 +45,7 @@ export const useNotificationStore2 = create((set, get) => ({
     socket.off(); // 🔥 prevents duplicate listeners
 
     socket.on("connect", () => {
-      console.log("⚡ Socket connected:", socket.id);
+      // console.log("⚡ Socket connected:", socket.id);
       set({ socketConnected: true });
     });
 

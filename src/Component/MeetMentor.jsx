@@ -17,7 +17,7 @@ const MeetMentor = () => {
     fetchMentors();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
-  console.log(mentorData)
+  // console.log(mentorData)
   return (
     <section className="w-full py-16 bg-gradient-to-b from-gray-50 to-white overflow-hidden">
       <div className="max-w-7xl mx-auto px-4 flex flex-col md:flex-row md:items-center md:justify-between gap-12">

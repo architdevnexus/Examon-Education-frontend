@@ -18,7 +18,7 @@ const HeaderNotification = () => {
       </div>
     );
   }
-console.log(notifications)
+// console.log(notifications)
   return (
     <div className="w-full bg-[var(--primary-color)] text-white py-[5px] overflow-hidden border-b border-white/10 shadow-lg backdrop-blur-sm">
       <div className="marquee flex gap-8">

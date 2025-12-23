@@ -102,7 +102,7 @@ const StudyMaterial = () => {
     setPage(1);
     setCategoryFilter("All");
   }, [viewMode, search]);
-console.log(currentData)
+// console.log(currentData)
   return (
     <div className="relative flex flex-col gap-6 p-4 md:py-6 mb-14">
       <main className="flex-1 flex flex-col gap-6">

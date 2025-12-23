@@ -7,7 +7,7 @@ let socket;
 
 export const getSocket = () => {
   if (!socket) {
-    console.log("🌐 Creating socket instance");
+    // console.log("🌐 Creating socket instance");
 
     socket = io(SOCKET_URL, {
       transports: ["polling", "websocket"], // fallback enabled

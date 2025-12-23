@@ -37,7 +37,7 @@ const Courses = () => {
   useEffect(() => {
     fetchBatches();
   }, [fetchBatches]);
-console.log(batchData)
+// console.log(batchData)
   const [banner, setbanner] = useState()
   const { fetchBanners, banners } = useBanners();
   useEffect(() => {
@@ -48,7 +48,7 @@ console.log(batchData)
   const aboutBannerUrl = useMemo(() => {
     return banners?.[0]?.courseBanner?.[0]?.url || "";
   }, [banners]);
-  console.log(banners?.[0])
+  // console.log(banners?.[0])
 
   /* -------------------- DEBOUNCE SEARCH -------------------- */
   useEffect(() => {
