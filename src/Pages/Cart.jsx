@@ -7,29 +7,32 @@ import { useCourseStore } from "../Zustand/GetAllCourses";
 const Cart = () => {
   const navigate = useNavigate();
   const { cart, removeFromCart } = useCourseStore();
-
+console.log(cart)
   /* ------------------ PRICE CALCULATIONS ------------------ */
-  const subtotal = useMemo(
-    () => cart.reduce((sum, item) => sum + Number(item.price || 0), 0),
-    [cart]
-  );
+  const { subtotal, totalDiscount, totalAmount } = useMemo(() => {
+    let subtotal = 0;
+    let totalDiscount = 0;
 
-  const discountPercent = useMemo(() => {
-    if (cart.length >= 3) return 20;
-    if (cart.length === 2) return 15;
-    if (cart.length === 1) return 10;
-    return 0;
-  }, [cart.length]);
+    cart.forEach((item) => {
+      const price = Number(item.price || 0);
+      const discount = Number(item.discount || 0);
+      const percent = Number(item.discountPercent || 0);
 
-  const discountAmount = useMemo(
-    () => (subtotal * discountPercent) / 100,
-    [subtotal, discountPercent]
-  );
+      subtotal += price;
 
-  const totalAmount = useMemo(
-    () => subtotal - discountAmount,
-    [subtotal, discountAmount]
-  );
+      if (discount > 0) {
+        totalDiscount += discount;
+      } else if (percent > 0) {
+        totalDiscount += (price * percent) / 100;
+      }
+    });
+
+    return {
+      subtotal,
+      totalDiscount,
+      totalAmount: subtotal - totalDiscount,
+    };
+  }, [cart]);
 
   /* ------------------ CHECKOUT ------------------ */
   const handleCheckout = () => {
@@ -75,23 +78,30 @@ const Cart = () => {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h1 className="text-sm font-bold text-gray-800 mb-8">
+      <h1 className="text-xl font-bold text-gray-800 mb-8">
         Your Cart ({cart.length})
       </h1>
 
-      <div className="flex flex-col lg:flex-row  gap-8">
+      <div className="flex flex-col lg:flex-row gap-8">
         {/* ---------------- CART ITEMS ---------------- */}
-        <div className="flex-1 max-h-96 h-full overflow-scroll space-y-6">
+        <div className="flex-1 space-y-6 max-h-[70vh] overflow-auto pr-1">
           <AnimatePresence>
             {cart.map((item) => {
-              const courseId = item._id || item.id;
+              const id = item._id || item.id;
               const image = item.image || item.images?.[0] || "";
               const title = item.batchName || item.title || "Course";
               const price = Number(item.price || 0);
 
+              const finalPrice =
+                item.discount > 0
+                  ? price - item.discount
+                  : item.discountPercent > 0
+                  ? price - (price * item.discountPercent) / 100
+                  : price;
+
               return (
                 <motion.div
-                  key={courseId}
+                  key={id}
                   layout
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -117,27 +127,22 @@ const Cart = () => {
                       </p>
                     )}
 
-                    {item.perks && (
-                      <p className="text-sm text-gray-600">
-                        <strong>Perks:</strong> {item.perks}
-                      </p>
-                    )}
-
-                    {item.teachers?.length > 0 && (
-                      <p className="text-sm text-gray-600">
-                        <strong>Faculty:</strong>{" "}
-                        {item.teachers.join(", ")}
-                      </p>
-                    )}
-
-                    <span className="text-2xl font-bold text-gray-900 block mt-2">
-                      ₹{price}
-                    </span>
+                    {/* Price */}
+                    <div className="mt-2">
+                      {(item.discount > 0 || item.discountPercent > 0) && (
+                        <span className="text-sm text-gray-400 line-through mr-2">
+                          ₹{price}
+                        </span>
+                      )}
+                      <span className="text-2xl font-bold text-gray-900">
+                        ₹{finalPrice.toFixed(0)}
+                      </span>
+                    </div>
                   </div>
 
                   {/* Remove */}
                   <button
-                    onClick={() => removeFromCart(courseId)}
+                    onClick={() => removeFromCart(id)}
                     className="flex items-center gap-2 text-sm text-red-500 hover:text-red-600 self-end sm:self-center"
                   >
                     <FiTrash2 /> Remove
@@ -166,11 +171,11 @@ const Cart = () => {
               </div>
 
               <div className="flex justify-between text-green-600">
-                <span>Discount ({discountPercent}%)</span>
-                <span>- ₹{discountAmount.toFixed(2)}</span>
+                <span>Total Discount</span>
+                <span>- ₹{totalDiscount.toFixed(2)}</span>
               </div>
 
-              <div className="border-t pt-4 flex justify-between text-lg font-bold text-gray-900">
+              <div className="border-t pt-4 flex justify-between text-lg font-bold">
                 <span>Total</span>
                 <span>₹{totalAmount.toFixed(2)}</span>
               </div>

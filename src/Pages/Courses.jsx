@@ -37,7 +37,7 @@ const Courses = () => {
   useEffect(() => {
     fetchBatches();
   }, [fetchBatches]);
-
+console.log(batchData)
   const [banner, setbanner] = useState()
   const { fetchBanners, banners } = useBanners();
   useEffect(() => {
@@ -199,6 +199,8 @@ const Courses = () => {
                       teachers={course.teachers || []}
                       perks={course.perks}
                       enrollLink={course.enrollLink}
+                      discountPercent={course?.discountPercent}
+                      discount={course?.discount}
                     />
                   </motion.div>
                 ))

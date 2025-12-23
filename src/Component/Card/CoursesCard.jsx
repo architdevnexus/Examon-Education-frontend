@@ -13,6 +13,8 @@ const CoursesCard = ({
   batchName,
   duration,
   price,
+  discount,
+  discountPercent,
   description = "",
   syllabus,
   teachers = [],
@@ -70,17 +72,16 @@ const CoursesCard = ({
        * ✅ EXACT PAYLOAD EXPECTED BY Zustand addToCart
        */
       addToCart({
-        _id: id,
-        categoryName,
-        batchName,
-        description,
-        duration,
-        enrollLink,
-        images: img ? [img] : [],
-        perks,
-        price,
-        syllabus,
-        teachers,
+         id,                       // ✅ matches Zustand
+  img,                      // ✅
+  courseDetails: batchName, // ✅ title
+  actualprice: price,       // ✅ final price
+  previousprice: price + discount, // ✅ derived safely
+  discountPercent,
+  amount: discount,         // ✅ discount amount
+  perks,
+  insideCourses: syllabus,
+  examCategory: categoryName,
       });
 
       toast.success("Added to cart");
@@ -116,10 +117,45 @@ const CoursesCard = ({
           className="w-full h-full object-cover rounded-2xl cursor-pointer"
           onClick={handleNavigate}
         />
-        <div className="absolute flex justify-between w-[98%] mx-auto left-1 -bottom-2 bg-white px-4 py-1 rounded-lg font-bold shadow">
-          <span>Price:</span>
-          <span>₹{price} /only</span>
-        </div>
+    <div
+  className="
+    absolute left-1/2 -translate-x-1/2 -bottom-3
+    w-[95%]
+    bg-white
+    px-4 py-2
+    rounded-xl
+    shadow-lg
+    flex items-center justify-between
+    text-sm
+    font-semibold
+  "
+>
+  {/* Discount */}
+  <div className="flex items-center gap-1 text-green-600">
+    <span className="text-base font-bold">{discountPercent}%</span>
+    <span className="uppercase tracking-wide">OFF</span>
+  </div>
+
+  {/* You Save */}
+  <div className="text-sm text-gray-500">
+    Save
+    <span className="ml-1 font-semibold text-green-600">
+      ₹{discount}
+    </span>
+  </div>
+
+  {/* Final Price */}
+  <div className="text-right flex items-center gap-2">
+    <span className="block text-xs text-gray-400">
+      Final Price :
+    </span>
+    <span className="text-lg font-bold text-[var(--primary-color)]">
+      ₹{price}
+    </span>
+  </div>
+</div>
+
+
       </div>
 
       {/* CONTENT */}

@@ -3,7 +3,7 @@ import { FaWhatsapp } from "react-icons/fa";
 import { motion } from "framer-motion";
 
 const Whatsapp = () => {
-  const phoneNumber = "+91 8602010101";
+  const phoneNumber = "+91 8368886452";
   const defaultMessage = encodeURIComponent(
     "Hello! I'm interested in your services."
   );

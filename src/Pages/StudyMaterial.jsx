@@ -4,7 +4,7 @@ import { IoClose } from "react-icons/io5";
 import { usePyqStore } from "../Zustand/GetPyq";
 import { useNotesStore } from "../Zustand/GetNotes";
 
-// --- Lazy Loaded Components ---
+// Lazy Components
 const StudyMaterialPageCard = lazy(() =>
   import("../Component/Card/StudyMaterialPageCard")
 );
@@ -12,6 +12,8 @@ const PyqCard = lazy(() => import("../Component/Card/PyqCard"));
 const CoursesYouLike = lazy(() =>
   import("../Component/CoursesYouLike")
 );
+
+const ITEMS_PER_PAGE = 6;
 
 const StudyMaterial = () => {
   const [search, setSearch] = useState("");
@@ -33,9 +35,7 @@ const StudyMaterial = () => {
     fetchPyq();
   }, [fetchNotes, fetchPyq]);
 
-  const itemsPerPage = 6;
-
-  // --- Notes Flatten ---
+  /* ---------------- NOTES FLATTEN ---------------- */
   const allNotes = useMemo(() => {
     if (!Array.isArray(notesData)) return [];
     return notesData.flatMap((cat) =>
@@ -46,12 +46,7 @@ const StudyMaterial = () => {
     );
   }, [notesData]);
 
-  const categories = useMemo(() => {
-    if (!Array.isArray(notesData)) return ["All"];
-    return ["All", ...new Set(notesData.map((n) => n.notesCategory))];
-  }, [notesData]);
-
-  // --- PYQ Flatten ---
+  /* ---------------- PYQ FLATTEN ---------------- */
   const allPyq = useMemo(() => {
     if (!Array.isArray(pyqData)) return [];
     return pyqData.flatMap((grp) =>
@@ -62,7 +57,13 @@ const StudyMaterial = () => {
     );
   }, [pyqData]);
 
-  // --- Filters ---
+  /* ---------------- DYNAMIC CATEGORIES ---------------- */
+  const categories = useMemo(() => {
+    const source = viewMode === "notes" ? allNotes : allPyq;
+    return ["All", ...new Set(source.map((i) => i.category))];
+  }, [viewMode, allNotes, allPyq]);
+
+  /* ---------------- FILTERED NOTES ---------------- */
   const filteredNotes = useMemo(() => {
     return allNotes.filter((item) => {
       const matchSearch = item.title
@@ -75,26 +76,37 @@ const StudyMaterial = () => {
     });
   }, [allNotes, search, categoryFilter]);
 
+  /* ---------------- FILTERED PYQ (FIXED ✅) ---------------- */
   const filteredPyq = useMemo(() => {
-    return allPyq.filter((item) =>
-      item.title?.toLowerCase().includes(search.toLowerCase())
-    );
-  }, [allPyq, search]);
+    return allPyq.filter((item) => {
+      const matchSearch = item.title
+        ?.toLowerCase()
+        .includes(search.toLowerCase());
+      const matchCategory =
+        categoryFilter === "All" ||
+        item.category === categoryFilter;
+      return matchSearch && matchCategory;
+    });
+  }, [allPyq, search, categoryFilter]);
 
   const currentData =
     viewMode === "notes" ? filteredNotes : filteredPyq;
 
-  const totalPages = Math.ceil(currentData.length / itemsPerPage);
+  const totalPages = Math.ceil(currentData.length / ITEMS_PER_PAGE);
   const paginatedData = currentData.slice(
-    (page - 1) * itemsPerPage,
-    page * itemsPerPage
+    (page - 1) * ITEMS_PER_PAGE,
+    page * ITEMS_PER_PAGE
   );
 
-  useEffect(() => setPage(1), [search, categoryFilter, viewMode]);
-
+  useEffect(() => {
+    setPage(1);
+    setCategoryFilter("All");
+  }, [viewMode, search]);
+console.log(currentData)
   return (
     <div className="relative flex flex-col gap-6 p-4 md:py-6 mb-14">
       <main className="flex-1 flex flex-col gap-6">
+
         {/* HEADER */}
         <header className="relative flex flex-col gap-3 text-white rounded-2xl bg-[var(--primary-color)] p-5 shadow-lg">
           <div className="flex justify-between items-center flex-wrap gap-3">
@@ -113,9 +125,9 @@ const StudyMaterial = () => {
                 <span className="hidden sm:inline">Filters</span>
               </button>
 
-              {/* Dropdown Filter */}
-              {showFilter && viewMode === "notes" && (
-                <div className="absolute  cursor-pointer right-0 top-12 w-64 bg-white rounded-xl shadow-lg p-4 z-50">
+              {/* Filter Dropdown */}
+              {showFilter && (
+                <div className="absolute right-0 top-12 w-64 bg-white rounded-xl shadow-lg p-4 z-50">
                   <div className="flex justify-between items-center mb-3">
                     <h4 className="text-sm font-semibold text-gray-700">
                       Filters
@@ -130,10 +142,8 @@ const StudyMaterial = () => {
                   </label>
                   <select
                     value={categoryFilter}
-                    onChange={(e) =>
-                      setCategoryFilter(e.target.value)
-                    }
-                    className="w-full border text-(--primary-color) rounded-lg p-2"
+                    onChange={(e) => setCategoryFilter(e.target.value)}
+                    className="w-full border cursor-pointer bg-(--primary-color) rounded-lg p-2"
                   >
                     {categories.map((c) => (
                       <option key={c}>{c}</option>
@@ -142,7 +152,7 @@ const StudyMaterial = () => {
                 </div>
               )}
 
-              {/* Notes / PYQ Toggle */}
+              {/* Toggle */}
               <div className="flex bg-gray-300 rounded-xl overflow-hidden">
                 {["notes", "pyq"].map((m) => (
                   <button
@@ -178,17 +188,11 @@ const StudyMaterial = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center gap-2">
-            <button
-              disabled={page === 1}
-              onClick={() => setPage((p) => p - 1)}
-            >
+          <div className="flex justify-center gap-3">
+            <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>
               Prev
             </button>
-            <button
-              disabled={page === totalPages}
-              onClick={() => setPage((p) => p + 1)}
-            >
+            <button disabled={page === totalPages} onClick={() => setPage(p => p + 1)}>
               Next
             </button>
           </div>

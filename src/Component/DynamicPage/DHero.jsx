@@ -160,7 +160,7 @@ const DHero = ({
           <motion.button
             whileHover={{ scale: 1.05 }}
             onClick={onEnroll}
-            className="flex items-center gap-3 px-6 py-3 bg-[var(--primary-color)] text-white rounded-full font-semibold shadow-md hover:shadow-lg transition-all"
+            className="flex cursor-pointer items-center gap-3 px-6 py-3 bg-[var(--primary-color)] text-white rounded-full font-semibold shadow-md hover:shadow-lg transition-all"
           >
             Enroll Now
             <span className="p-2 rounded-full bg-gray-200 text-[var(--primary-color)]">

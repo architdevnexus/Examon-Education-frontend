@@ -35,11 +35,11 @@ export const useCourseStore = create((set, get) => ({
           img: course.img,
           actualprice: course.actualprice,
           previousprice: course.previousprice,
-          percent: course.percent,
+          discountPercent: course.discountPercent,
           courseDetails: course.title,
           insideCourses: course.insideCourses,
           perks: course.perks,
-          Discount: course.Discount,
+          percent: course.percent,
           amount: course.amount,
           examCategory: category.examCategory,
         }))
@@ -84,48 +84,46 @@ export const useCourseStore = create((set, get) => ({
     const { totalPages } = get();
     if (page >= 1 && page <= totalPages) set({ currentPage: page });
   },
-  // --- ADD TO CART (BACKEND COURSE → CART SNAPSHOT) ---
-  addToCart: (course) => {
-    if (!course || !course._id) {
-      console.error("Invalid backend course data");
-      return;
-    }
+  // --- ADD TO CART ---
+addToCart: (course) => {
+  if (!course || !course.id) {
+    console.error("Invalid course data");
+    return;
+  }
 
-    const { cart } = get();
+  const { cart } = get();
 
-    const exists = cart.some((item) => item.id === course._id);
-    if (exists) return;
+  const exists = cart.some((item) => item.id === course.id);
+  if (exists) return;
 
-    const cartItem = {
-      // IDs
-      id: course._id,
-      categoryName: course.categoryName,
+  const cartItem = {
+    // IDs
+    id: course.id,
+    categoryName: course.examCategory,
 
-      // Display
-      title: course.batchName,
-      image: course.images?.[0] || null,
-      description: course.description,
+    // Display
+    title: course.courseDetails,
+    image: course.img,
+    
+    // Pricing (✅ FIXED)
+    price: course.actualprice,
+    previousprice: course.previousprice,
+    discount: course.amount || 0,                // ✅ WORKS
+    discountPercent: course.discountPercent || 0, // ✅ WORKS
 
-      // Pricing
-      price: course.price,
+    // Academic
+    perks: course.perks,
+    insideCourses: course.insideCourses,
 
-      // Academic
-      teachers: course.teachers,
-      syllabus: course.syllabus,
-      perks: course.perks,
+    // Meta
+    addedAt: Date.now(),
+  };
 
-      // Enrollment
-      enrollLink: course.enrollLink,
-      duration: course.duration,
+  const updatedCart = [...cart, cartItem];
+  localStorage.setItem("cart", JSON.stringify(updatedCart));
+  set({ cart: updatedCart });
+},
 
-      // Meta
-      addedAt: Date.now(),
-    };
-
-    const updatedCart = [...cart, cartItem];
-    localStorage.setItem("cart", JSON.stringify(updatedCart));
-    set({ cart: updatedCart });
-  },
 
 
 
