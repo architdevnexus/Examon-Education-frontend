@@ -99,7 +99,7 @@ const UserProfile = () => {
     <div className="min-h-screen mb-18 py-8 px-4 md:px-10 relative">
       {/* HEADER */}
       <header className="flex items-center justify-between mb-8 border-b pb-3">
-        <h1 className="text-3xl md:text-4xl font-bold text-gray-800 tracking-tight">
+        <h1 className="text-xl font-bold text-gray-800 tracking-tight">
           My Profile
         </h1>
         <div className="flex items-center gap-3">
@@ -116,7 +116,7 @@ const UserProfile = () => {
             className="px-3 py-2 gap-3 cursor-pointer flex items-center text-gray-800 rounded-md border bg-gray-100 hover:bg-gray-200 focus:ring-2 focus:ring-gray-400 transition-all"
             title="Change Password"
           >
-            Change Password <RiLockPasswordLine />
+            <span className="hidden md:block">Change Password</span> <RiLockPasswordLine />
           </button>
         </div>
       </header>

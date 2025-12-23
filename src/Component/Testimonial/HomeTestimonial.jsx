@@ -22,6 +22,8 @@ const HomeTestimonial = () => {
     () => reviewData?.filter((r) => r.status === "approved"),
     [reviewData]
   );
+
+  console.log(approvedReviews)
   // 🎬 Animation Variants
   const textVariant = {
     hidden: { opacity: 0, y: 40 },

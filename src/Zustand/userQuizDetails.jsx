@@ -34,7 +34,7 @@ export const useQuizStore = create((set) => ({
       );
 
       const result = await response.json();
-      console.log("Quiz API Response:", result);
+      // console.log("Quiz API Response:", result);
 
       if (!response.ok) {
         throw new Error(result?.message || "Failed to fetch quiz");

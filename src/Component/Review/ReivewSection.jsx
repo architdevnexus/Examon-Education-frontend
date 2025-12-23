@@ -33,11 +33,12 @@ export const ReviewSection = () => {
       return "Anonymous";
     }
   }, []);
+  
 
   const profileImage = userData?.[0]?.profileImage || "";
 
   /* ---------------- HANDLERS ---------------- */
-  const handleSubmit = async (e) => {
+const handleSubmit = async (e) => {
   e.preventDefault();
 
   if (!isAuthenticated || !token) {
@@ -57,12 +58,9 @@ export const ReviewSection = () => {
     formData.append("clientname", userName);
     formData.append("star", rating);
     formData.append("review", reviewText.trim());
-    formData.append("course", selectedBatch); 
-
-    // image file (must be File object)
-    if (profileImage instanceof File) {
-      formData.append("profilePicture", profileImage);
-    }
+    formData.append("course", selectedBatch);
+    formData.append("profilePicture", profileImage);
+  
 
     await axios.post(
       "https://backend.mastersaab.co.in/api/review/create",
@@ -70,7 +68,6 @@ export const ReviewSection = () => {
       {
         headers: {
           Authorization: `Bearer ${token}`,
-          
         },
       }
     );
@@ -85,6 +82,7 @@ export const ReviewSection = () => {
     setLoading(false);
   }
 };
+
 
 
   /* ---------------- UI ---------------- */
