@@ -79,9 +79,9 @@ const Cart = () => {
         Your Cart ({cart.length})
       </h1>
 
-      <div className="flex flex-col lg:flex-row gap-8">
+      <div className="flex flex-col lg:flex-row  gap-8">
         {/* ---------------- CART ITEMS ---------------- */}
-        <div className="flex-1 space-y-6">
+        <div className="flex-1 max-h-96 h-full overflow-scroll space-y-6">
           <AnimatePresence>
             {cart.map((item) => {
               const courseId = item._id || item.id;
