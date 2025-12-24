@@ -23,7 +23,7 @@ const DynamicTest = ({ quizData }) => {
         }))
       );
 
-      const totalSeconds = quizData.timer || 5 * 60;
+      const totalSeconds = quizData.duration || 5 * 60;
       setTimeLeft(totalSeconds);
     }
   }, [quizData]);

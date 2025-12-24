@@ -154,7 +154,7 @@ const Cart = () => {
                   {/* Remove */}
                   <button
                     onClick={() => removeFromCart(id)}
-                    className="flex items-center gap-2 text-sm text-red-500 hover:text-red-600 self-end sm:self-center"
+                    className="flex items-center gap-2 cursor-pointer text-sm text-red-500 hover:text-red-600 self-end sm:self-center"
                   >
                     <FiTrash2 /> Remove
                   </button>
@@ -200,14 +200,14 @@ const Cart = () => {
               whileHover={{ scale: 1.02 }}
               whileTap={{ scale: 0.97 }}
               onClick={handleCheckout}
-              className="mt-6 w-full bg-[var(--primary-color)] text-white py-3 rounded-full font-semibold shadow-md"
+              className="mt-6 w-full cursor-pointer bg-[var(--primary-color)] text-white py-3 rounded-full font-semibold shadow-md"
             >
               Proceed to Checkout
             </motion.button>
 
             <button
               onClick={() => navigate("/courses")}
-              className="mt-3 w-full border border-[var(--primary-color)] text-[var(--primary-color)] py-3 rounded-full font-semibold hover:bg-[var(--tertiary-color)] transition"
+              className="mt-3 w-full cursor-pointer border border-[var(--primary-color)] text-[var(--primary-color)] py-3 rounded-full font-semibold hover:bg-[var(--tertiary-color)] transition"
             >
               Continue Exploring
             </button>
