@@ -1,131 +1,168 @@
-export default function Refund() {
-  const refundPolicy = `
-Examon Course – Refund & Cancellation Policy
-Last Updated: January 2025
+import React from "react";
 
-We appreciate your trust in Examon Course. This Refund Policy explains the rules, conditions, and eligibility for refunds on course purchases made on our educational platform.
 
-------------------------------------------
-1. General Refund Terms
-------------------------------------------
-• All purchases made on Examon Course are final.  
-• Refunds are provided only under specific conditions mentioned below.  
-• Refunds, if approved, will be processed to the original payment method.  
-• Processing time may take 7–14 working days depending on the payment gateway.
+export default function RefundPolicy() {
 
-------------------------------------------
-2. Refund Eligibility
-------------------------------------------
-You may be eligible for a refund only if:
-
-• You purchased the wrong course by mistake AND have not accessed more than 10% of the content.  
-• There were technical issues on our platform that prevented course access for more than 48 hours.  
-• Duplicate payments were made due to gateway errors.  
-
-Refunds will NOT be granted if:
-
-• The course has been accessed or used significantly.  
-• You completed a large portion of content, tests, or downloaded materials.  
-• You changed your mind or no longer wish to study the course.  
-• Your exam plans changed or you failed the exam.  
-• Course access expired due to non-usage.
-
-------------------------------------------
-3. Non-Refundable Items
-------------------------------------------
-The following are strictly non-refundable:
-
-• Subscription plans after activation  
-• Mock tests once attempted  
-• Downloadable PDFs, study materials, or notes  
-• Offers, bundles, and discounted packages  
-• Courses purchased through special promotions  
-
-------------------------------------------
-4. Cancellation Policy
-------------------------------------------
-• Orders cannot be cancelled once the course is activated.  
-• If a cancellation request is made before activation, only partial refunds may be issued (payment gateway fees deducted).  
-• Cancellation is not allowed after accessing any course content.
-
-------------------------------------------
-5. Technical Issues
-------------------------------------------
-If you face technical issues such as:
-
-• Login errors  
-• Course not loading  
-• Payment deducted but access not granted  
-
-You must contact support within **24–48 hours** with screenshots.
-
-We will resolve the issue or provide a suitable solution (not always a refund).
-
-------------------------------------------
-6. Duplicate or Failed Transactions
-------------------------------------------
-In case of accidental duplicate payments:
-
-• The extra amount will be refunded  
-• Refund initiation time: 3–5 working days  
-• Reflection time: depends on your bank/payment gateway  
-
-------------------------------------------
-7. How to Request a Refund
-------------------------------------------
-To apply for a refund, email us at:
-
-support@examoncourse.com
-
-Include the following:
-
-• Registered name & email  
-• Course purchased  
-• Payment ID / transaction screenshot  
-• Reason for refund request  
-• Any technical issue evidence (if applicable)
-
-Incomplete requests may be rejected.
-
-------------------------------------------
-8. Our Decision on Refund Requests
-------------------------------------------
-All refund decisions are made after:
-
-• Verifying usage  
-• Checking system logs  
-• Reviewing eligibility  
-• Confirming payment details  
-
-Our decision is final and binding.
-
-------------------------------------------
-9. Changes to Refund Policy
-------------------------------------------
-We may update this Refund Policy at any time.  
-Significant changes will be notified via email or dashboard alerts.
-
-------------------------------------------
-10. Contact Us
-------------------------------------------
-For any refund or billing concerns, contact:
-
-Examon Course – Support Team  
-Email: support@examoncourse.com
-
-------------------------------------------
-Thank you for understanding and supporting our learning platform.
-------------------------------------------
-`;
+ const refundPolicyData = {
+  title: "Examon Course – Refund & Cancellation Policy",
+  lastUpdated: "January 2025",
+  intro: [
+    "Thank you for choosing Examon Course.",
+    "This Refund & Cancellation Policy explains the rules, conditions, and limitations related to refunds for courses purchased on the Examon platform.",
+    "By purchasing any course on Examon, you agree to this policy."
+  ],
+  sections: [
+    {
+      heading: "1. General Refund Terms",
+      points: [
+        "All purchases made on Examon Course are final unless stated otherwise.",
+        "Refunds are provided only under specific conditions mentioned in this policy.",
+        "Approved refunds will be processed to the original payment method only.",
+        "Refund processing may take 7–14 working days depending on the payment gateway or bank."
+      ]
+    },
+    {
+      heading: "2. Refund Eligibility",
+      subSections: [
+        {
+          title: "You may be eligible for a refund if:",
+          points: [
+            "You purchased the wrong course by mistake and accessed less than 10% of the content.",
+            "There were technical issues that prevented access for more than 48 hours.",
+            "A duplicate payment was made due to a payment gateway error."
+          ]
+        },
+        {
+          title: "Refunds will NOT be granted if:",
+          points: [
+            "The course has been accessed or consumed significantly.",
+            "A large portion of videos, tests, or materials were completed or downloaded.",
+            "You changed your mind or no longer wish to continue the course.",
+            "Your exam schedule or preparation plan changed.",
+            "Course access expired due to inactivity."
+          ]
+        }
+      ]
+    },
+    {
+      heading: "3. Non-Refundable Items",
+      points: [
+        "Activated subscription plans",
+        "Mock tests once attempted",
+        "Downloaded PDFs, notes, or study materials",
+        "Discounted bundles, offers, or promotional packages",
+        "Courses purchased under special sales or campaigns"
+      ]
+    },
+    {
+      heading: "4. Cancellation Policy",
+      points: [
+        "Orders cannot be cancelled once course access is activated.",
+        "Cancellation requests before activation may receive partial refunds after deducting gateway charges.",
+        "No cancellations are allowed after accessing any course content."
+      ]
+    },
+    {
+      heading: "5. Technical Issues",
+      text: "If you face issues such as login errors, course access problems, or payment deducted without access, you must contact support within 24–48 hours with valid screenshots or proof. Resolution may include access restoration or alternative solutions, not necessarily a refund."
+    },
+    {
+      heading: "6. Duplicate or Failed Transactions",
+      points: [
+        "Duplicate payments caused by system or gateway errors are refundable.",
+        "Refund initiation timeline: 3–5 working days.",
+        "Final credit time depends on your bank or payment provider."
+      ]
+    },
+    {
+      heading: "7. How to Request a Refund",
+      text: "To request a refund, email us with complete details including registered name, email, course name, payment ID, reason for refund, and supporting screenshots. Incomplete requests may be rejected."
+    },
+    {
+      heading: "8. Decision on Refund Requests",
+      text: "All refund requests are reviewed by verifying system logs, usage history, eligibility criteria, and payment details. Examon’s decision shall be final and binding."
+    },
+    {
+      heading: "9. Policy Updates",
+      text: "Examon reserves the right to update or modify this Refund Policy at any time. Major changes will be communicated via email or dashboard notifications."
+    }
+  ],
+  contact: {
+    heading: "10. Contact Us",
+    team: "Examon Course – Support Team",
+    email: "Shivamgupta.vits@gmail.com"
+  }
+};
 
   return (
-    <div className="w-full min-h-screen bg-(--primary-color) text-white py-16 px-4 md:px-10">
-      <h2 className="text-4xl font-bold mb-6">
-        Refund Policy
-      </h2>
+    <div className="min-h-screen bg-gray-50 px-4 md:px-10 py-12 text-gray-800 mb-4">
+      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-10">
 
-      <div className="space-y-4 text-lg leading-relaxed whitespace-pre-line">
-        {refundPolicy}
+        {/* Header */}
+        <h1 className="text-3xl md:text-4xl font-extrabold mb-2">
+          {refundPolicyData.title}
+        </h1>
+        <p className="text-sm text-gray-500 mb-6">
+          Last Updated: {refundPolicyData.lastUpdated}
+        </p>
+
+        {/* Intro */}
+        <div className="space-y-3 mb-8">
+          {refundPolicyData.intro.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
+        </div>
+
+        {/* Sections */}
+        <div className="space-y-8">
+          {refundPolicyData.sections.map((section, index) => (
+            <div key={index}>
+              <h2 className="text-xl font-bold mb-3">
+                {section.heading}
+              </h2>
+
+              {section.points && (
+                <ul className="list-disc pl-6 space-y-1">
+                  {section.points.map((point, i) => (
+                    <li key={i}>{point}</li>
+                  ))}
+                </ul>
+              )}
+
+              {section.subSections &&
+                section.subSections.map((sub, idx) => (
+                  <div key={idx} className="mb-4">
+                    <h3 className="font-semibold mb-2">{sub.title}</h3>
+                    <ul className="list-disc pl-6 space-y-1">
+                      {sub.points.map((point, i) => (
+                        <li key={i}>{point}</li>
+                      ))}
+                    </ul>
+                  </div>
+                ))}
+
+              {section.text && <p>{section.text}</p>}
+            </div>
+          ))}
+        </div>
+
+        {/* Contact */}
+        <div className="mt-10 border-t pt-6">
+          <h2 className="text-xl font-bold mb-2">
+            {refundPolicyData.contact.heading}
+          </h2>
+          <p>{refundPolicyData.contact.team}</p>
+          <p className="font-medium">
+            Email:{" "}
+            <a
+              href={`mailto:${refundPolicyData.contact.email}`}
+              className="text-blue-600 hover:underline"
+            >
+              {refundPolicyData.contact.email}
+            </a>
+          </p>
+        </div>
+
       </div>
     </div>
   );

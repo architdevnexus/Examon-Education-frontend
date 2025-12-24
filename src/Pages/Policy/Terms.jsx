@@ -1,130 +1,168 @@
-export default function Terms() {
-  const terms = `
-Examon Course – Terms & Conditions
-Last Updated: January 2025
+import React from "react";
 
-Welcome to Examon Course (“we”, “our”, “us”). By accessing or using our website, learning materials, online tests, or services, you agree to follow the Terms & Conditions listed below. Please read them carefully.
 
-------------------------------------------
-1. Acceptance of Terms
-------------------------------------------
-By using our platform, you confirm that:
-• You are at least 13 years old.
-• You will use the platform legally and responsibly.
-• You agree to follow all rules, policies, and updates posted by Examon Course.
+export default function TermsAndConditions() {
+const termsPolicyData = {
+  title: "Examon Course – Terms & Conditions",
+  lastUpdated: "January 2025",
+  intro: [
+    "Welcome to Examon Course (“we”, “our”, “us”).",
+    "By accessing or using our website, learning materials, online tests, or services, you agree to comply with these Terms & Conditions.",
+    "Please read these terms carefully before using the platform."
+  ],
+  sections: [
+    {
+      heading: "1. Acceptance of Terms",
+      points: [
+        "You must be at least 13 years old to use the platform.",
+        "You agree to use the platform in a lawful and responsible manner.",
+        "You agree to comply with all rules, policies, and updates published by Examon Course.",
+        "If you do not agree with any part of these terms, you must stop using the platform immediately."
+      ]
+    },
+    {
+      heading: "2. Account Creation & Responsibilities",
+      points: [
+        "You must provide accurate and complete registration information.",
+        "You are responsible for maintaining the confidentiality of your login credentials.",
+        "All activities performed through your account are your responsibility.",
+        "Sharing accounts, passwords, or course access is strictly prohibited."
+      ]
+    },
+    {
+      heading: "3. Use of Educational Content",
+      text: "All videos, notes, tests, PDFs, and course materials available on Examon Course are the intellectual property of Examon Course.",
+      points: [
+        "You may not copy, reproduce, download, distribute, or resell any content.",
+        "You may not upload or share content on social media or third-party platforms.",
+        "Content access is provided strictly for personal and non-commercial learning purposes."
+      ]
+    },
+    {
+      heading: "4. Course Access & Validity",
+      points: [
+        "Course validity is determined by the plan or package purchased.",
+        "Once validity expires, access to content and tests will be revoked.",
+        "Renewal or repurchase is required to regain access."
+      ]
+    },
+    {
+      heading: "5. Payments & Billing",
+      points: [
+        "All payments are final and non-transferable.",
+        "Payments are processed through trusted third-party payment gateways.",
+        "Examon Course does not store or access your card or banking details.",
+        "Refunds and cancellations are governed by the Refund Policy."
+      ]
+    },
+    {
+      heading: "6. Prohibited Activities",
+      points: [
+        "Cheating, hacking, or attempting to manipulate tests or results.",
+        "Mass downloading or screen recording of paid content.",
+        "Reverse-engineering tests or copying exam questions.",
+        "Uploading abusive, harmful, or misleading content."
+      ]
+    },
+    {
+      heading: "7. Performance Reports & Analytics",
+      text: "Performance reports and analytics are provided solely for self-assessment and academic improvement. These reports must not be publicly shared or misused."
+    },
+    {
+      heading: "8. Limitation of Liability",
+      points: [
+        "Internet connectivity issues or device-related failures.",
+        "Exam scores, results, rankings, or final selections.",
+        "Temporary service interruptions due to maintenance or technical issues."
+      ],
+      text: "The platform is provided on an “as is” basis without any guarantees regarding exam outcomes."
+    },
+    {
+      heading: "9. Modifications to Services",
+      text: "Examon Course reserves the right to update or modify courses, pricing, features, or policies at any time. Significant changes will be communicated via email or dashboard notifications."
+    },
+    {
+      heading: "10. Termination of Access",
+      points: [
+        "Violation of these Terms & Conditions.",
+        "Misuse of content or platform features.",
+        "Engaging in fraudulent or harmful activities."
+      ],
+      text: "Accounts terminated for violations are not eligible for refunds."
+    },
+    {
+      heading: "11. Governing Law",
+      text: "These Terms & Conditions shall be governed and interpreted in accordance with the laws of India. Any disputes shall be subject to the jurisdiction of Indian courts."
+    }
+  ],
+  contact: {
+    heading: "12. Contact Us",
+    team: "Examon Course – Support Team",
+    email: "Shivamgupta.vits@gmail.com"
+  }
+};
 
-If you disagree with any part of these terms, you must stop using our platform immediately.
-
-------------------------------------------
-2. Account Creation & Responsibilities
-------------------------------------------
-When creating an account, you agree to:
-• Provide accurate and complete information.
-• Keep your login details confidential.
-• Be responsible for all activities done through your account.
-
-Sharing accounts, passwords, or learning material access is strictly prohibited.
-
-------------------------------------------
-3. Use of Educational Content
-------------------------------------------
-All videos, notes, tests, PDFs, and course materials are the property of Examon Course.  
-You may NOT:
-• Copy, download, share, or resell our content  
-• Upload our content to social media or other websites  
-• Distribute course material without written permission  
-
-Content access is provided only for personal learning purposes.
-
-------------------------------------------
-4. Course Access & Validity
-------------------------------------------
-• Course validity depends on the plan purchased.  
-• After expiration, course content and tests will not be accessible.  
-• Renewal or repurchase is required for extended access.
-
-------------------------------------------
-5. Payments & Billing
-------------------------------------------
-• All payments are final and non-transferable.  
-• Payments are processed through trusted third-party gateways.  
-• We do not store or access your banking/card information.  
-
-For refund or cancellation rules, please refer to our **Refund Policy**.
-
-------------------------------------------
-6. Prohibited Activities
-------------------------------------------
-You agree NOT to:
-• Use the platform for cheating, hacking, or mass downloading  
-• Attempt to copy exam questions or reverse-engineer tests  
-• Misuse doubt-solving or support features  
-• Upload harmful or abusive content  
-
-Violations may result in permanent account suspension.
-
-------------------------------------------
-7. Performance Reports & Analytics
-------------------------------------------
-Examon Course provides performance insights and test analytics.  
-These reports are for educational improvement only and must not be misused or publicly shared.
-
-------------------------------------------
-8. Limitation of Liability
-------------------------------------------
-We are not responsible for:
-• Loss of data due to internet or device issues  
-• Score changes, exam results, or selection outcomes  
-• Service interruptions due to maintenance or technical problems  
-
-Our platform is provided “as is” without warranties regarding exam results.
-
-------------------------------------------
-9. Modifications to Service
-------------------------------------------
-We may update courses, features, pricing, or policies at any time.  
-Major changes will be notified through email or dashboard alerts.
-
-------------------------------------------
-10. Termination
-------------------------------------------
-We reserve the right to suspend or delete any account that:
-• Violates terms  
-• Misuses content  
-• Engages in harmful behavior  
-
-No refunds will be issued for accounts terminated due to violations.
-
-------------------------------------------
-11. Governing Law
-------------------------------------------
-These Terms are governed by the laws of India.  
-Any disputes will be handled under the jurisdiction of Indian courts.
-
-------------------------------------------
-12. Contact Us
-------------------------------------------
-For questions or support, contact:
-
-Examon Course – Support Team  
-Email: support@examoncourse.com
-
-------------------------------------------
-Thank you for choosing Examon Course to support your learning journey.
-------------------------------------------
-`;
 
   return (
-    <div className="w-full min-h-screen text-(--primary-color)  py-16 px-4 md:px-10">
+    <div className="min-h-screen bg-gray-50 px-4 md:px-10 py-12 text-gray-800">
+      <div className="max-w-5xl mx-auto bg-white rounded-2xl shadow-lg p-6 md:p-10">
 
-      <h2 className="text-4xl font-bold  mb-6">
-        Terms & Conditions
-      </h2>
+        {/* Header */}
+        <h1 className="text-3xl md:text-4xl font-extrabold mb-2">
+          {termsPolicyData.title}
+        </h1>
+        <p className="text-sm text-gray-500 mb-6">
+          Last Updated: {termsPolicyData.lastUpdated}
+        </p>
 
-      <div className=" leading-7 whitespace-pre-line text-lg">
-        {terms}
+        {/* Intro */}
+        <div className="space-y-3 mb-8">
+          {termsPolicyData.intro.map((text, index) => (
+            <p key={index}>{text}</p>
+          ))}
+        </div>
+
+        {/* Sections */}
+        <div className="space-y-8">
+          {termsPolicyData.sections.map((section, index) => (
+            <div key={index}>
+              <h2 className="text-xl font-bold mb-3">
+                {section.heading}
+              </h2>
+
+              {section.text && (
+                <p className="mb-3">{section.text}</p>
+              )}
+
+              {section.points && (
+                <ul className="list-disc pl-6 space-y-1">
+                  {section.points.map((point, i) => (
+                    <li key={i}>{point}</li>
+                  ))}
+                </ul>
+              )}
+            </div>
+          ))}
+        </div>
+
+        {/* Contact */}
+        <div className="mt-10 border-t pt-6">
+          <h2 className="text-xl font-bold mb-2">
+            {termsPolicyData.contact.heading}
+          </h2>
+          <p>{termsPolicyData.contact.team}</p>
+          <p className="font-medium">
+            Email:{" "}
+            <a
+              href={`mailto:${termsPolicyData.contact.email}`}
+              className="text-blue-600 hover:underline"
+            >
+              {termsPolicyData.contact.email}
+            </a>
+          </p>
+        </div>
+
       </div>
-
     </div>
   );
 }
