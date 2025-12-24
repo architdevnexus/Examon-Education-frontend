@@ -172,14 +172,14 @@ const HomeSlider = () => {
         {/* Navigation arrows */}
         <button
           onClick={prevSlide}
-          className="absolute top-1/2 left-1 text-[var(--secondary-color)] text-4xl p-2 sm:p-3 -translate-y-1/2 z-20"
+          className="absolute cursor-pointer top-1/2 left-1 text-[var(--secondary-color)] text-4xl p-2 sm:p-3 -translate-y-1/2 z-20"
         >
           <MdNavigateBefore size={60} />
         </button>
 
         <button
           onClick={nextSlide}
-          className="absolute top-1/2 right-1 text-[var(--secondary-color)] text-4xl p-2 sm:p-3 -translate-y-1/2 z-20"
+          className="absolute cursor-pointer top-1/2 right-1 text-[var(--secondary-color)] text-4xl p-2 sm:p-3 -translate-y-1/2 z-20"
         >
           <MdNavigateNext size={60} />
         </button>
