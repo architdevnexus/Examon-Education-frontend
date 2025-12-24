@@ -79,7 +79,7 @@ const StudyMaterialPageCard = ({ title, level, language, pdfUrl }) => {
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
-                            className="absolute cursor-pointer top-3 right-12 text-gray-200 hover:text-white"
+                            className="absolute cursor-pointer top-3 right-12 text-gray-200 hover:text-red-500"
                             onClick={() => setShowModal(false)}
                         >
                             <IoClose size={22} />
