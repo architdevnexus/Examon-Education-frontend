@@ -125,7 +125,7 @@ const handleCartToggle = useCallback(
     absolute left-1/2 -translate-x-1/2 -bottom-4
     w-[94%]
     bg-white
-    px-4 py-3
+    px-4 py-2
     rounded-2xl
     shadow-xl
     flex items-center justify-between
@@ -138,7 +138,7 @@ const handleCartToggle = useCallback(
       Discount
     </span>
     <div className="flex items-center gap-1 text-red-600 font-bold">
-      <span className="text-lg">{discountPercent}%</span>
+      <span className="text-xs">{discountPercent}%</span>
       <span className="text-xs uppercase">OFF</span>
     </div>
   </div>
@@ -158,7 +158,7 @@ const handleCartToggle = useCallback(
     <span className="text-xs text-gray-400 uppercase tracking-wide">
       Pay Now
     </span>
-    <span className="text-xl font-extrabold text-[var(--primary-color)] leading-none">
+    <span className="text-base font-extrabold text-[var(--primary-color)] leading-none">
       ₹{discount}
     </span>
   </div>
@@ -170,7 +170,7 @@ const handleCartToggle = useCallback(
 
       {/* CONTENT */}
       <div className="px-4 py-3 flex flex-col gap-2">
-        <h3 className="font-semibold text-black text-md line-clamp-2 min-h-[44px]">
+        <h3 className="font-semibold mt-3 text-black text-md line-clamp-2 min-h-[44px]">
           {batchName}
         </h3>
 

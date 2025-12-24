@@ -215,6 +215,9 @@ const ProfileEditDropdown = () => {
                   </>
                 )}
               </div>
+              {
+                editMode && <span className="text-xs text-(--primary-color)">Please insert image in png , jpg , jpeg , webp , svg</span>
+              }
             </div>
 
             {/* Inputs */}

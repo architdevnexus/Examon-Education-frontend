@@ -75,11 +75,11 @@ const StudyMaterialPageCard = ({ title, level, language, pdfUrl }) => {
                     onClick={() => setShowModal(false)}
                 >
                     <div
-                        className="bg-white rounded-2xl w-[95%] max-w-3xl h-[80vh] relative overflow-hidden"
+                        className="bg-white rounded-2xl w-[95%] max-w-7xl h-[80vh] relative overflow-hidden"
                         onClick={(e) => e.stopPropagation()}
                     >
                         <button
-                            className="absolute top-3 right-3 text-gray-500 hover:text-black"
+                            className="absolute cursor-pointer top-3 right-12 text-gray-200 hover:text-white"
                             onClick={() => setShowModal(false)}
                         >
                             <IoClose size={22} />

@@ -60,7 +60,7 @@ const HeaderNotification = () => {
         .marquee {
           display: flex;
           width: max-content;
-          animation: marquee 25s linear infinite;
+          animation: marquee 55s linear infinite;
         }
 
         .marquee:hover {

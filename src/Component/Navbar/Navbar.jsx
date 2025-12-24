@@ -256,7 +256,7 @@ const Navbar = () => {
             ) : (
               <button
                 onClick={() => handleNavigate("/login")}
-                className="bg-[var(--primary-color)] text-white px-5 py-2 rounded-full hover:brightness-95 transition"
+                className="bg-[var(--primary-color)] cursor-pointer text-white px-5 py-2 rounded-full hover:brightness-95 transition"
               >
                 Login / Signup
               </button>
