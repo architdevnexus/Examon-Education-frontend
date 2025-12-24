@@ -131,7 +131,7 @@ const NewsLetter = () => {
         <button
           type="submit"
           disabled={loading}
-          className={`px-6 py-3 rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 ${
+          className={`px-6 py-3 cursor-pointer rounded-lg font-semibold transition-all duration-300 transform hover:scale-105 ${
             loading
               ? "bg-gray-400 cursor-not-allowed"
               : "bg-white text-[var(--primary-color)] hover:bg-white/90"

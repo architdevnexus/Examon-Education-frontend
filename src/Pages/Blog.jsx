@@ -61,23 +61,32 @@ const Blog = () => {
     return ["All", ...Array.from(unique)];
   }, [blogs]);
 
+  const stripHtml = (html = "") =>
+  html.replace(/<[^>]*>/g, "").toLowerCase();
+
+
   /* ---------------- Filter Blogs ---------------- */
-  const filteredBlogs = useMemo(() => {
-    const search = debouncedSearch.toLowerCase();
-    const normalizedCategory = normalizeCategory(category);
+const filteredBlogs = useMemo(() => {
+  const search = debouncedSearch.trim().toLowerCase();
+  const normalizedCategory = normalizeCategory(category);
 
-    return blogs.filter((blog) => {
-      const matchesSearch =
-        blog.title?.toLowerCase().includes(search) ||
-        blog.blogContent?.toLowerCase().includes(search);
+  return blogs.filter((blog) => {
+    const titleText = blog.title?.toLowerCase() || "";
+    const contentText = stripHtml(blog.blogContent);
 
-      const matchesCategory =
-        category === "All" ||
-        normalizeCategory(blog.category) === normalizedCategory;
+    const matchesSearch =
+      search === "" ||
+      titleText.includes(search) ||
+      contentText.includes(search);
 
-      return matchesSearch && matchesCategory;
-    });
-  }, [blogs, debouncedSearch, category]);
+    const matchesCategory =
+      category === "All" ||
+      normalizeCategory(blog.category) === normalizedCategory;
+
+    return matchesSearch && matchesCategory;
+  });
+}, [blogs, debouncedSearch, category]);
+
 
   /* ---------------- Pagination ---------------- */
   useEffect(() => setCurrentPage(1), [debouncedSearch, category]);
