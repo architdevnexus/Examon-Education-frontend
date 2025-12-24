@@ -70,8 +70,8 @@ const CategoryCourses = ({ category }) => {
       {!loading && filteredBatches.length > 0 && (
         <Swiper
           direction={isDesktop ? "vertical" : "horizontal"}
-          spaceBetween={10}
-          slidesPerView={isDesktop ? 3 : 1}
+          spaceBetween={50}
+          slidesPerView={isDesktop ? 1 : 1}
           autoplay={{ delay: 2000, disableOnInteraction: false }}
           modules={[Autoplay]}
           className="mySwiper w-full h-[400px] lg:h-[600px]"

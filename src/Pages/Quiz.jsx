@@ -171,16 +171,18 @@ const Quiz = () => {
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center gap-2 mt-4">
+          <div className="flex justify-center gap-6  mt-4">
             <button
               onClick={() => setPage((p) => Math.max(p - 1, 1))}
               disabled={page === 1}
+              className="cursor-pointer"
             >
               Prev
             </button>
             <button
               onClick={() => setPage((p) => Math.min(p + 1, totalPages))}
               disabled={page === totalPages}
+               className="cursor-pointer"
             >
               Next
             </button>

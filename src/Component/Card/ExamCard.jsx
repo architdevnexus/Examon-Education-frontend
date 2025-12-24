@@ -77,7 +77,7 @@ const ExamCard = ({ examData }) => {
 
       <div className="bg-[var(--primary-color)] py-3 px-4 flex justify-center">
         <button
-          className="w-full sm:w-3/4 bg-white text-[var(--primary-color)] font-semibold py-2 rounded-lg shadow-sm hover:bg-[var(--secondary-color)] hover:text-white transition-all duration-300"
+          className="w-full cursor-pointer sm:w-3/4 bg-white text-[var(--primary-color)] font-semibold py-2 rounded-lg shadow-sm hover:bg-[var(--secondary-color)] hover:text-white transition-all duration-300"
         >
           Start Now
         </button>
