@@ -62,30 +62,30 @@ const Blog = () => {
   }, [blogs]);
 
   const stripHtml = (html = "") =>
-  html.replace(/<[^>]*>/g, "").toLowerCase();
+    html.replace(/<[^>]*>/g, "").toLowerCase();
 
 
   /* ---------------- Filter Blogs ---------------- */
-const filteredBlogs = useMemo(() => {
-  const search = debouncedSearch.trim().toLowerCase();
-  const normalizedCategory = normalizeCategory(category);
+  const filteredBlogs = useMemo(() => {
+    const search = debouncedSearch.trim().toLowerCase();
+    const normalizedCategory = normalizeCategory(category);
 
-  return blogs.filter((blog) => {
-    const titleText = blog.title?.toLowerCase() || "";
-    const contentText = stripHtml(blog.blogContent);
+    return blogs.filter((blog) => {
+      const titleText = blog.title?.toLowerCase() || "";
+      const contentText = stripHtml(blog.blogContent);
 
-    const matchesSearch =
-      search === "" ||
-      titleText.includes(search) ||
-      contentText.includes(search);
+      const matchesSearch =
+        search === "" ||
+        titleText.includes(search) ||
+        contentText.includes(search);
 
-    const matchesCategory =
-      category === "All" ||
-      normalizeCategory(blog.category) === normalizedCategory;
+      const matchesCategory =
+        category === "All" ||
+        normalizeCategory(blog.category) === normalizedCategory;
 
-    return matchesSearch && matchesCategory;
-  });
-}, [blogs, debouncedSearch, category]);
+      return matchesSearch && matchesCategory;
+    });
+  }, [blogs, debouncedSearch, category]);
 
 
   /* ---------------- Pagination ---------------- */
@@ -218,7 +218,7 @@ const filteredBlogs = useMemo(() => {
 
                         <button
                           onClick={() => navigate(`/blog/${blog._id}`)}
-                          className="mt-auto bg-[var(--primary-color)] text-white py-2.5 rounded-xl"
+                          className="mt-auto cursor-pointer bg-[var(--primary-color)] text-white py-2.5 rounded-xl"
                         >
                           Read More
                         </button>

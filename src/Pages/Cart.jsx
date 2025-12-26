@@ -1,4 +1,4 @@
-import React, { useMemo, useCallback } from "react";
+import React, { useMemo, useCallback, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiTrash2 } from "react-icons/fi";
@@ -8,12 +8,13 @@ const Cart = () => {
   const navigate = useNavigate();
   const { cart, removeFromCart } = useCourseStore();
 
+  const [selectedCourseId, setSelectedCourseId] = useState(null);
+
   /* ------------------ PRICE ENGINE ------------------ */
   const calculatePrice = useCallback((item) => {
-    const previous = Number(item.price || item.previousprice || 0);
+    const previous = Number(item.previousprice || item.price || 0);
     const final = Number(item.discount || previous);
     const saving = Math.max(previous - final, 0);
-
     return { previous, final, saving };
   }, []);
 
@@ -35,33 +36,44 @@ const Cart = () => {
 
   /* ------------------ CHECKOUT ------------------ */
   const handleCheckout = useCallback(() => {
+    if (!selectedCourseId) return;
+
     const token = JSON.parse(localStorage.getItem("token"))?.state?.token;
-    if (!token) navigate("/login");
-    else window.open("https://classplusapp.com/", "_blank");
-  }, [navigate]);
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    const selectedCourse = cart.find(
+      (item) => item.id === selectedCourseId
+    );
+
+    if (selectedCourse?.enrollLink) {
+      window.open(selectedCourse.enrollLink, "_blank");
+    } else {
+      alert("Enrollment link not available");
+    }
+  }, [selectedCourseId, cart, navigate]);
 
   /* ------------------ EMPTY CART ------------------ */
   if (!cart.length) {
     return (
       <motion.div
-        className="min-h-[80vh]  flex flex-col items-center justify-center text-center px-4"
+        className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
       >
         <img
-          src="https://toppng.com/show_download/182968/sign-in-empty-cart-ico"
+          src="examon_logo.svg"
           alt="Empty Cart"
-          className="w-60 mb-6 opacity-80"
+          className="w-42 mb-6 opacity-80"
         />
-
         <h2 className="text-3xl font-bold text-gray-800">
           Your cart is empty
         </h2>
-
         <p className="text-gray-500 mt-2 max-w-md">
           Add courses to unlock amazing discounts and start learning 🚀
         </p>
-
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
@@ -100,6 +112,7 @@ const Cart = () => {
                 "Course";
 
               const { previous, final, saving } = calculatePrice(item);
+              const isSelected = selectedCourseId === id;
 
               return (
                 <motion.div
@@ -108,7 +121,10 @@ const Cart = () => {
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -20 }}
-                  className="bg-white rounded-2xl shadow-md p-5 flex flex-col sm:flex-row gap-5"
+                  className={`bg-white rounded-2xl shadow-md p-5 flex flex-col sm:flex-row gap-5 cursor-pointer ${
+                    isSelected ? "ring-2 ring-[var(--primary-color)]" : ""
+                  }`}
+                  onClick={() => setSelectedCourseId(id)}
                 >
                   {/* Image */}
                   <img
@@ -123,20 +139,12 @@ const Cart = () => {
                       {title}
                     </h3>
 
-                    {item.duration && (
-                      <p className="text-sm text-gray-500">
-                        Duration: {item.duration}
-                      </p>
-                    )}
-
-                    {/* Price */}
                     <div className="mt-2 space-y-1">
                       {saving > 0 && (
                         <div className="flex items-center gap-2 text-sm">
                           <span className="line-through text-gray-400">
                             ₹{previous}
                           </span>
-
                           {item.discountPercent > 0 && (
                             <span className="text-red-500 font-semibold">
                               {item.discountPercent}% OFF
@@ -144,7 +152,6 @@ const Cart = () => {
                           )}
                         </div>
                       )}
-
                       <span className="text-2xl font-bold text-gray-900">
                         ₹{final}
                       </span>
@@ -153,8 +160,13 @@ const Cart = () => {
 
                   {/* Remove */}
                   <button
-                    onClick={() => removeFromCart(id)}
-                    className="flex items-center gap-2 cursor-pointer text-sm text-red-500 hover:text-red-600 self-end sm:self-center"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      removeFromCart(id);
+                      if (selectedCourseId === id)
+                        setSelectedCourseId(null);
+                    }}
+                    className="flex items-center cursor-pointer gap-2 text-sm text-red-500 hover:text-red-600 self-end sm:self-center"
                   >
                     <FiTrash2 /> Remove
                   </button>
@@ -180,12 +192,10 @@ const Cart = () => {
                 <span>Subtotal (MRP)</span>
                 <span>₹{subtotal.toFixed(2)}</span>
               </div>
-
               <div className="flex justify-between text-green-600">
                 <span>Total Savings</span>
                 <span>- ₹{totalDiscount.toFixed(2)}</span>
               </div>
-
               <div className="border-t pt-4 flex justify-between text-lg font-bold">
                 <span>Payable Amount</span>
                 <span>₹{totalAmount.toFixed(2)}</span>
@@ -193,21 +203,26 @@ const Cart = () => {
             </div>
 
             <p className="text-xs text-gray-500 mt-3">
-              * Final payment will be processed on Classplus
+              * Final payment will be processed on Examon Education
             </p>
 
             <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.97 }}
+              whileHover={selectedCourseId ? { scale: 1.02 } : {}}
+              whileTap={selectedCourseId ? { scale: 0.97 } : {}}
+              disabled={!selectedCourseId}
               onClick={handleCheckout}
-              className="mt-6 w-full cursor-pointer bg-[var(--primary-color)] text-white py-3 rounded-full font-semibold shadow-md"
+              className={`mt-6 w-full py-3 rounded-full font-semibold shadow-md transition ${
+                selectedCourseId
+                  ? "bg-[var(--primary-color)] text-white cursor-pointer"
+                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
+              }`}
             >
               Proceed to Checkout
             </motion.button>
 
             <button
               onClick={() => navigate("/courses")}
-              className="mt-3 w-full cursor-pointer border border-[var(--primary-color)] text-[var(--primary-color)] py-3 rounded-full font-semibold hover:bg-[var(--tertiary-color)] transition"
+              className="mt-3 cursor-pointer w-full border border-[var(--primary-color)] text-[var(--primary-color)] py-3 rounded-full font-semibold hover:bg-[var(--tertiary-color)] transition"
             >
               Continue Exploring
             </button>

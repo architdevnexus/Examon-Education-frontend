@@ -28,8 +28,8 @@ const QuickConnect = () => {
     },
      {
       icon: <CiLocationOn size={24} />,
-      title: "Headquater",
-      details: "Examo Learning Private Limited, 2nd Floor, 100, Sector 43, Gurugram, Haryana 122009",
+      title: "Headquarter",
+      details: "Examon Education Private Limited, 2nd Floor, 100, Sector 43, Gurugram, Haryana 122009",
       path: "https://www.google.com/maps/dir//2nd+Floor,+100,+Sector+43,+Gurugram,+Haryana+122009/@28.4131328,77.0473984,14z/data=!4m8!4m7!1m0!1m5!1m1!1s0x390d19a38b97328d:0x996ed6aa68383d52!2m2!1d77.0905234!2d28.4616212?entry=ttu&g_ep=EgoyMDI1MTIwMS4wIKXMDSoASAFQAw%3D%3D",
     }
   ];

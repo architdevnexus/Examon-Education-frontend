@@ -37,7 +37,7 @@ const CategoryCourses = ({ category }) => {
       batch?.description?.toLowerCase().includes(keyword)
     );
   }, [batchData, category]);
-  console.log(filteredBatches)
+  // console.log(filteredBatches)
   return (
     <div className="mt-8 w-full">
       <motion.h2
@@ -45,7 +45,7 @@ const CategoryCourses = ({ category }) => {
         initial={{ opacity: 0, y: 10 }}
         animate={{ opacity: 1, y: 0 }}
       >
-        Courses in <span className="text-[var(--primary-color)]">{category}</span>
+        Courses in <span className="text-[var(--primary-color)]">{category.toUpperCase()}</span>
       </motion.h2>
 
       {loading && (

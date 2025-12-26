@@ -43,12 +43,12 @@ const Courses = () => {
   useEffect(() => {
     fetchBanners()
   }, [])
-console.log(batchData)
+// console.log(batchData)
   // Derived banner URL (no extra state)
   const aboutBannerUrl = useMemo(() => {
     return banners?.[0]?.courseBanner?.[0]?.url || "";
   }, [banners]);
-  // console.log(banners?.[0])
+  console.log(banners)
 
   /* -------------------- DEBOUNCE SEARCH -------------------- */
   useEffect(() => {
@@ -201,6 +201,7 @@ console.log(batchData)
                       enrollLink={course.enrollLink}
                       discountPercent={course?.discountPercent}
                       discount={course?.discount}
+                      // enrollLink={course?.enrollLink}
                     />
                   </motion.div>
                 ))

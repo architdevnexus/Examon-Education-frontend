@@ -124,14 +124,14 @@ const Navbar = () => {
             <div className="relative">
               <div className="flex items-center gap-3 md:gap-4">
 
-                <button
+                {/* <button
                   onClick={() => setExamOpen((prev) => !prev)}
                   aria-haspopup="true"
                   aria-expanded={examOpen}
                   className=" p-1 md:px-2 z-[991] text-xs sm:text-base rounded-md border-2 border-[var(--secondary-color)] text-gray-700 font-medium hover:text-[var(--primary-color)] transition flex items-center gap-1"
                 >
                   All Exams ▾
-                </button>
+                </button> */}
 
                 <div
                   className="flex items-center gap-2 cursor-pointer"

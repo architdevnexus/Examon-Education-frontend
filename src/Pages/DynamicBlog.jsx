@@ -3,6 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import DOMPurify from "dompurify";
 import { useBlogStore } from "../Zustand/GetBlog";
+import CategoryCourses from "../Component/CategoryCourses";
 
 // Lazy load sidebar
 const CoursesYouLike = lazy(() => import("../Component/CoursesYouLike"));
@@ -35,6 +36,7 @@ const DynamicBlog = () => {
     }
     return null;
   }, [allBlogs, id]);
+  
 
   // ✅ ALWAYS call hooks before returns
   const styledHTML = useMemo(() => {
@@ -153,7 +155,7 @@ const DynamicBlog = () => {
         </article>
 
         {/* Sidebar Section */}
-        <aside className="w-full lg:w-80 flex-shrink-0">
+        {/* <aside className="w-full lg:w-80 flex-shrink-0">
           <Suspense fallback={<div className="text-gray-500">Loading courses...</div>}>
             <div className="hidden lg:block sticky top-24">
               <CoursesYouLike title />
@@ -162,7 +164,8 @@ const DynamicBlog = () => {
               <CoursesYouLike title={false} />
             </div>
           </Suspense>
-        </aside>
+        </aside> */}
+        <CategoryCourses category={blog?.category}/>
       </div>
     </motion.section>
   );

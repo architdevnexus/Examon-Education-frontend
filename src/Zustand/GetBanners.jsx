@@ -18,6 +18,7 @@ export const useBanners = create((set) => ({
         banners: res?.data?.banners, // Axios gives parsed data
         loading: false,
       });
+      console.log(banners)
     } catch (error) {
       console.error("Error fetching banners:", error);
 

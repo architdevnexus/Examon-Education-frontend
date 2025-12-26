@@ -42,6 +42,7 @@ export const useCourseStore = create((set, get) => ({
           percent: course.percent,
           amount: course.amount,
           examCategory: category.examCategory,
+          enrollLink: course.enrollLink,
         }))
       );
 
@@ -114,6 +115,8 @@ addToCart: (course) => {
     // Academic
     perks: course.perks,
     insideCourses: course.insideCourses,
+
+        enrollLink: course.enrollLink,
 
     // Meta
     addedAt: Date.now(),

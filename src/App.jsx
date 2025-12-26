@@ -7,12 +7,13 @@ import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./App.css";
 
-/* Layout Components */
+/* Layout */
 import Navbar from "./Component/Navbar/Navbar";
 import Footer from "./Component/Footer";
 import Whatsapp from "./Component/Whatsapp";
 import PopupManager from "./Component/Popup/NotificationPopup";
 import ProtectedRoute from "./auth/ProtectedRoute";
+import ScrollToTop from "./utils/ScrollToTop";
 
 /* Static Pages */
 import PrivatePolicy from "./Pages/Policy/PrivatePolicy";
@@ -41,17 +42,20 @@ const ForgotPassword = lazy(() => import("./Form/ForgotPassword"));
 const NewPassword = lazy(() => import("./Form/NewPassword"));
 
 /* ------------------------------------------------------------------
-    MAIN APP COMPONENT (Optimized)
+    MAIN APP COMPONENT (OPTIMIZED & SAFE)
 -------------------------------------------------------------------*/
+
 export default function App() {
   return (
     <Router>
-      <div className="App flex flex-col min-h-screen bg-white text-gray-900">
+      {/* Scroll restoration */}
+      <ScrollToTop />
 
+      <div className="App flex flex-col min-h-screen bg-white text-gray-900">
         {/* Navbar */}
         <Navbar />
 
-        {/* PAGE LOADER */}
+        {/* Page Loader */}
         <Suspense
           fallback={
             <div className="flex justify-center items-center h-[70vh] text-gray-500 animate-pulse text-lg font-medium">
@@ -61,8 +65,7 @@ export default function App() {
         >
           <main className="flex-grow mt-28">
             <Routes>
-
-              {/* PUBLIC ROUTES */}
+              {/* PUBLIC */}
               <Route path="/" element={<Home />} />
               <Route path="/about" element={<Aboutus />} />
               <Route path="/courses" element={<Courses />} />
@@ -73,24 +76,24 @@ export default function App() {
               <Route path="/blog/:id" element={<DynamicBlog />} />
               <Route path="/batches" element={<Batches />} />
 
-              {/* AUTH ROUTES */}
+              {/* AUTH */}
               <Route path="/login" element={<Login />} />
               <Route path="/register" element={<Register />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/reset-password/:token" element={<NewPassword />} />
 
-              {/* POLICY PAGES */}
+              {/* POLICY */}
               <Route path="/privacy" element={<PrivatePolicy />} />
               <Route path="/terms" element={<Terms />} />
               <Route path="/refund" element={<Refund />} />
 
-              {/* DYNAMIC ROUTES */}
+              {/* DYNAMIC */}
               <Route path="/courses/:courseId" element={<DynamicCourses />} />
               <Route path="/exams/:_id" element={<DynamicExam />} />
               <Route path="/quiz/:_id" element={<DynamicQuiz />} />
               <Route path="/view-quiz/:finalQuizId" element={<ViewQuizPop />} />
 
-              {/* PROTECTED ROUTES */}
+              {/* PROTECTED */}
               <Route
                 path="/profile"
                 element={
@@ -109,7 +112,7 @@ export default function App() {
                 }
               />
 
-              {/* 404 PAGE */}
+              {/* 404 */}
               <Route
                 path="*"
                 element={
@@ -118,18 +121,13 @@ export default function App() {
                   </div>
                 }
               />
-
             </Routes>
           </main>
         </Suspense>
 
-        {/* Floating WhatsApp Button */}
+        {/* Floating Buttons & Footer */}
         <Whatsapp />
-
-        {/* Footer */}
         <Footer />
-
-        {/* Global Popup Manager */}
         <PopupManager />
 
         {/* Toast */}
@@ -141,7 +139,6 @@ export default function App() {
           draggable
           theme="colored"
         />
-
       </div>
     </Router>
   );
