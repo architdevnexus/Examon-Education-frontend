@@ -1,171 +1,157 @@
-import React, { useEffect, useMemo, lazy, Suspense } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import { motion } from "framer-motion";
 import DOMPurify from "dompurify";
 import { useBlogStore } from "../Zustand/GetBlog";
 import CategoryCourses from "../Component/CategoryCourses";
 
-// Lazy load sidebar
-const CoursesYouLike = lazy(() => import("../Component/CoursesYouLike"));
-
 const DynamicBlog = () => {
   const { id } = useParams();
   const navigate = useNavigate();
-  const { blogData: allBlogs = [], fetchBlogs, loading } = useBlogStore();
 
+  const { blogData = {}, fetchBlogs, loading } = useBlogStore();
+
+  /* ------------------ FETCH BLOGS ------------------ */
   useEffect(() => {
-    if (!loading && allBlogs.length === 0) {
+    if (!blogData?.categories?.length && !loading) {
       fetchBlogs();
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [blogData, loading, fetchBlogs]);
 
+  /* ------------------ FIND BLOG ------------------ */
   const blog = useMemo(() => {
-    if (!Array.isArray(allBlogs?.categories)) return null;
-
-    for (const category of allBlogs.categories) {
-      if (!Array.isArray(category.blogs)) continue;
-
-      const found = category.blogs.find(b => b._id === id);
+    const categories = blogData?.categories || [];
+    for (const category of categories) {
+      const found = category?.blogs?.find((b) => b._id === id);
       if (found) {
         return {
           ...found,
-          category: category.blogCategory,
+          category: category.blogCategory || "General",
         };
       }
     }
     return null;
-  }, [allBlogs, id]);
-  
+  }, [blogData, id]);
 
-  // ✅ ALWAYS call hooks before returns
+  /* ------------------ SANITIZED CONTENT ------------------ */
   const styledHTML = useMemo(() => {
     if (!blog?.blogContent) return "";
 
-    const clean = DOMPurify.sanitize(blog.blogContent);
+    const cleanHTML = DOMPurify.sanitize(blog.blogContent);
 
-    return clean
-      .replaceAll(
-        /<table([^>]*)>/g,
-        '<div class="overflow-x-auto my-6"><table$1 class="min-w-full text-sm border border-gray-300 rounded-xl shadow-md">'
-      )
-      .replaceAll(/<\/table>/g, "</table></div>")
-      .replaceAll(/<thead>/g, '<thead class="bg-gray-100">')
-      .replaceAll(/<tbody>/g, '<tbody class="divide-y">')
-      .replaceAll(/<tr>/g, '<tr class="hover:bg-gray-50">')
-      .replaceAll(/<td([^>]*)>/g, '<td$1 class="px-4 py-3 border-b">')
-      .replaceAll(/<th([^>]*)>/g, '<th$1 class="px-4 py-3 border-b font-medium">')
-      .replaceAll(/<ul>/g, '<ul class="list-disc pl-6 space-y-2">')
-      .replaceAll(/<ol>/g, '<ol class="list-decimal pl-6 space-y-2">')
-      .replaceAll(/<p>/g, '<p class="mb-4 leading-relaxed">')
-      .replaceAll(/<h2([^>]*)>/g, '<h2$1 class="text-2xl font-semibold mt-8 mb-4">')
-      .replaceAll(/<h3([^>]*)>/g, '<h3$1 class="text-xl font-semibold mt-6 mb-3">')
-      .replaceAll(/<a([^>]*)>/g, '<a$1 class="text-blue-600 hover:underline">');
+    return cleanHTML
+      .replace(/<table/g, '<div class="overflow-x-auto my-6"><table class="min-w-full border rounded-xl"')
+      .replace(/<\/table>/g, "</table></div>")
+      .replace(/<h2/g, '<h2 class="text-2xl font-semibold mt-8 mb-4"')
+      .replace(/<h3/g, '<h3 class="text-xl font-semibold mt-6 mb-3"')
+      .replace(/<p/g, '<p class="leading-relaxed mb-4"')
+      .replace(/<ul/g, '<ul class="list-disc pl-6 space-y-2"')
+      .replace(/<ol/g, '<ol class="list-decimal pl-6 space-y-2"')
+      .replace(/<a/g, '<a class="text-blue-600 hover:underline"');
   }, [blog]);
 
-  // ✅ Safe conditional return AFTER hooks
-  if (loading || !blog) {
+  /* ------------------ LOADING / ERROR ------------------ */
+  if (loading) {
     return (
-      <div className="flex items-center justify-center min-h-screen bg-gray-50">
-        <p className="text-gray-600 text-lg animate-pulse">
-          Loading blog...
-        </p>
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="animate-pulse text-gray-500">Loading blog...</p>
       </div>
     );
   }
 
+  if (!blog) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+        <p className="text-gray-500">Blog not found</p>
+      </div>
+    );
+  }
+
+  const formattedDate = blog.updatedAt
+    ? new Date(blog.updatedAt).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "short",
+        day: "numeric",
+      })
+    : "";
+
+  /* ------------------ RENDER ------------------ */
   return (
     <motion.section
-      className="min-h-screen bg-gray-50 py-10 px-4 md:px-16"
+      className="bg-gray-50 min-h-screen px-4 md:px-10 lg:px-20 py-10"
       initial={{ opacity: 0, y: 30 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.5, ease: "easeOut" }}
+      transition={{ duration: 0.4 }}
     >
-      {/* Back Button */}
+      {/* Back */}
       <button
         onClick={() => navigate(-1)}
-        className="text-blue-600 hover:text-blue-800 mb-6 text-sm font-medium transition"
+        className="mb-6 text-sm text-blue-600 hover:text-blue-800 transition"
       >
         ← Back to Blogs
       </button>
 
-      <div className="flex flex-col mb-14 lg:flex-row gap-10">
-        {/* Blog Section */}
-        <article
-          className="flex-1 bg-white rounded-3xl shadow-md hover:shadow-xl transition overflow-hidden"
-          aria-label="Blog Article"
-        >
-          {/* Hero Image */}
-          <div className="relative w-full h-72 md:h-96 overflow-hidden">
+      {/* Layout */}
+      <div className="grid grid-cols-1 lg:grid-cols-[1fr_380px] gap-10">
+        {/* Blog Content */}
+        <article className="bg-white rounded-3xl shadow-sm overflow-hidden">
+          {/* Image */}
+          <div className="h-[240px] md:h-[380px] overflow-hidden">
             <img
               src={blog.featuredImage || "/placeholder.jpg"}
-              alt={blog.title || "Blog Image"}
+              alt={blog.title}
+              className="w-full h-full object-cover"
               loading="lazy"
-              className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
             />
           </div>
 
-          {/* Blog Content */}
+          {/* Content */}
           <div className="p-6 md:p-10">
-            {/* Metadata */}
-            <div className="flex flex-wrap gap-3 text-sm text-gray-500 mb-3">
+            {/* Meta */}
+            <div className="flex flex-wrap gap-3 text-sm text-gray-500 mb-4">
               <span className="bg-blue-50 text-blue-700 px-3 py-1 rounded-full font-medium">
-                {blog.category || "General"}
+                {blog.category}
               </span>
-              <span>
-                {new Date(blog.updatedAt).toLocaleDateString(undefined, {
-                  year: "numeric",
-                  month: "short",
-                  day: "numeric",
-                })}
-              </span>
+              {formattedDate && <span>{formattedDate}</span>}
               {blog.read_time && <span>• {blog.read_time}</span>}
             </div>
 
             {/* Title */}
-            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-5 leading-tight">
+            <h1 className="text-3xl md:text-4xl font-bold text-gray-900 mb-6">
               {blog.title}
             </h1>
 
-            {/* Author Info */}
+            {/* Author */}
             {blog.author && (
-              <div className="flex items-center mb-8">
+              <div className="flex items-center gap-3 mb-8">
                 <img
                   src={blog.author.profile_image || "/user-avatar.png"}
-                  alt={blog.author.name || "Author"}
-                  className="w-12 h-12 rounded-full object-cover border border-gray-200"
+                  alt={blog.author.name}
+                  className="w-12 h-12 rounded-full border object-cover"
                 />
-                <div className="ml-3">
-                  <p className="font-semibold text-gray-800 text-sm">
-                    {blog.author.name || "Anonymous"}
+                <div>
+                  <p className="text-sm font-semibold text-gray-800">
+                    {blog.author.name}
                   </p>
-                  <p className="text-gray-500 text-xs">
-                    {blog.author.designation || ""}
+                  <p className="text-xs text-gray-500">
+                    {blog.author.designation}
                   </p>
                 </div>
               </div>
             )}
 
-            {/* Blog Body */}
+            {/* Body */}
             <div
-              className="prose max-w-none text-gray-700 prose-headings:text-gray-900"
+              className="prose max-w-none prose-headings:text-gray-900 prose-p:text-gray-700"
               dangerouslySetInnerHTML={{ __html: styledHTML }}
             />
           </div>
         </article>
 
-        {/* Sidebar Section */}
-        {/* <aside className="w-full lg:w-80 flex-shrink-0">
-          <Suspense fallback={<div className="text-gray-500">Loading courses...</div>}>
-            <div className="hidden lg:block sticky top-24">
-              <CoursesYouLike title />
-            </div>
-            <div className="block lg:hidden mt-10">
-              <CoursesYouLike title={false} />
-            </div>
-          </Suspense>
-        </aside> */}
-        <CategoryCourses category={blog?.category}/>
+        {/* Sidebar */}
+        <aside className=" h-fit">
+          <CategoryCourses category={blog.category} />
+        </aside>
       </div>
     </motion.section>
   );
