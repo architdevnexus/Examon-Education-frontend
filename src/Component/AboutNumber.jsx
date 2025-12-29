@@ -87,12 +87,13 @@ const AboutNumber = () => {
   // Extract first item safely
   const achievement = achievements?.[0] || {};
 
+
   // Prepare safe data for Stats component
   const data = [
-    { num: achievement.activeUser || 0, unit: "M+", title: "Students" },
-    { num: achievement.courses || 0, unit: "+", title: "Courses" },
-    { num: achievement.Instructors || 20, unit: "%", title: "Instructors" },
-    { num: achievement.alumni || 0, unit: "K+", title: "Alumni" },
+    { num: achievement.activeUser || 0, unit: "M+", title: "Active Users" },
+    { num: achievement.satisfyUser || 0, unit: "+", title: "Student's Satisfaction" },
+    { num: achievement.courses || 20, unit: "%", title: "Courses" },
+    { num: achievement.passingRate || 0, unit: "K+", title: "Our Selections" },
   ];
 
   // Loading / Error UI
