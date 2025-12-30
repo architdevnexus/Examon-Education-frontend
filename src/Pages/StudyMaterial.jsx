@@ -127,7 +127,7 @@ const StudyMaterial = () => {
 
               {/* Filter Dropdown */}
               {showFilter && (
-                <div className="absolute right-0 top-12 w-64 bg-white rounded-xl shadow-lg p-4 z-50">
+                <div className="absolute left-2 md:right-0 top-12 w-64 bg-white rounded-xl shadow-lg p-4 z-50">
                   <div className="flex justify-between items-center mb-3">
                     <h4 className="text-sm font-semibold text-gray-700">
                       Filters

@@ -62,7 +62,7 @@ const Quiz = () => {
             <img src="/questionmark.svg" alt="" className="w-64 h-64" />
           </div>
 
-          <div className="flex justify-between items-center flex-wrap gap-3 relative z-10">
+          <div className="flex justify-between items-center flex-wrap gap-3 relative">
             <div className="flex items-center gap-3 text-2xl font-semibold">
               <span>All Quizzes</span>
               <img src="/questionmark.svg" alt="" className="w-8 h-8" />
@@ -79,7 +79,7 @@ const Quiz = () => {
               </button>
 
               {showFilter && (
-                <div className="absolute right-0 top-12 w-72 bg-white rounded-xl shadow-xl p-4 z-50">
+                <div className="absolute right-0 top-12 w-72 bg-white rounded-xl shadow-xl p-4 z-9999">
                   <div className="flex justify-between items-center mb-3">
                     <h3 className="text-sm font-semibold text-gray-700">
                       Filter Quizzes
@@ -90,7 +90,7 @@ const Quiz = () => {
                   </div>
 
                   {/* Exam Filter */}
-                  <div className="flex flex-col gap-2">
+                  <div className="flex flex-col z-9999 gap-2">
                     {examOptions.map((exam) => (
                       <label
                         key={exam}
