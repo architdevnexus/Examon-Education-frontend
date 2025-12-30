@@ -18,8 +18,6 @@ const ViewQuizPage = () => {
     return Array.isArray(data?.attempts) ? data.attempts : [];
   }, [data]);
 
-  console.log("URL quizId:", quizId);
-  console.log("Attempts:", attempts);
 
   // Correct comparison using quizId from API
   const quiz = useMemo(() => {

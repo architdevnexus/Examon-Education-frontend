@@ -24,7 +24,7 @@ const Stats = ({ data }) => {
             />
             <span className="text-4xl">{item.unit}</span>
           </h3>
-          <p className="text-gray-700 text-sm md:text-base font-medium mt-1">
+          <p className="text-gray-700 flex flex-wrap text-sm md:text-base font-medium mt-1">
             {item.title}
           </p>
         </motion.div>

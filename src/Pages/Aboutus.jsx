@@ -18,7 +18,7 @@ const LoadingFallback = () => (
 );
 
 const Aboutus = () => {
-  const [banner, setbanner] = useState()
+
   const { fetchBanners, loading, banners } = useBanners();
   useEffect(() => {
     fetchBanners()
