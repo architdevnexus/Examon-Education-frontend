@@ -1,62 +1,79 @@
-import React, { useMemo, useCallback, useState } from "react";
+import React, { memo, useMemo, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FiTrash2 } from "react-icons/fi";
+import { FiShoppingCart } from "react-icons/fi";
 import { useCourseStore } from "../Zustand/GetAllCourses";
 
+/* ------------------ UTILS ------------------ */
+const formatPrice = (value) =>
+  new Intl.NumberFormat("en-IN").format(value || 0);
+
+const normalizeCourse = (item = {}) => {
+  const previous = Number(item.saving || item.price || 0);
+  const final = Number(item.discount || item.price || 0);
+
+  return {
+    id: item.id || item._id,
+    title:
+      item.title ||
+      item.courseDetails ||
+      item.batchName ||
+      "Course",
+    image:
+      item.image ||
+      item.img ||
+      item.images?.[0] ||
+      "/placeholder-course.jpg",
+    previous,
+    final,
+    saving: Math.max(previous - final, 0),
+    discountPercent: Number(item.discountPercent || 0),
+    enrollLink: item.enrollLink,
+  };
+};
+
+/* ------------------ COMPONENT ------------------ */
 const Cart = () => {
   const navigate = useNavigate();
   const { cart, removeFromCart } = useCourseStore();
 
-  const [selectedCourseId, setSelectedCourseId] = useState(null);
+  /* -------- Normalized Cart -------- */
+  const courses = useMemo(
+    () => cart.map(normalizeCourse),
+    [cart]
+  );
 
-  /* ------------------ PRICE ENGINE ------------------ */
-  const calculatePrice = useCallback((item) => {
-    const previous = Number(item.previousprice || item.price || 0);
-    const final = Number(item.discount || previous);
-    const saving = Math.max(previous - final, 0);
-    return { previous, final, saving };
-  }, []);
+  /* -------- Buy Now -------- */
+  const handleBuyNow = useCallback(
+    (course) => {
+      const token =
+        JSON.parse(localStorage.getItem("token"))?.state
+          ?.token;
 
-  /* ------------------ TOTALS ------------------ */
-  const { subtotal, totalDiscount, totalAmount } = useMemo(() => {
-    let subtotal = 0;
-    let totalDiscount = 0;
-    let totalAmount = 0;
+      if (!token) {
+        navigate("/login");
+        return;
+      }
 
-    cart.forEach((item) => {
-      const { previous, final, saving } = calculatePrice(item);
-      subtotal += previous;
-      totalDiscount += saving;
-      totalAmount += final;
-    });
+      if (!course.enrollLink) {
+        alert("Enrollment link not available");
+        return;
+      }
 
-    return { subtotal, totalDiscount, totalAmount };
-  }, [cart, calculatePrice]);
+      window.open(course.enrollLink, "_blank", "noopener");
+    },
+    [navigate]
+  );
 
-  /* ------------------ CHECKOUT ------------------ */
-  const handleCheckout = useCallback(() => {
-    if (!selectedCourseId) return;
+  /* -------- Remove -------- */
+  const handleRemove = useCallback(
+    (id) => removeFromCart(id),
+    [removeFromCart]
+  );
 
-    const token = JSON.parse(localStorage.getItem("token"))?.state?.token;
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    const selectedCourse = cart.find(
-      (item) => item.id === selectedCourseId
-    );
-
-    if (selectedCourse?.enrollLink) {
-      window.open(selectedCourse.enrollLink, "_blank");
-    } else {
-      alert("Enrollment link not available");
-    }
-  }, [selectedCourseId, cart, navigate]);
-
-  /* ------------------ EMPTY CART ------------------ */
-  if (!cart.length) {
+  /* ------------------ EMPTY STATE ------------------ */
+  if (!courses.length) {
     return (
       <motion.div
         className="min-h-[80vh] flex flex-col items-center justify-center text-center px-4"
@@ -66,19 +83,20 @@ const Cart = () => {
         <img
           src="examon_logo.svg"
           alt="Empty Cart"
-          className="w-42 mb-6 opacity-80"
+          className="w-40 mb-6 opacity-80"
         />
         <h2 className="text-3xl font-bold text-gray-800">
           Your cart is empty
         </h2>
-        <p className="text-gray-500 mt-2 max-w-md">
-          Add courses to unlock amazing discounts and start learning 🚀
+        <p className="text-gray-500 mt-2">
+          Add a course to get started 🚀
         </p>
+
         <motion.button
           whileHover={{ scale: 1.05 }}
           whileTap={{ scale: 0.95 }}
           onClick={() => navigate("/courses")}
-          className="mt-8 bg-[var(--primary-color)] text-white px-8 py-3 rounded-full font-semibold shadow-lg"
+          className="mt-8 bg-[var(--primary-color)] text-white px-8 py-3 rounded-full font-semibold"
         >
           Explore Courses
         </motion.button>
@@ -86,151 +104,90 @@ const Cart = () => {
     );
   }
 
-  /* ------------------ CART UI ------------------ */
+  /* ------------------ UI ------------------ */
   return (
-    <motion.div
+    <motion.section
       className="min-h-screen bg-gray-50 py-10 px-4 md:px-10 lg:px-20"
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     >
-      <h1 className="text-2xl font-bold text-gray-800 mb-8">
-        Your Cart ({cart.length})
+      <h1 className="text-2xl flex items-center justify-between gap-4 font-bold text-gray-800 mb-8">
+        Your Cart   <div className="flex gap-2 items-center"> <FiShoppingCart/>({courses.length})</div> 
       </h1>
 
-      <div className="flex flex-col lg:flex-row gap-10">
-        {/* ---------------- CART ITEMS ---------------- */}
-        <div className="flex-1 space-y-6 max-h-[60vh] overflow-scroll pr-1">
-          <AnimatePresence>
-            {cart.map((item) => {
-              const id = item.id || item._id;
-              const image =
-                item.image || item.img || item.images?.[0] || "";
-              const title =
-                item.title ||
-                item.courseDetails ||
-                item.batchName ||
-                "Course";
+      <div className="space-y-6 max-h-[70vh] overflow-auto pr-1">
+        <AnimatePresence>
+          {courses.map((course) => (
+            <motion.article
+              key={course.id}
+              layout
+              initial={{ opacity: 0, y: 16 }}
+              animate={{ opacity: 1, y: 0 }}
+              exit={{ opacity: 0, y: -16 }}
+              className="bg-white rounded-2xl items-center shadow-md p-5 flex flex-col sm:flex-row gap-5"
+            >
+              <img
+                src={course.image}
+                alt={course.title}
+                loading="lazy"
+                className="w-full sm:w-44 h-28 object-cover rounded-xl"
+                onError={(e) =>
+                  (e.target.src = "/placeholder-course.jpg")
+                }
+              />
 
-              const { previous, final, saving } = calculatePrice(item);
-              const isSelected = selectedCourseId === id;
+              <div className="flex flex-1 flex-col justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-gray-800">
+                    {course.title}
+                  </h3>
 
-              return (
-                <motion.div
-                  key={id}
-                  layout
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -20 }}
-                  className={`bg-white rounded-2xl shadow-md p-5 flex flex-col sm:flex-row gap-5 cursor-pointer ${
-                    isSelected ? "ring-2 ring-[var(--primary-color)]" : ""
-                  }`}
-                  onClick={() => setSelectedCourseId(id)}
-                >
-                  {/* Image */}
-                  <img
-                    src={image}
-                    alt={title}
-                    className="w-full sm:w-44 h-28 object-cover rounded-xl"
-                  />
-
-                  {/* Info */}
-                  <div className="flex-1 space-y-2">
-                    <h3 className="text-lg font-semibold text-gray-800">
-                      {title}
-                    </h3>
-
-                    <div className="mt-2 space-y-1">
-                      {saving > 0 && (
-                        <div className="flex items-center gap-2 text-sm">
-                          <span className="line-through text-gray-400">
-                            ₹{previous}
+                  <div className="mt-2 space-y-1">
+                    {course.saving > 0 && (
+                      <div className="flex items-center gap-2 text-sm">
+                        <span className="line-through text-gray-400">
+                          ₹{formatPrice(course.previous)}
+                        </span>
+                        {course.discountPercent > 0 && (
+                          <span className="text-red-500 font-semibold">
+                            {course.discountPercent}% OFF
                           </span>
-                          {item.discountPercent > 0 && (
-                            <span className="text-red-500 font-semibold">
-                              {item.discountPercent}% OFF
-                            </span>
-                          )}
-                        </div>
-                      )}
-                      <span className="text-2xl font-bold text-gray-900">
-                        ₹{final}
-                      </span>
-                    </div>
-                  </div>
+                        )}
+                      </div>
+                    )}
 
-                  {/* Remove */}
+                    <span className="text-2xl font-bold text-gray-900">
+                      ₹{formatPrice(course.final)}
+                    </span>
+                  </div>
+                </div>
+
+              </div>
+                {/* ACTIONS */}
+                <div className="mt-4 flex flex-wrap gap-3">
+                  <motion.button
+                    whileHover={{ scale: 1.04 }}
+                    whileTap={{ scale: 0.96 }}
+                    onClick={() => handleBuyNow(course)}
+                    className="bg-[var(--primary-color)] cursor-pointer text-white px-6 py-2 rounded-full font-semibold"
+                  >
+                    Buy Now
+                  </motion.button>
+
                   <button
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      removeFromCart(id);
-                      if (selectedCourseId === id)
-                        setSelectedCourseId(null);
-                    }}
-                    className="flex items-center cursor-pointer gap-2 text-sm text-red-500 hover:text-red-600 self-end sm:self-center"
+                    onClick={() => handleRemove(course.id)}
+                    className="flex items-center cursor-pointer gap-2 text-sm text-red-500 hover:text-red-600"
+                    aria-label="Remove course"
                   >
                     <FiTrash2 /> Remove
                   </button>
-                </motion.div>
-              );
-            })}
-          </AnimatePresence>
-        </div>
-
-        {/* ---------------- SUMMARY ---------------- */}
-        <div className="lg:w-[360px] h-[50vh] mb-4 sm:mb-0">
-          <motion.div
-            className="bg-white rounded-2xl shadow-lg p-6 sticky top-24"
-            initial={{ opacity: 0, x: 40 }}
-            animate={{ opacity: 1, x: 0 }}
-          >
-            <h2 className="text-xl font-semibold text-gray-800 mb-6">
-              Order Summary
-            </h2>
-
-            <div className="space-y-3 text-gray-700">
-              <div className="flex justify-between">
-                <span>Subtotal (MRP)</span>
-                <span>₹{subtotal.toFixed(2)}</span>
-              </div>
-              <div className="flex justify-between text-green-600">
-                <span>Total Savings</span>
-                <span>- ₹{totalDiscount.toFixed(2)}</span>
-              </div>
-              <div className="border-t pt-4 flex justify-between text-lg font-bold">
-                <span>Payable Amount</span>
-                <span>₹{totalAmount.toFixed(2)}</span>
-              </div>
-            </div>
-
-            <p className="text-xs text-gray-500 mt-3">
-              * Final payment will be processed on Examon Education
-            </p>
-
-            <motion.button
-              whileHover={selectedCourseId ? { scale: 1.02 } : {}}
-              whileTap={selectedCourseId ? { scale: 0.97 } : {}}
-              disabled={!selectedCourseId}
-              onClick={handleCheckout}
-              className={`mt-6 w-full py-3 rounded-full font-semibold shadow-md transition ${
-                selectedCourseId
-                  ? "bg-[var(--primary-color)] text-white cursor-pointer"
-                  : "bg-gray-300 text-gray-500 cursor-not-allowed"
-              }`}
-            >
-              Proceed to Checkout
-            </motion.button>
-
-            <button
-              onClick={() => navigate("/courses")}
-              className="mt-3 cursor-pointer w-full border border-[var(--primary-color)] text-[var(--primary-color)] py-3 rounded-full font-semibold hover:bg-[var(--tertiary-color)] transition"
-            >
-              Continue Exploring
-            </button>
-          </motion.div>
-        </div>
+                </div>
+            </motion.article>
+          ))}
+        </AnimatePresence>
       </div>
-    </motion.div>
+    </motion.section>
   );
 };
 
-export default React.memo(Cart);
+export default memo(Cart);

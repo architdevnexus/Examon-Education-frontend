@@ -91,7 +91,7 @@ const AboutNumber = () => {
   // Prepare safe data for Stats component
   const data = [
     { num: achievement.activeUser || 0, unit: "M+", title: "Active Users" },
-    { num: achievement.satisfyUser || 0, unit: "+", title: "Student's Satisfaction" },
+    { num: achievement.satisfyUser || 0, unit: "+", title: "Satisfaction" },
     { num: achievement.courses || 20, unit: "%", title: "Courses" },
     { num: achievement.passingRate || 0, unit: "K+", title: "Our Selections" },
   ];

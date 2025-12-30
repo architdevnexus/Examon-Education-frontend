@@ -48,7 +48,7 @@ const Courses = () => {
   const aboutBannerUrl = useMemo(() => {
     return banners?.[0]?.courseBanner?.[0]?.url || "";
   }, [banners]);
-  console.log(banners)
+  // console.log(banners)
 
   /* -------------------- DEBOUNCE SEARCH -------------------- */
   useEffect(() => {
