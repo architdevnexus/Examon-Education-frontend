@@ -122,7 +122,7 @@ const StudyMaterialPageCard = ({ title, level, language, pdfUrl }) => {
 
         <button
           onClick={handleDownload}
-          className="p-2 rounded-full bg-white"
+          className="p-2 rounded-full cursor-pointer bg-white"
         >
           <BsDownload size={18} />
         </button>
