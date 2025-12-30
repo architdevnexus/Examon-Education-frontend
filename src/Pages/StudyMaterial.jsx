@@ -102,7 +102,7 @@ const StudyMaterial = () => {
     setPage(1);
     setCategoryFilter("All");
   }, [viewMode, search]);
-// console.log(currentData)
+  // console.log(currentData)
   return (
     <div className="relative flex flex-col gap-6 p-4 md:py-6 mb-14">
       <main className="flex-1 flex flex-col gap-6">
@@ -159,8 +159,8 @@ const StudyMaterial = () => {
                     key={m}
                     onClick={() => setViewMode(m)}
                     className={`px-4 py-2 text-sm ${viewMode === m
-                        ? "bg-[var(--primary-color)] text-white"
-                        : "text-gray-800"
+                      ? "bg-[var(--primary-color)] text-white"
+                      : "text-gray-800"
                       }`}
                   >
                     {m.toUpperCase()}
@@ -184,11 +184,11 @@ const StudyMaterial = () => {
           />
         </header>
 
-        {/* --- Main Grid Content --- */} <Suspense fallback={<div className="text-center py-10 text-gray-500">Loading...</div>}> <div className="flex flex-col lg:flex-row items-start gap-8 mb-14 px-2 md:px-4"> {/* --- Main Section: Notes / PYQs --- */} <section className="flex-1 grid grid-cols-1 w-full sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-4"> {viewMode === "notes" ? ( loading ? ( <div className="col-span-full text-center py-10 text-gray-500"> Loading study materials... </div> ) : error ? ( <div className="col-span-full text-center py-10 text-red-500"> {error} </div> ) : paginatedData.length > 0 ? ( paginatedData.map((item) => ( <StudyMaterialPageCard key={item._id} {...item} /> )) ) : ( <div className="col-span-full text-center py-10 text-gray-500"> No materials found. </div> ) ) : pyqLoading ? ( <div className="col-span-full text-center py-10 text-gray-500"> Loading PYQs... </div> ) : pyqError ? ( <div className="col-span-full text-center py-10 text-red-500"> {pyqError} </div> ) : paginatedData.length > 0 ? ( paginatedData.map((item) => ( <PyqCard key={item._id} title={item.title} year={item.year} pdf={item.pdf} /> )) ) : ( <div className="col-span-full text-center py-10 text-gray-500"> No PYQs found. </div> )} </section> {/* --- Sidebar: Courses You Like --- */} <aside className="w-full lg:w-80 flex-shrink-0"> <Suspense fallback={<div className="text-gray-500 text-center py-10">Loading courses...</div>}> {/* Desktop Sidebar */} <div className="hidden lg:block sticky top-24"> <CoursesYouLike title /> </div> {/* Mobile / Tablet Sidebar */} <div className="block lg:hidden mt-8"> <CoursesYouLike title={false} /> </div> </Suspense> </aside> </div> </Suspense>
+        {/* --- Main Grid Content --- */} <Suspense fallback={<div className="text-center py-10 text-gray-500">Loading...</div>}> <div className="flex flex-col lg:flex-row items-start gap-8 mb-14 px-2 md:px-4"> {/* --- Main Section: Notes / PYQs --- */} <section className="flex-1 grid grid-cols-1 w-full sm:grid-cols-2 lg:grid-cols-3 gap-5 mt-4"> {viewMode === "notes" ? (loading ? (<div className="col-span-full text-center py-10 text-gray-500"> Loading study materials... </div>) : error ? (<div className="col-span-full text-center py-10 text-red-500"> {error} </div>) : paginatedData.length > 0 ? (paginatedData.map((item) => (<StudyMaterialPageCard key={item._id} {...item} />))) : (<div className="col-span-full text-center py-10 text-gray-500"> No materials found. </div>)) : pyqLoading ? (<div className="col-span-full text-center py-10 text-gray-500"> Loading PYQs... </div>) : pyqError ? (<div className="col-span-full text-center py-10 text-red-500"> {pyqError} </div>) : paginatedData.length > 0 ? (paginatedData.map((item) => (<PyqCard key={item._id} title={item.title} year={item.year} pdf={item.pdf} />))) : (<div className="col-span-full text-center py-10 text-gray-500"> No PYQs found. </div>)} </section> {/* --- Sidebar: Courses You Like --- */} <aside className="w-full lg:w-80 flex-shrink-0"> <Suspense fallback={<div className="text-gray-500 text-center py-10">Loading courses...</div>}> {/* Desktop Sidebar */} <div className="hidden lg:block sticky top-24"> <CoursesYouLike title /> </div> {/* Mobile / Tablet Sidebar */} <div className="block lg:hidden mt-8"> <CoursesYouLike title={false} /> </div> </Suspense> </aside> </div> </Suspense>
 
         {/* Pagination */}
         {totalPages > 1 && (
-          <div className="flex justify-center gap-3">
+          <div className="flex cursor-pointer justify-center gap-3">
             <button disabled={page === 1} onClick={() => setPage(p => p - 1)}>
               Prev
             </button>
