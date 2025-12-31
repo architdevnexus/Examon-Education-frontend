@@ -10,6 +10,7 @@ import MeetMentor from '../Component/MeetMentor'
 import LatestNewsInsights from '../Component/LatestNewsInsights'
 import HomeQuiz from '../Component/Quiz/HomeQuiz'
 import CoursesYouLike from '../Component/CoursesYouLike'
+import Mobile from '../Component/Mobile'
 
 const Home = () => {
 
@@ -25,6 +26,7 @@ const Home = () => {
       <MeetMentor />
       <HomeQuiz />
       <CoursesYouLike />
+      <Mobile/>
       <HomeTestimonial />
       <section className='mb-12'>
         <ContactSection />
