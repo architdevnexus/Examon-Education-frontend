@@ -111,7 +111,7 @@ export default function PrivacyPolicy() {
   ],
   contact: {
     title: "10. Contact Us",
-    email: "Shivamgupta.vits@gmail.com",
+    email: "help@examoneducation.com",
     team: "Examon Course – Support Team"
   }
 };

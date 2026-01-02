@@ -79,12 +79,12 @@ const StudyMaterialPageCard = memo(
         <div className="p-3 flex justify-end gap-3 bg-[var(--primary-color)] rounded-b-2xl">
           <button
             onClick={openPreview}
-            className="px-4 py-2 bg-white rounded-xl text-sm"
+            className="px-4 py-2 bg-white cursor-pointer  rounded-xl text-sm"
           >
             View
           </button>
 
-          <button onClick={handleDownload} className="p-2 text-white">
+          <button onClick={handleDownload} className="p-2 cursor-pointer text-white">
             <BsDownload size={18} />
           </button>
         </div>

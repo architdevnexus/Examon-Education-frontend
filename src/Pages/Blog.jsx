@@ -144,13 +144,13 @@ const Blog = () => {
             placeholder="Search blogs..."
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="flex-1 border border-gray-300 rounded-xl px-4 py-2"
+            className="flex-1 border cursor-pointer border-gray-300 rounded-xl px-4 py-2"
           />
 
           <select
             value={category}
             onChange={(e) => setCategory(e.target.value)}
-            className="border border-gray-300 rounded-xl px-4 py-2"
+            className="border border-gray-300 cursor-pointer rounded-xl px-4 py-2"
           >
             {categories.map((cat) => (
               <option key={cat} value={cat}>

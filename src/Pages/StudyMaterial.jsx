@@ -115,11 +115,11 @@ const StudyMaterial = () => {
               <img src="/notebook.svg" alt="icon" className="w-8 h-8" />
             </div>
 
-            <div className="flex items-center gap-3 relative">
+            <div className="flex items-center  gap-3 relative">
               {/* Filter Button */}
               <button
                 onClick={() => setShowFilter((p) => !p)}
-                className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg"
+                className="flex items-center cursor-pointer gap-2 bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg"
               >
                 <FiFilter />
                 <span className="hidden sm:inline">Filters</span>
@@ -153,12 +153,12 @@ const StudyMaterial = () => {
               )}
 
               {/* Toggle */}
-              <div className="flex bg-gray-300 rounded-xl overflow-hidden">
+              <div className="flex bg-gray-300  rounded-xl overflow-hidden">
                 {["notes", "pyq"].map((m) => (
                   <button
                     key={m}
                     onClick={() => setViewMode(m)}
-                    className={`px-4 py-2 text-sm ${viewMode === m
+                    className={`px-4 cursor-pointer py-2 text-sm ${viewMode === m
                       ? "bg-[var(--primary-color)] text-white"
                       : "text-gray-800"
                       }`}

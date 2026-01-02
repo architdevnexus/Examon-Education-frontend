@@ -98,7 +98,7 @@ const termsPolicyData = {
   contact: {
     heading: "12. Contact Us",
     team: "Examon Course – Support Team",
-    email: "Shivamgupta.vits@gmail.com"
+    email: "help@examoneducation.com"
   }
 };
 

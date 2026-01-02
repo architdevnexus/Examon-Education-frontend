@@ -77,7 +77,7 @@ const Footer = () => {
               <IoIosCall size={20} /> <span>+91 8368886452</span>
             </div>
             <div className="flex items-center gap-3">
-              <IoMdMail size={20} /> <span>Shivamgupta.vits@gmail.com</span>
+              <IoMdMail size={20} /> <span>help@examoneducation.com</span>
             </div>
             <div className="flex items-center gap-3">
               <RiMapPin2Fill size={20} /> <span>Gurgaon, Haryana, India</span>

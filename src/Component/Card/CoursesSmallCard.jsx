@@ -128,14 +128,14 @@ const CoursesSmallCard = ({ batch }) => {
         <div className="mt-auto flex items-center gap-2 pt-4 h-[48px]">
           <button
             onClick={handleExplore}
-            className="bg-[var(--primary-color)] text-white px-4 py-2 rounded-lg font-semibold transition w-1/2"
+            className="bg-[var(--primary-color)] cursor-pointer text-white px-4 py-2 rounded-lg font-semibold transition w-1/2"
           >
             Explore
           </button>
 
           <button
             onClick={handleCartToggle}
-            className={`flex items-center justify-center gap-2 px-2 py-2 rounded-lg font-semibold transition w-1/2 ${
+            className={`flex items-center justify-center gap-2 px-2 cursor-pointer py-2 rounded-lg font-semibold transition w-1/2 ${
               isInCart
                 ? "bg-red-500 text-white hover:bg-red-600"
                 : "border border-[var(--primary-color)] text-[var(--primary-color)] hover:bg-[var(--tertiary-color)]"

@@ -90,7 +90,7 @@ export default function RefundPolicy() {
   contact: {
     heading: "10. Contact Us",
     team: "Examon Course – Support Team",
-    email: "Shivamgupta.vits@gmail.com"
+    email: "help@examoneducation.com"
   }
 };
 

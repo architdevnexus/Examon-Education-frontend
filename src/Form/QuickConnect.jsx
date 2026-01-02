@@ -23,8 +23,8 @@ const QuickConnect = () => {
     {
       icon: <MdEmail size={24} />,
       title: "Email",
-      details: "Shivamgupta.vits@gmail.com",
-      path: "mailto:Shivamgupta.vits@gmail.com",
+      details: "help@examoneducation.com",
+      path: "mailto:help@examoneducation.com",
     },
      {
       icon: <CiLocationOn size={24} />,

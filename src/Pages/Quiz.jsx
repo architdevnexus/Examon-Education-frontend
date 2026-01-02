@@ -72,7 +72,7 @@ const Quiz = () => {
             <div className="relative">
               <button
                 onClick={() => setShowFilter((p) => !p)}
-                className="flex items-center gap-2 bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg backdrop-blur-sm"
+                className="flex items-center gap-2 cursor-pointer bg-white/20 hover:bg-white/30 px-3 py-2 rounded-lg backdrop-blur-sm"
               >
                 <FiFilter />
                 <span className="hidden sm:inline">Filters</span>
