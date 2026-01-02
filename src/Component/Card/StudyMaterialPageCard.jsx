@@ -109,7 +109,7 @@ const StudyMaterialPageCard = memo(
 
               {/* IMAGE PREVIEW */}
               <div className="flex-1 overflow-y-auto p-4 space-y-6">
-                {[1, 2, 3].map((page) => (
+                {[1, 2, 3,4,5,6].map((page) => (
                   <img
                     key={page}
                     src={getPageImage(page)}
