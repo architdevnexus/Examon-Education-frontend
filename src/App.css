@@ -105,3 +105,41 @@ main {
   background-size: 200% 200%;
   animation: fadeGradient 15s ease infinite;
 }
+.marquee-wrapper {
+  width: 100%;
+  overflow: hidden;
+  background: var(--primary-color);
+  padding: 6px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.15);
+}
+
+.marquee-track {
+  display: flex;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+/* 🔥 PAUSE ON HOVER */
+.marquee-wrapper:hover .marquee-track {
+  animation-play-state: paused;
+}
+
+.marquee-content {
+  display: flex;
+  gap: 2rem;
+  padding-right: 2rem;
+}
+
+.marquee-item {
+  white-space: nowrap;
+}
+
+/* Same logic as your HTML example */
+@keyframes marquee-scroll {
+  0% {
+    transform: translateX(0);
+  }
+  100% {
+    transform: translateX(-50%);
+  }
+}
