@@ -4,7 +4,6 @@ import { useNotificationStore } from "../../Zustand/useNotificationStore";
 const HeaderNotification = () => {
   const { notifications, initSocket, disconnectSocket } = useNotificationStore();
 
-  // Initialize and clean up socket connection
   useEffect(() => {
     initSocket?.();
     return () => disconnectSocket?.();
@@ -16,7 +15,7 @@ const HeaderNotification = () => {
     return notifications.map((item) => (
       <div
         key={item._id || item.title}
-        className="flex items-center gap-2 px-4 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 shadow-md hover:bg-white/20 transition duration-300 flex-shrink-0"
+        className="marquee-item flex items-center gap-2 px-4 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 shadow-md hover:bg-white/20 transition duration-300 flex-shrink-0"
       >
         {item.tags?.map((tag) => (
           <span
@@ -57,36 +56,44 @@ const HeaderNotification = () => {
 
   return (
     <div className="w-full bg-[var(--primary-color)] text-white py-[5px] overflow-hidden border-b border-white/10 shadow-lg backdrop-blur-sm">
-      <div className="marquee-wrapper relative w-full overflow-hidden">
-        <div className="marquee flex gap-8 whitespace-nowrap">
-          {/* Duplicate once for seamless scroll */}
-          {[...renderedNotifications, ...renderedNotifications]}
-        </div>
+      <div className="marquee flex gap-8 whitespace-nowrap relative">
+        {renderedNotifications}
+
+        <style jsx>{`
+          .marquee {
+            display: inline-flex;
+            position: relative;
+          }
+
+          /* Create a pseudo-element to repeat the content for infinite scroll */
+          .marquee::after {
+            content: "";
+            display: inline-block;
+            width: 100%;
+          }
+
+          .marquee:hover {
+            animation-play-state: paused;
+          }
+
+          .marquee {
+            animation: marquee 30s linear infinite;
+          }
+
+          @keyframes marquee {
+            0% {
+              transform: translateX(0);
+            }
+            100% {
+              transform: translateX(-100%);
+            }
+          }
+
+          .marquee-item {
+            flex-shrink: 0;
+          }
+        `}</style>
       </div>
-
-      <style jsx>{`
-        .marquee {
-          display: inline-flex;
-          animation: marquee 25s linear infinite;
-        }
-
-        .marquee:hover {
-          animation-play-state: paused;
-        }
-
-        @keyframes marquee {
-          0% {
-            transform: translateX(0);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-
-        .marquee > * {
-          flex-shrink: 0;
-        }
-      `}</style>
     </div>
   );
 };
