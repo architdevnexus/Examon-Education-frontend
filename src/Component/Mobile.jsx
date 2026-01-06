@@ -11,7 +11,7 @@ const Mobile = React.memo(() => {
   return (
     <section
       onClick={handleLink}
-      className="mx-auto cursor-pointer max-w-7xl  px-4 mt-24"
+      className="mx-auto cursor-pointer max-w-7xl  px-4"
     >
       <div className="relative rounded-[32px] bg-[#0E4B6C]">
 
@@ -69,7 +69,7 @@ const Mobile = React.memo(() => {
               alt="Examon Education App"
               loading="lazy"
               className="
-                w-[200px]
+                w-[300px]
                 sm:w-[240px]
                 md:w-[280px]
                 lg:w-[320px]

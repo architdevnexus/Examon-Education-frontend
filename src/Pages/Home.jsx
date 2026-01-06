@@ -25,7 +25,10 @@ const Home = () => {
       <WhyChooseUs />
       <MeetMentor />
       <HomeQuiz />
+      <section className='mb-24'>
+
       <CoursesYouLike />
+      </section>
       <Mobile/>
       <HomeTestimonial />
       <section className='mb-12'>

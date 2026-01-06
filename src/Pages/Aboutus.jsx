@@ -1,6 +1,7 @@
 import React, { Suspense, lazy, memo, useMemo, useState, useEffect } from "react";
 import Hero from "../Component/Hero";
 import { useBanners } from "../Zustand/GetBanners";
+import Mobile from "../Component/Mobile";
 
 // Lazy-load heavy sections for performance
 const FourStepSelection = lazy(() =>
@@ -53,6 +54,9 @@ const Aboutus = () => {
         {/* Mission & Vision Section */}
         <section className="flex flex-col items-center justify-center w-full py-10">
           <MissionVisionValues />
+        </section>
+        <section className="flex flex-col items-center justify-center w-full mb-24">
+          <Mobile />
         </section>
 
         {/* Contact Section */}
