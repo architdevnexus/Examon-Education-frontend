@@ -13,6 +13,8 @@ const HeaderNotification = () => {
   const items = useMemo(() => {
     if (!notifications?.length) return null;
 
+    console.log(notifications)
+
     return notifications.map((item) => (
       <div
         key={item._id || item.title}
