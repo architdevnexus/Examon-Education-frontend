@@ -96,30 +96,40 @@ const CoursesSmallCard = ({ batch }) => {
         <img
           src={images?.[1] || images?.[0]}
           alt={batchName}
-          className="w-full h-full object-cover"
+          className="w-full cursor-pointer h-full object-cover"
+           onClick={handleExplore}
         />
 
         {categoryName && (
-          <span className="absolute top-2 right-2 bg-[#F11A28] text-white text-xs font-semibold px-2 py-1 rounded-md">
+          <span
+           onClick={handleExplore}
+          className="absolute cursor-pointer top-2 right-2 bg-[#F11A28] text-white text-xs font-semibold px-2 py-1 rounded-md">
             {categoryName.toUpperCase()}
           </span>
         )}
       </div>
 
       {/* CONTENT */}
-      <div className="flex flex-col flex-grow p-4">
+      <div
+       
+      className="flex cursor-pointer flex-col flex-grow p-4">
         <h3
+        onClick={handleExplore}
           className="text-black text-base sm:text-lg font-semibold line-clamp-2 min-h-[48px]"
           title={batchName}
         >
           {batchName}
         </h3>
 
-        <p className="text-xs text-gray-500 mt-1 line-clamp-1">
+        <p
+        onClick={handleExplore}
+        className="text-xs text-gray-500 mt-1 line-clamp-1">
           {perks} • {duration}
         </p>
 
-        <div className="mt-3 mb-2">
+        <div
+        onClick={handleExplore}
+        className="mt-3 mb-2">
           <span className="text-black font-bold text-lg sm:text-xl">
             ₹{price}
           </span>

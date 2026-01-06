@@ -1,64 +1,126 @@
 import React from "react";
 
 const Mobile = React.memo(() => {
-  return (
-    <section className="mx-auto max-w-7xl w-full px-4 py-10">
-      <div className="relative overflow-hidden rounded-3xl bg-[#0E4B6C] px-6 py-10 md:px-12 md:py-14">
-        <div className="grid grid-cols-1 items-center gap-12 md:grid-cols-2">
+  const handleLink = () => {
+    window.open(
+      "https://play.google.com/store/apps/details?id=co.diy17.hcdeq",
+      "_blank"
+    );
+  };
 
-          {/* LEFT : Mobile Image */}
-          <div className="relative flex justify-center md:justify-start">
-            {/* Glow / Decorative background */}
-            <div className="absolute -top-6 h-64 w-64 rounded-full bg-[#1E78A6]/40 blur-3xl md:h-80 md:w-80" />
+  return (
+    <section
+      onClick={handleLink}
+      className="mx-auto cursor-pointer max-w-7xl  px-4 mt-24"
+    >
+      <div className="relative rounded-[32px] bg-[#0E4B6C]">
+
+        {/* Right angled shade (desktop only) */}
+        <div className="absolute inset-y-0 right-0 hidden md:block w-[42%] bg-[#2E6386] clip-diagonal rounded-r-[32px]" />
+
+        {/* WRAPPER */}
+        <div className="
+          relative
+          grid
+          grid-cols-1
+          md:flex
+          items-center
+          gap-8
+          min-h-[260px]
+          md:min-h-[300px]
+          lg:min-h-[340px]
+          px-6
+          py-8
+          md:px-16
+        ">
+
+          {/* IMAGE */}
+          <div
+            className="
+              relative
+              flex
+              justify-center
+              md:absolute
+              md:left-10
+              lg:left-14
+              md:top-1/2
+              md:-translate-y-1/2
+              z-20
+            "
+          >
+            {/* Glow (desktop only) */}
+            <div className="
+              hidden md:block
+              absolute
+              -left-12
+              top-1/2
+              -translate-y-1/2
+              h-[300px]
+              w-[300px]
+              rounded-full
+              bg-[#2BA4E6]
+              opacity-80
+              blur-3xl
+              -z-10
+            " />
 
             <img
               src="/mobile.svg"
-              alt="Examon Education mobile app preview"
+              alt="Examon Education App"
               loading="lazy"
               className="
-                relative z-10
-                w-[220px]
-                sm:w-[260px]
-                md:w-[300px]
-                lg:w-[340px]
-                xl:w-[360px]
+                w-[200px]
+                sm:w-[240px]
+                md:w-[280px]
+                lg:w-[320px]
+                xl:w-[400px]
+                drop-shadow-2xl
               "
             />
           </div>
 
-          {/* RIGHT : Content */}
-          <div className="flex flex-col items-start gap-4 text-white">
-            <span className="text-sm font-medium opacity-90">
+          {/* TEXT */}
+          <div className="
+            text-white
+            text-center
+            md:text-left
+            md:ml-[260px]
+            lg:ml-[300px]
+            xl:ml-[340px]
+          ">
+            <span className="text-sm opacity-90">
               Learn anytime, anywhere with the
             </span>
 
-            <h2 className="text-2xl font-bold sm:text-3xl lg:text-4xl">
+            <h2 className="mt-2 text-xl sm:text-2xl md:text-3xl lg:text-4xl font-bold">
               Examon Education App
             </h2>
 
-            <p className="max-w-md text-sm leading-relaxed opacity-90 sm:text-base">
+            <p className="mt-3 max-w-md mx-auto md:mx-0 text-sm sm:text-base opacity-90">
               Attend live classes, watch recorded lectures, practice quizzes,
               and stay exam-ready — all from one powerful app.
             </p>
 
-            <a
-              href="https://play.google.com/store/apps/details?id=co.diy17.hcdeq"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Download Examon Education App from Google Play"
-              className="mt-4 inline-flex transition-transform hover:scale-105 focus:scale-105"
-            >
+            <div className="mt-5 flex justify-center md:justify-start">
               <img
                 src="/googleplay.svg"
                 alt="Get it on Google Play"
-                loading="lazy"
-                className="h-12 sm:h-14"
+                className="h-11 sm:h-12 transition-transform hover:scale-105"
               />
-            </a>
+            </div>
           </div>
 
         </div>
       </div>
+
+      {/* Clip Path */}
+      <style>
+        {`
+          .clip-diagonal {
+            clip-path: polygon(20% 0, 100% 0, 100% 100%, 0% 100%);
+          }
+        `}
+      </style>
     </section>
   );
 });

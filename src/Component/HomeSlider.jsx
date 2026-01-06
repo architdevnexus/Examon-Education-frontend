@@ -109,7 +109,7 @@ const HomeSlider = () => {
   const batch = batchData[current];
 // console.log(batch)
   return (
-    <div className="p-2">
+    <div className="p-2 cursor-pointer">
       <div
         className="relative w-full h-[70vh] sm:h-[75vh] overflow-hidden rounded-2xl shadow-lg"
         onTouchStart={handleTouchStart}
@@ -132,7 +132,9 @@ const HomeSlider = () => {
               className="w-full h-full object-cover rounded-2xl"
             />
 
-            <div className="absolute inset-0 bg-black/40 flex flex-col justify-end items-start p-8 md:p-14 text-white rounded-2xl">
+            <div
+             onClick={() => navigate("/courses")}
+            className="absolute inset-0 bg-black/40 flex flex-col justify-end items-start p-8 md:p-14 text-white rounded-2xl">
               <h2 className="text-2xl sm:text-3xl font-bold mb-4 max-w-2xl leading-tight">
                 {batch.batchName}
               </h2>

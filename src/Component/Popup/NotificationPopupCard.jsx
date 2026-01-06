@@ -57,7 +57,8 @@ const NotificationPopup = ({ items = [], onClose }) => {
     <AnimatePresence mode="wait">
       <motion.div
         key={index}
-        className="fixed inset-0 z-[9999] bg-black/60 backdrop-blur-lg flex items-center justify-center px-2 sm:px-4"
+        
+        className="fixed inset-0  z-[9999] bg-black/60 backdrop-blur-lg flex items-center justify-center px-2 sm:px-4"
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
         exit={{ opacity: 0 }}
@@ -81,7 +82,7 @@ const NotificationPopup = ({ items = [], onClose }) => {
           {/* Close */}
           <button
             onClick={onClose}
-            className="absolute top-3 right-3 sm:top-5 sm:right-5 bg-black/40 p-1 sm:p-1.5 rounded-full text-gray-300 hover:text-white transition"
+            className="absolute cursor-pointer top-3 right-3 sm:top-5 sm:right-5 bg-black/40 p-1 sm:p-1.5 rounded-full text-gray-300 hover:text-white transition"
           >
             <X size={15} />
           </button>
@@ -109,7 +110,7 @@ const NotificationPopup = ({ items = [], onClose }) => {
                 className="
                   mt-3 sm:mt-4 px-4 sm:px-6 py-2 sm:py-3 
                   rounded-full bg-[var(--primary-color)] 
-                  text-white font-semibold text-xs sm:text-sm
+                  text-white font-semibold cursor-pointer text-xs sm:text-sm
                 "
               >
                 Enroll Now →

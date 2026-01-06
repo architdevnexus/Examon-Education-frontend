@@ -18,8 +18,11 @@ const HeaderNotification = () => {
     return notifications.map((item) => (
       <div
         key={item._id || item.title}
-        className="marquee-item flex items-center gap-3 px-4 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 shadow-md flex-shrink-0"
-      >
+        className="marquee-item flex cursor-pointer items-center gap-3 px-4 py-1 rounded-lg bg-white/10 backdrop-blur-md border border-white/20 shadow-md flex-shrink-0"
+      onClick={() =>
+              window.open(item.link, "_blank", "noopener,noreferrer")
+            }
+     >
         {item.tags?.map((tag) => (
           <span
             key={tag}
