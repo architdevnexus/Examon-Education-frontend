@@ -13,7 +13,7 @@ const ContactSection = lazy(() => import("../Component/ContactSection"));
 //  Reusable loading fallback
 const LoadingFallback = () => (
   <div className="flex justify-center items-center py-20 text-gray-500 animate-pulse">
-    Loading content....
+    Loading content......
   </div>
 );
 
