@@ -1,11 +1,11 @@
 import React from "react";
 
-const Card = ({ 
-  title = "VISION", 
-  bgImage = "/path/to/lightbulb.jpg", 
-  icon = "/path/to/eye-icon.svg", 
-  description = "Lorem ipsum dolor sit amet consectetur adipiscing elit mattis sit phasellus mollis sit aliquam sit nullam neque ultrices.", 
-  accentColor = "#e74c3c" 
+const Card = ({
+  title = "VISION",
+  bgImage = "/path/to/lightbulb.jpg",
+  icon = "/path/to/eye-icon.svg",
+  description = "Lorem ipsum dolor sit amet consectetur adipiscing elit mattis sit phasellus mollis sit aliquam sit nullam neque ultrices.",
+  accentColor = "#e74c3c"
 }) => {
   return (
     <div

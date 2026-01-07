@@ -131,9 +131,12 @@ const CoursesCard = ({
     flex items-center justify-between
     text-sm
   "
+          onClick={handleNavigate}
         >
           {/* DISCOUNT BADGE */}
-          <div className="flex flex-col items-start">
+          <div className=" cursor-pointer flex flex-col items-start"
+            onClick={handleNavigate}
+          >
             <span className="text-xs text-gray-400 uppercase tracking-wide">
               Discount
             </span>
@@ -172,27 +175,27 @@ const CoursesCard = ({
       <div className="px-4 py-3 flex flex-col gap-2">
         <h3
           onClick={handleNavigate}
-        
-        className="font-semibold mt-3 text-black text-md line-clamp-2 min-h-[44px]">
+
+          className="font-semibold mt-3 text-black text-md line-clamp-2 min-h-[44px]">
           {batchName}
         </h3>
 
-        <p 
+        <p
           onClick={handleNavigate}
-        
-        className="text-xs text-gray-500">Duration: {duration}</p>
 
-        <p 
+          className="text-xs text-gray-500">Duration: {duration}</p>
+
+        <p
           onClick={handleNavigate}
-        
-        className="text-sm text-gray-600 min-h-[60px]">
+
+          className="text-sm text-gray-600 min-h-[60px]">
           {trimmedDescription}
         </p>
 
         <ul
           onClick={handleNavigate}
-        
-        className="text-sm text-gray-700 space-y-1 h-[70px] overflow-y-auto pr-1">
+
+          className="text-sm text-gray-700 space-y-1 h-[70px] overflow-y-auto pr-1">
           {syllabus?.split("+").map((item, i) => (
             <li key={i} className="flex gap-2">
               <TiTickOutline className="text-green-600 mt-1" />
@@ -204,8 +207,8 @@ const CoursesCard = ({
 
       {/* FACULTY */}
       <div
-          onClick={handleNavigate} 
-      className="px-4 mb-2">
+        onClick={handleNavigate}
+        className="px-4 mb-2">
         <p className="text-xs font-semibold text-gray-700 mb-1">Faculty</p>
         <div className="flex flex-wrap gap-2 max-h-[52px] overflow-hidden">
           {teachers.map((t, i) => (
