@@ -5,21 +5,21 @@ const StudyMaterialHome = () => {
   const studyMaterialData = [
     {
       id: 1,
-      title: "Notes",
+      title: "Notes & PYQ's",
       description:
         "Comprehensive handwritten notes covering key concepts for quick revision and better understanding.",
       link: "/study-material",
-      image: "./notes.svg",
+      image: "./newnote.svg",
       bgcolor: "#ECF3FE",
       btncolor: "#254371",
     },
     {
       id: 2,
-      title: "PYQ's",
+      title: "Blogs",
       description:
         "Access previous year question papers to analyze exam patterns and improve performance.",
-      link: "/study-material",
-      image: "./pyq.svg",
+      link: "/blog",
+      image: "./newblogs.svg",
       bgcolor: "#FFF8EB",
       btncolor: "#CB9534",
     },
@@ -29,7 +29,7 @@ const StudyMaterialHome = () => {
       description:
         "Interactive quizzes to test your knowledge, reinforce concepts, and track your progress.",
       link: "/quiz",
-      image: "./Quiz.svg",
+      image: "./newQuiz.svg",
       bgcolor: "#EAFFF7",
       btncolor: "#248972",
     },

@@ -153,12 +153,12 @@ const StudyMaterial = () => {
               )}
 
               {/* Toggle */}
-              <div className="flex bg-gray-300  rounded-xl overflow-hidden">
+              <div className="flex bg-gray-200 p-1  rounded-xl overflow-hidden">
                 {["notes", "pyq"].map((m) => (
                   <button
                     key={m}
                     onClick={() => setViewMode(m)}
-                    className={`px-4 cursor-pointer py-2 text-sm ${viewMode === m
+                    className={`px-4 cursor-pointer rounded-2xl py-2 text-sm ${viewMode === m
                       ? "bg-[var(--primary-color)] text-white"
                       : "text-gray-800"
                       }`}

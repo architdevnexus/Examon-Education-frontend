@@ -29,7 +29,13 @@ const Home = () => {
 
       <CoursesYouLike />
       </section>
-      <Mobile/>
+
+<section className='max-w-6xl flex items-center justify-center  mx-auto'>
+
+      <img src="./examonappbanner.png" alt="" srcset="" className='rounded-xl'/>
+</section>
+
+      {/* <Mobile/> */}
       <HomeTestimonial />
       <section className='mb-12'>
         <ContactSection />

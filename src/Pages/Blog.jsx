@@ -191,7 +191,8 @@ const Blog = () => {
                   return (
                     <motion.article
                       key={blog._id}
-                      className="bg-white rounded-2xl shadow-md hover:shadow-2xl transition overflow-hidden flex flex-col"
+                       onClick={() => navigate(`/blog/${blog._id}`)}
+                      className="bg-white rounded-2xl cursor-pointer shadow-md hover:shadow-2xl transition overflow-hidden flex flex-col"
                       initial={{ opacity: 0, y: 30 }}
                       animate={{ opacity: 1, y: 0 }}
                       transition={{ delay: index * 0.05 }}
