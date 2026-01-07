@@ -77,39 +77,39 @@ const DynamicCourse = () => {
   }, [batchData, courseId]);
 
   // ---------------------- ENROLL HANDLER ----------------------
- const handleEnroll = useCallback(
-  (enrollLink) => {
-    const storedToken = JSON.parse(localStorage.getItem("token"))?.state?.token;
-   
+  const handleEnroll = useCallback(
+    (enrollLink) => {
+      const storedToken = JSON.parse(localStorage.getItem("token"))?.state?.token;
 
-    if (!storedToken) {
-      toast.info("Please login to add this batch to your favorites");
-      setTimeout(() => navigate("/login"), 700);
-      return;
-    }
 
-    if (!course || !course._id) {
-      toast.error("Unable to add batch right now. Please try again.");
-      return;
-    }
+      if (!storedToken) {
+        toast.info("Please login to add this batch to your favorites");
+        setTimeout(() => navigate("/login"), 700);
+        return;
+      }
 
-    if (!enrollLink) {
-      toast.error("Enrollment link not available.");
-      return;
-    }
+      if (!course || !course._id) {
+        toast.error("Unable to add batch right now. Please try again.");
+        return;
+      }
 
-    // ✅ Open enroll link in new tab
-    const newTab = window.open(enrollLink, "_blank", "noopener,noreferrer");
+      if (!enrollLink) {
+        toast.error("Enrollment link not available.");
+        return;
+      }
 
-    if (!newTab) {
-      toast.error("Popup blocked. Please allow popups.");
-      return;
-    }
+      // Open enroll link in new tab
+      const newTab = window.open(enrollLink, "_blank", "noopener,noreferrer");
 
-    toast.success(`${course.batchName} added to your favorites!`);
-  },
-  [course, cart, addToCart, navigate]
-);
+      if (!newTab) {
+        toast.error("Popup blocked. Please allow popups.");
+        return;
+      }
+
+      toast.success(`${course.batchName} added to your favorites!`);
+    },
+    [course, cart, addToCart, navigate]
+  );
 
 
   // ---------------------- LOADERS & ERRORS ----------------------
@@ -136,7 +136,7 @@ const DynamicCourse = () => {
         </p>
       </main>
     );
-
+  console.log(course)
   // ---------------------- UI (UNCHANGED) ----------------------
   return (
     <AnimatePresence mode="wait">
@@ -149,48 +149,95 @@ const DynamicCourse = () => {
         className="w-full flex flex-col items-center bg-white"
       >
         <motion.section variants={fadeInUp} initial="hidden" animate="show" className="w-full">
-         <DHero
-  title={course?.batchName}
-  image={course?.images?.[1]}
-  actualprice={course?.price}
-  insideCourses={course?.teachers}
-  perks={course?.syllabus}
-  onEnroll={() => handleEnroll(course?.enrollLink)}
-/>
+          <DHero
+            title={course?.batchName}
+            image={course?.images?.[1]}
+            actualprice={course?.price}
+            insideCourses={course?.teachers}
+            perks={course?.syllabus}
+            onEnroll={() => handleEnroll(course?.enrollLink)}
+          />
 
         </motion.section>
 
         <motion.section
-          variants={fadeInUp}
-          initial="hidden"
-          whileInView="show"
-          viewport={{ once: true }}
+  variants={fadeInUp}
+  initial="hidden"
+  whileInView="show"
+  viewport={{ once: true }}
+  className="
+    w-full sm:w-[95%] lg:w-[90%]
+    max-w-5xl
+    mx-auto
+    bg-white
+    rounded-2xl
+    shadow-md hover:shadow-lg
+    transition-shadow duration-300
+    border border-gray-100
+    p-5 sm:p-6 md:p-8
+    relative
+    overflow-hidden
+  "
+>
+  {/* Top Accent */}
+  <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500" />
 
-          className="
-        w-[90%]
-        bg-white
-        rounded-2xl
-        shadow-lg
-        border border-gray-100
-        p-6 md:p-8
-        relative
-        overflow-hidden
-        top-4
-      "
-        >
-          {/* Accent Gradient */}
-          <div className="absolute left-0 top-0 h-1 w-full bg-gradient-to-r from-indigo-500 via-purple-500 to-blue-500" />
+  {/* Course Overview */}
+  <header className="mb-6">
+    <h2 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800">
+      Course Overview
+    </h2>
+    <p className="mt-3 text-sm sm:text-base text-gray-600 leading-relaxed">
+      {course?.description || "No description available."}
+    </p>
+  </header>
 
-          {/* Title */}
-          <h2 className="text-xl md:text-2xl font-semibold text-gray-800 mb-4">
-            Course Overview
-          </h2>
+  {/* Additional Assistance */}
+  {Array.isArray(course?.link) && course.link.length > 0 && (
+    <section>
+      <h3 className="text-lg sm:text-xl md:text-2xl font-semibold text-gray-800 mb-4">
+        Additional Assistance
+      </h3>
 
-          {/* Description */}
-          <p className="text-(--primary-color) leading-relaxed text-sm md:text-base">
-            {course?.description}
-          </p>
-        </motion.section>
+      <div className="space-y-3">
+        {course.link.map((item) => (
+          <div
+            key={item.id}
+            className="
+              flex items-center justify-between
+              bg-gray-50
+              rounded-lg
+              px-4 py-3
+              hover:bg-gray-100
+              transition-colors
+            "
+          >
+            <span className="text-sm sm:text-base font-medium text-gray-700">
+              {item.title}
+            </span>
+
+            <a
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="
+                text-sm sm:text-base
+                text-indigo-600
+                font-medium
+                hover:text-indigo-700
+                underline-offset-4
+                hover:underline
+              "
+            >
+              Open →
+            </a>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+</motion.section>
+
 
         <motion.section variants={fadeInUp} initial="hidden" whileInView="show" viewport={{ once: true }} className="w-full">
           <StagesOfSSC item={course} />

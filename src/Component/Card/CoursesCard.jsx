@@ -110,7 +110,7 @@ const CoursesCard = ({
 
 
   return (
-    <div className="bg-white rounded-xl shadow-xl flex flex-col h-[600px] transition-transform hover:scale-[1.02]">
+    <div className="bg-white cursor-pointer rounded-xl shadow-xl flex flex-col h-[600px] transition-transform hover:scale-[1.02]">
       {/* IMAGE */}
       <div className="relative h-52 md:h-60">
         <img
@@ -170,17 +170,29 @@ const CoursesCard = ({
 
       {/* CONTENT */}
       <div className="px-4 py-3 flex flex-col gap-2">
-        <h3 className="font-semibold mt-3 text-black text-md line-clamp-2 min-h-[44px]">
+        <h3
+          onClick={handleNavigate}
+        
+        className="font-semibold mt-3 text-black text-md line-clamp-2 min-h-[44px]">
           {batchName}
         </h3>
 
-        <p className="text-xs text-gray-500">Duration: {duration}</p>
+        <p 
+          onClick={handleNavigate}
+        
+        className="text-xs text-gray-500">Duration: {duration}</p>
 
-        <p className="text-sm text-gray-600 min-h-[60px]">
+        <p 
+          onClick={handleNavigate}
+        
+        className="text-sm text-gray-600 min-h-[60px]">
           {trimmedDescription}
         </p>
 
-        <ul className="text-sm text-gray-700 space-y-1 h-[70px] overflow-y-auto pr-1">
+        <ul
+          onClick={handleNavigate}
+        
+        className="text-sm text-gray-700 space-y-1 h-[70px] overflow-y-auto pr-1">
           {syllabus?.split("+").map((item, i) => (
             <li key={i} className="flex gap-2">
               <TiTickOutline className="text-green-600 mt-1" />
@@ -191,7 +203,9 @@ const CoursesCard = ({
       </div>
 
       {/* FACULTY */}
-      <div className="px-4 mb-2">
+      <div
+          onClick={handleNavigate} 
+      className="px-4 mb-2">
         <p className="text-xs font-semibold text-gray-700 mb-1">Faculty</p>
         <div className="flex flex-wrap gap-2 max-h-[52px] overflow-hidden">
           {teachers.map((t, i) => (
