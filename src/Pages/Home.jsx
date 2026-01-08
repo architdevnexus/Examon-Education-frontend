@@ -30,12 +30,8 @@ const Home = () => {
       <CoursesYouLike />
       </section>
 
-<section className='max-w-6xl flex items-center justify-center  mx-auto'>
 
-      <img src="./examonappbanner.png" alt="" srcset="" className='rounded-xl'/>
-</section>
-
-      {/* <Mobile/> */}
+      <Mobile/>
       <HomeTestimonial />
       <section className='mb-12'>
         <ContactSection />
