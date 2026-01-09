@@ -17,7 +17,7 @@ const StudyMaterialHome = () => {
       id: 2,
       title: "Blogs",
       description:
-        "Access previous year question papers to analyze exam patterns and improve performance.",
+      "Explore insights, tips, and in-depth articles to strengthen your understanding and stay exam-ready.",
       link: "/blog",
       image: "./newblogs.svg",
       bgcolor: "#FFF8EB",
