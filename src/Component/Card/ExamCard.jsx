@@ -15,21 +15,18 @@ const ExamCard = ({ examData }) => {
   };
 
   const token = localStorage.getItem("token");
+
   const handleNavigate = () => {
-    if (token) {
-      navigate(`/quiz/${_id}`);
-    } else {
-      navigate("/login");
-    }
+    navigate(token ? `/quiz/${_id}` : "/login");
   };
 
   return (
     <div
       onClick={handleNavigate}
-      className="cursor-pointer bg-gradient-to-b from-[#EAF5FF] h-[300px] max-h-[340] to-white shadow-md hover:shadow-lg rounded-2xl flex flex-col justify-between overflow-hidden border border-gray-100 transition-all duration-300 hover:-translate-y-1"
-      // style={{ height: "340px", minHeight: "240px" }} 
+      className="cursor-pointer h-[300px] bg-gradient-to-b from-[#EAF5FF] to-white shadow-md hover:shadow-lg rounded-2xl flex flex-col justify-between overflow-hidden border border-gray-100 transition-all duration-300 hover:-translate-y-1"
     >
-      <div className="p-5 flex flex-col gap-3 flex-1">
+      {/* CONTENT */}
+      <div className="p-5 flex flex-col gap-3 flex-1 overflow-hidden">
         <h2 className="text-lg font-bold text-[var(--primary-color)] leading-snug line-clamp-2">
           {title}
         </h2>
@@ -56,14 +53,8 @@ const ExamCard = ({ examData }) => {
           </div>
         </div>
 
-        {/* 🔹 TAGS WITH SCROLL IF EXCEEDS HEIGHT */}
-        <div
-          className="flex flex-wrap gap-2 mt-3 overflow-y-auto"
-          style={{
-            maxHeight: "80px", // fits 1–2 rows before scrolling
-            paddingRight: "4px",
-          }}
-        >
+        {/* TAGS (SCROLLS IF MORE) */}
+        <div className="mt-3 max-h-[72px] overflow-y-auto flex flex-wrap gap-2 pr-1">
           {tags?.map((tag) => (
             <span
               key={tag}
@@ -75,10 +66,9 @@ const ExamCard = ({ examData }) => {
         </div>
       </div>
 
+      {/* FOOTER */}
       <div className="bg-[var(--primary-color)] py-3 px-4 flex justify-center">
-        <button
-          className="w-full cursor-pointer sm:w-3/4 bg-white text-[var(--primary-color)] font-semibold py-2 rounded-lg shadow-sm hover:bg-[var(--secondary-color)] hover:text-white transition-all duration-300"
-        >
+        <button className="w-full sm:w-3/4 bg-white text-[var(--primary-color)] font-semibold py-2 rounded-lg shadow-sm hover:bg-[var(--secondary-color)] hover:text-white transition-all duration-300">
           Start Now
         </button>
       </div>
