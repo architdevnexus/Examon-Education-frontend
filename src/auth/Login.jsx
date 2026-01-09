@@ -119,9 +119,9 @@ const Login = () => {
           {/* Left Image */}
           <div className="hidden md:block md:w-1/2">
             <img
-              src="/login.png"
+              src="/newlogin.png"
               alt="Login visual"
-              className="w-full h-full object-cover"
+              className="w-full mt-.5 h-full object-cover"
               loading="lazy"
             />
           </div>

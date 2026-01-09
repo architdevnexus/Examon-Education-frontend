@@ -88,7 +88,9 @@ const NotificationPopup = ({ items = [], onClose }) => {
           </button>
 
           {/* Layout (responsive) */}
-          <div className="flex flex-col-reverse md:flex-row items-center gap-4 sm:gap-6">
+          <div
+             onClick={handleNavigate}
+          className="flex cursor-pointer flex-col-reverse md:flex-row items-center gap-4 sm:gap-6">
 
             {/* Text Section */}
             <div className="flex flex-col gap-2 sm:gap-3 flex-1 text-center md:text-left">
