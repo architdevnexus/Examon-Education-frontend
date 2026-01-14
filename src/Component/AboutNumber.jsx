@@ -48,9 +48,9 @@ const RightComp = ({ stats }) => (
     initial="hidden"
     whileInView="show"
     viewport={{ once: true, amount: 0.3 }}
-    className="flex flex-col items-start justify-center gap-6 px-6 md:px-16 py-10 md:w-1/2"
+    className="flex flex-col items-center md:items-start justify-center gap-4 px-6 md:px-16 py-8 md:w-1/2"
   >
-    <p className="text-black text-sm md:text-base leading-relaxed">
+    <p className="text-black text-sm md:text-base leading-relaxed text-justify md:text-left">
       We offer bilingual learning in Hindi and English, accessible on app and web
       platforms, with transparent and affordable plans. Start your journey with{" "}
       <strong>Examon Education</strong> today!
@@ -59,6 +59,7 @@ const RightComp = ({ stats }) => (
     <Stats data={stats} />
   </motion.div>
 );
+
 
 /* ---------------- Main Component ---------------- */
 const AboutNumber = () => {
