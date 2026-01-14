@@ -1,34 +1,40 @@
 import React from "react";
-import CountUp from "react-countup";
 import { motion } from "framer-motion";
 
-const Stats = ({ data }) => {
+const Stats = ({ data = [] }) => {
   return (
-    <div className="grid grid-cols-2 sm:grid-cols-4 gap-8 w-full">
-      {data.map((item, index) => (
-        <motion.div
-          key={index}
-          className="flex flex-col items-center justify-center text-center"
-          initial={{ opacity: 0, y: 40 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: index * 0.2, duration: 0.6 }}
-          viewport={{ once: true }}
-        >
-          <h3 className="text-4xl font-bold text-[var(--primary-color)] flex items-end gap-1">
-            <CountUp
-              start={0}
-              end={item.num}
-              duration={2.5}
-              delay={0.2 * index}
-              enableScrollSpy
-            />
-            <span className="text-4xl">{item.unit}</span>
-          </h3>
-          <p className="text-gray-700 flex flex-wrap text-sm md:text-base font-medium mt-1">
-            {item.title}
-          </p>
-        </motion.div>
-      ))}
+    <div className="flex flex-wrap items-center justify-start gap-6">
+      {data.map((item, index) => {
+        const isLast = index === data.length - 1;
+
+        return (
+          <div
+            key={item.label}
+            className="flex items-center gap-6"
+          >
+            {/* Stat */}
+            <motion.div
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.4 }}
+              viewport={{ once: true }}
+              className="flex flex-col items-center"
+            >
+              <span className="text-3xl font-extrabold text-[var(--primary-color)]">
+                {item.value}
+              </span>
+              <span className="text-sm font-semibold text-[var(--primary-color)]">
+                {item.label}
+              </span>
+            </motion.div>
+
+            {/* Vertical Divider (except last) */}
+            {!isLast && (
+              <div className="hidden md:block h-10 w-[2px] bg-[var(--primary-color)] opacity-60" />
+            )}
+          </div>
+        );
+      })}
     </div>
   );
 };

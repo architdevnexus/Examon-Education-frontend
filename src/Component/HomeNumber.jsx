@@ -1,139 +1,128 @@
-import React, { useEffect, useState, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { motion } from "framer-motion";
 import { useInView } from "react-intersection-observer";
 import { useAchievementStore } from "../Zustand/GetAchievement";
+import { parseStat } from "../utils/parseStat";
 
-// Optimized CountUp component
-const CountUp = React.memo(({ target, unit }) => {
-  const [count, setCount] = useState(0);
+/* ---------------- CountUp ---------------- */
+const CountUp = React.memo(({ value }) => {
+  const [count, setCount] = useState(value);
   const { ref, inView } = useInView({ triggerOnce: true });
 
   useEffect(() => {
     if (!inView) return;
 
-    let start = 0;
-    const duration = 1500; // 1.5 seconds
-    const stepTime = 20;
-    const totalSteps = Math.ceil(duration / stepTime);
-    const increment = target / totalSteps;
+    let current = 0;
+    const duration = 1500;
+    const steps = 60;
+    const increment = value / steps;
 
     const timer = setInterval(() => {
-      start += increment;
-      if (start >= target) {
-        start = target;
+      current += increment;
+      if (current >= value) {
+        setCount(value);
         clearInterval(timer);
+      } else {
+        setCount(Math.floor(current));
       }
-      setCount(Math.floor(start));
-    }, stepTime);
+    }, duration / steps);
 
     return () => clearInterval(timer);
-  }, [inView, target]);
+  }, [inView, value]);
 
   return (
     <span ref={ref} className="text-[var(--primary-color)]">
-      {unit === "%" ? count.toFixed(0) : count}
+      {count}
     </span>
   );
 });
 
-// Individual number card component
-const NumbCompo = React.memo(({ num, unit, text, isLast }) => (
+
+/* ---------------- Card ---------------- */
+const StatCard = React.memo(({ num, unit, text, isLast }) => (
   <motion.div
+    className="flex items-center justify-center relative"
     variants={{
       hidden: { opacity: 0, y: 20 },
-      visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: "easeOut" } },
+      visible: {
+        opacity: 1,
+        y: 0,
+        transition: { duration: 0.5, ease: "easeOut" },
+      },
     }}
-    className="flex items-center justify-center relative"
   >
     <div className="flex flex-col items-center text-center p-4">
-      <div className="flex items-center justify-center gap-1 text-3xl sm:text-4xl font-extrabold">
-        <CountUp target={num} unit={unit} />
+      <div className="flex items-center gap-1 text-3xl sm:text-4xl font-extrabold">
+        <CountUp value={num} />
         {unit}
       </div>
-      <span className="mt-2 text-sm sm:text-base text-[var(--primary-color)] font-semibold">
+      <span className="mt-2 text-sm sm:text-base font-semibold text-[var(--primary-color)]">
         {text}
       </span>
     </div>
 
-    {!isLast && <div className="hidden md:block h-12 w-[2px] bg-[var(--primary-color)] mx-4"></div>}
+    {!isLast && (
+      <div className="hidden md:block h-12 w-[2px] bg-[var(--primary-color)] mx-4" />
+    )}
   </motion.div>
 ));
 
+/* ---------------- Main ---------------- */
 const HomeNumber = () => {
-  const { loading, error, achievements, fetchAchievements } = useAchievementStore();
+  const { achievements, loading, error, fetchAchievements } =
+    useAchievementStore();
 
   useEffect(() => {
-    fetchAchievements(); // fetch only once
+    fetchAchievements();
   }, []);
+  console.log(achievements)
 
-  // Get latest achievement
-  const latestAchievement = useMemo(() => {
-    if (!achievements?.length) return null;
-    return achievements[achievements.length - 1];
+  const stats = useMemo(() => {
+    const latest = achievements?.at(-1);
+    if (!latest) return [];
+
+    return [
+      { key: "activeUser", label: "Active Users" },
+      { key: "satisfyUser", label: "Student’s Satisfaction" },
+      { key: "courses", label: "Courses" },
+      { key: "passingRate", label: "Our Selections" },
+    ].map(({ key, label }) => ({
+      ...parseStat(latest[key]),
+      text: label,
+    }));
   }, [achievements]);
 
-  // Stats to display
-  const stats = useMemo(() => {
-    return latestAchievement
-      ? [
-          { num: latestAchievement.activeUser || 0, unit: "K", text: "Active Users" },
-          { num: Number(latestAchievement.satisfyUser) || 0, unit: "%", text: "Student’s Satisfaction" },
-          { num: latestAchievement.courses || 0, unit: "+", text: "Courses" },
-          { num: latestAchievement.passingRate || 0, unit: "%", text: "Our Selections" },
-        ]
-      : [
-          { num: 0, unit: "K", text: "Active Users" },
-          { num: 0, unit: "%", text: "Student’s Satisfaction" },
-          { num: 0, unit: "+", text: "Courses" },
-          { num: 0, unit: "%", text: "Our Selections" },
-        ];
-  }, [latestAchievement]);
-
   if (loading)
-    return (
-      <div className="w-full flex justify-center items-center py-10 text-gray-500">
-        Loading achievements...
-      </div>
-    );
+    return <div className="py-10 text-gray-500">Loading achievements...</div>;
 
   if (error)
-    return (
-      <div className="w-full flex justify-center items-center py-10 text-red-500">
-        Failed to load data: {error}
-      </div>
-    );
+    return <div className="py-10 text-red-500">{error}</div>;
 
   return (
-    <motion.div
-      className="w-full flex flex-col items-center justify-center py-10"
+    <motion.section
+      className="w-full flex justify-center py-10"
+      initial="hidden"
+      whileInView="visible"
+      viewport={{ once: true, amount: 0.3 }}
       variants={{
         hidden: { opacity: 0, y: 40 },
         visible: {
           opacity: 1,
           y: 0,
-          transition: { staggerChildren: 0.15, duration: 0.6, ease: "easeOut" },
+          transition: { staggerChildren: 0.15 },
         },
       }}
-      initial="hidden"
-      whileInView="visible"
-      viewport={{ once: true, amount: 0.3 }}
     >
-      <motion.div
-        className="grid grid-cols-2 md:grid-cols-4 gap-6 md:gap-4 max-w-5xl w-full justify-items-center"
-        variants={{
-          hidden: { opacity: 0, y: 40 },
-          visible: {
-            opacity: 1,
-            y: 0,
-            transition: { staggerChildren: 0.15, duration: 0.6, ease: "easeOut" },
-          },
-        }}
-      >
+      <motion.div className="grid grid-cols-2 md:grid-cols-4 gap-6 max-w-5xl">
         {stats.map((item, index) => (
-          <NumbCompo key={index} {...item} isLast={index === stats.length - 1} />
+          <StatCard
+            key={item.text}
+            {...item}
+            isLast={index === stats.length - 1}
+          />
         ))}
       </motion.div>
-    </motion.div>
+    </motion.section>
   );
 };
 
